@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "NortherLights.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "cloudthird.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

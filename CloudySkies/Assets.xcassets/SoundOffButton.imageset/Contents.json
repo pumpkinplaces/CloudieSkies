@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "PinkandBlue.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "SoundOffButton.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

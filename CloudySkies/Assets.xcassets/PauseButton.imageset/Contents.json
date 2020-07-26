@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "PauseButton.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "PauseButton.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

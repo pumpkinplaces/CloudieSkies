@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "PurpleNight.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "cloudfirst.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
