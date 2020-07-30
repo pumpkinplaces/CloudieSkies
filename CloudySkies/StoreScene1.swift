@@ -127,7 +127,7 @@ class StoreScene1: SKScene {
         let halfiwdthMid = self.frame.width/2 - self.frame.width/4
         
         RedRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        RedRabbita.run(SKAction.colorize(with: UIColor.systemRed, colorBlendFactor: 0.3, duration: 0))
+        RedRabbita.run(SKAction.colorize(with: UIColor.systemRed, colorBlendFactor: 0.6, duration: 0))
         RedRabbita.name = "RedRabbita"
         RedRabbita.zPosition = 3
         RedRabbita.position = CGPoint(x: -halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
@@ -135,21 +135,21 @@ class StoreScene1: SKScene {
         self.addChild(RedRabbita)
         bunnyList.append("RedRabbita")
         bunnyDictionary["RedRabbita"] = RedRabbita
-        bunnyPriceList["RedRabbita"] = 1000
+        bunnyPriceList["RedRabbita"] = 1
         
         OrangeRabbita = SKSpriteNode(imageNamed: "Rabbita1")
         OrangeRabbita.name = "OrangeRabbita"
-        OrangeRabbita.run(SKAction.colorize(with: UIColor(red: 235, green: 149, blue: 152), colorBlendFactor: 0.4, duration: 0))
+        OrangeRabbita.run(SKAction.colorize(with: UIColor(red: 235, green: 149, blue: 152), colorBlendFactor: 0.7, duration: 0))
         OrangeRabbita.zPosition = 3
         OrangeRabbita.position = CGPoint(x: -halfiwdthMid, y: 2 * tenthHeight - tenthHeightMid)
         OrangeRabbita.size = CGSize(width: 120, height: 120)
         self.addChild(OrangeRabbita)
         bunnyList.append("OrangeRabbita")
         bunnyDictionary["OrangeRabbita"] = OrangeRabbita
-        bunnyPriceList["OrangeRabbita"] = 1000
+        bunnyPriceList["OrangeRabbita"] = 1
         
         BlueRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        BlueRabbita.run(SKAction.colorize(with: UIColor.blue, colorBlendFactor: 0.4, duration: 0))
+        BlueRabbita.run(SKAction.colorize(with: UIColor.blue, colorBlendFactor: 0.35, duration: 0))
         BlueRabbita.name = "BlueRabbita"
         BlueRabbita.zPosition = 3
         BlueRabbita.position = CGPoint(x: -halfiwdthMid, y: -tenthHeightMid)
@@ -157,10 +157,10 @@ class StoreScene1: SKScene {
         self.addChild(BlueRabbita)
         bunnyList.append("BlueRabbita")
         bunnyDictionary["BlueRabbita"] = BlueRabbita
-        bunnyPriceList["BlueRabbita"] = 1000
+        bunnyPriceList["BlueRabbita"] = 1
         
         PinkRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        PinkRabbita.run(SKAction.colorize(with: UIColor.systemPink, colorBlendFactor: 0.4, duration: 0))
+        PinkRabbita.run(SKAction.colorize(with: UIColor.systemPink, colorBlendFactor: 0.3, duration: 0))
         PinkRabbita.name = "PinkRabbita"
         PinkRabbita.zPosition = 3
         PinkRabbita.position = CGPoint(x: -halfiwdthMid, y: -2 * tenthHeight - tenthHeightMid)
@@ -168,7 +168,7 @@ class StoreScene1: SKScene {
         self.addChild(PinkRabbita)
         bunnyList.append("PinkRabbita")
         bunnyDictionary["PinkRabbita"] = PinkRabbita
-        bunnyPriceList["PinkRabbita"] = 2
+        bunnyPriceList["PinkRabbita"] = 1
         
         GreenRabbita = SKSpriteNode(imageNamed: "Rabbita1")
         GreenRabbita.run(SKAction.colorize(with: UIColor(red: 82, green: 171, blue: 75), colorBlendFactor: 0.4, duration: 0))
@@ -179,10 +179,10 @@ class StoreScene1: SKScene {
         self.addChild(GreenRabbita)
         bunnyList.append("GreenRabbita")
         bunnyDictionary["GreenRabbita"] = GreenRabbita
-        bunnyPriceList["GreenRabbita"] = 1000
+        bunnyPriceList["GreenRabbita"] = 1
         
         GrayRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        GrayRabbita.run(SKAction.colorize(with: UIColor.gray, colorBlendFactor: 0.4, duration: 0))
+        GrayRabbita.run(SKAction.colorize(with: UIColor.gray, colorBlendFactor: 0.7, duration: 0))
         GrayRabbita.name = "GrayRabbita"
         GrayRabbita.zPosition = 3
         GrayRabbita.position = CGPoint(x: halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
@@ -190,10 +190,10 @@ class StoreScene1: SKScene {
         self.addChild(GrayRabbita)
         bunnyList.append("GrayRabbita")
         bunnyDictionary["GrayRabbita"] = GrayRabbita
-        bunnyPriceList["GrayRabbita"] = 1000
+        bunnyPriceList["GrayRabbita"] = 1
         
         PurpleRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        PurpleRabbita.run(SKAction.colorize(with: UIColor(red: 123, green: 75, blue: 171), colorBlendFactor: 0.4, duration: 0))
+        PurpleRabbita.run(SKAction.colorize(with: UIColor(red: 123, green: 75, blue: 171), colorBlendFactor: 0.7, duration: 0))
         PurpleRabbita.name = "PurpleRabbita"
         PurpleRabbita.zPosition = 3
         PurpleRabbita.position = CGPoint(x: halfiwdthMid, y: 2 * tenthHeight - tenthHeightMid)
@@ -201,7 +201,7 @@ class StoreScene1: SKScene {
         self.addChild(PurpleRabbita)
         bunnyList.append("PurpleRabbita")
         bunnyDictionary["PurpleRabbita"] = PurpleRabbita
-        bunnyPriceList["PurpleRabbita"] = 1000
+        bunnyPriceList["PurpleRabbita"] = 1
     }
     
     
