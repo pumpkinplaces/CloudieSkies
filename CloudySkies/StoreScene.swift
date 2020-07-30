@@ -60,6 +60,7 @@ class StoreScene: SKScene {
     var sorryTabClosed = true
     var bunnyBeingUsed:SKSpriteNode?
     var inMovedToView = Bool()
+    var getMoreCarrots = SKSpriteNode()
     
     
     override func didMove(to view: SKView) {
@@ -318,8 +319,8 @@ class StoreScene: SKScene {
         sorryLabel = SKLabelNode(text: "Sorry, You need: ")
         sorryLabel.setScale(0.8)
         sorryLabel.fontName = "Noteworthy-Bold"
-        sorryLabel.fontSize = 30
-        sorryLabel.position = CGPoint(x: 0, y: 50)
+        sorryLabel.fontSize = 35
+        sorryLabel.position = CGPoint(x: 0, y: 75)
         sorryLabel.zPosition = 7
         sorryLabel.fontColor = UIColor(red: 218, green: 211, blue: 244)
         sorryTab.addChild(sorryLabel)
@@ -329,17 +330,17 @@ class StoreScene: SKScene {
         sorryNum = SKLabelNode(text: diffString)
         sorryNum.setScale(0.8)
         sorryNum.fontName = "Noteworthy-Bold"
-        sorryNum.fontSize = 30
-        sorryNum.position = CGPoint.zero
+        sorryNum.fontSize = 35
+        sorryNum.position = CGPoint(x: 0, y: 25)
         sorryNum.zPosition = 7
-        sorryNum.fontColor = UIColor(red: 218, green: 211, blue: 244)
+        sorryNum.fontColor = UIColor.white
         sorryTab.addChild(sorryNum)
         
         sorryEnd = SKLabelNode(text: "more carrots!")
         sorryEnd.setScale(0.8)
         sorryEnd.fontName = "Noteworthy-Bold"
-        sorryEnd.fontSize = 30
-        sorryEnd.position = CGPoint(x: 0, y: -50)
+        sorryEnd.fontSize = 35
+        sorryEnd.position = CGPoint(x: 0, y: -20)
         sorryEnd.zPosition = 7
         sorryEnd.fontColor = UIColor(red: 218, green: 211, blue: 244)
         sorryTab.addChild(sorryEnd)
@@ -351,8 +352,14 @@ class StoreScene: SKScene {
         close.fontSize = 30
         close.position = CGPoint(x: -halfWid + 40, y: halfWid - 40)
         close.zPosition = 7
-        close.fontColor = UIColor(red: 218, green: 211, blue: 244)
+        close.fontColor = UIColor(red: 239, green: 235, blue: 252)
         sorryTab.addChild(close)
+        
+        getMoreCarrots = SKSpriteNode(imageNamed: "GetMoreCarrots")
+        getMoreCarrots.setScale(0.35)
+        getMoreCarrots.position = CGPoint(x: 0, y: -85)
+        getMoreCarrots.zPosition = 7
+        sorryTab.addChild(getMoreCarrots)
     }
     
     
@@ -476,8 +483,14 @@ class StoreScene: SKScene {
                     self.scene?.view?.presentScene(storeScene1!, transition: fadeAway)
                 }
                 }
-                if sorryTab.contains(loca){
+                if close.contains(loca){
                     sorryTabClosed = true; sorryTab.removeFromParent();
+                }
+                if getMoreCarrots.contains(loca){
+                    theBlender(runActionOn: getMoreCarrots)
+                    let mainGame = MainGame(fileNamed: "MainGame")
+                    let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
+                    self.scene?.view?.presentScene(mainGame!, transition: fadeAway)
                 }
                 var counter = -1
                 for each in useOrPriceList{
