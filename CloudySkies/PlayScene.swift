@@ -43,6 +43,9 @@ class PlayScene: SKScene {
     var soundOff = SKSpriteNode(), soundOn = SKSpriteNode()
     var silentaudio: AVAudioPlayer?
     var soundOffOrOn = UserDefaults().bool(forKey: "SoundOffOrOn")
+    var contactLearnMore:SKSpriteNode?
+    var more = SKSpriteNode()
+    var close: SKSpriteNode?
      
     
     override func didMove(to view: SKView) {
@@ -139,9 +142,15 @@ class PlayScene: SKScene {
         Cloud8.zPosition = 1
         
         Cloud9 = SKSpriteNode(imageNamed: "Cloud2")
-        Cloud9.position = CGPoint(x: -self.frame.width/2 + 73, y: -self.frame.height/2 + 79)
+        Cloud9.position = CGPoint(x: -self.frame.width/2 + 88, y: -self.frame.height/2 + 79)
         Cloud9.zPosition = 1
-        Cloud9.setScale(0.18)
+        Cloud9.setScale(0.2)
+        
+        more = SKSpriteNode(imageNamed: "More")
+        more.setScale(0.22)
+        more.position = CGPoint(x: Cloud9.position.x, y: Cloud9.position.y )
+        more.zPosition = 2
+        self.addChild(more)
         
         Cloud10 = SKSpriteNode(imageNamed: "Cloud2")
         Cloud10.position = CGPoint(x: self.frame.width/2 - 35, y: self.frame.width/2 - 44)
@@ -163,6 +172,21 @@ class PlayScene: SKScene {
         makeTheBorder(fluffy, color: UIColor.black, posit: CGPoint(x: -165, y: 179), scaleTo: 2)
         
     }
+    
+    private func makeMore(){
+        contactLearnMore = SKSpriteNode(imageNamed: "contactLearnMore")
+        contactLearnMore!.setScale(0.75)
+        contactLearnMore!.zPosition = 4
+        contactLearnMore!.position = CGPoint.zero
+        self.addChild(contactLearnMore!)
+        
+        close = SKSpriteNode(imageNamed: "Close")
+        close!.zPosition = 5
+        close!.setScale(0.12)
+        close!.position = CGPoint(x: contactLearnMore!.frame.width/2 - 40, y:contactLearnMore!.frame.height/2 - 30)
+        self.addChild(close!)
+    }
+    
     
     @objc private func pauseEverything(_ application: UIApplication){
         introsong?.pause()
@@ -293,9 +317,13 @@ class PlayScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if close?.parent == nil && contactLearnMore?.parent == nil{
+            close = nil; contactLearnMore = nil
+        }
         for touch in touches{
             let tab = touch.location(in: self)
-            if rulesTab.contains(tab){
+            print(rulesTab.contains(tab), ruleBoard.alpha, close as Any)
+            if rulesTab.contains(tab) && ruleBoard?.alpha == 0 && close == nil{
                 theBlender(runActionOn: rulesTab)
                 theBlender(runActionOn: rulesText)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.11, execute: {
@@ -303,7 +331,7 @@ class PlayScene: SKScene {
                     self.closeScoreBoard?.alpha = 1
                 })
             }
-            if playTab.contains(tab) && ruleBoard?.alpha == 0 {
+            if playTab.contains(tab) && ruleBoard?.alpha == 0 && close == nil{
                 theBlender(runActionOn: playTab)
                 theBlender(runActionOn: startPlaying)
                 introsong?.setVolume(0, fadeDuration: 2.5)
@@ -311,7 +339,7 @@ class PlayScene: SKScene {
                 let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                 self.scene?.view?.presentScene(mainGameScene!, transition: fadeAway)
             }
-            if let closeBoard = closeScoreBoard{
+            if let closeBoard = closeScoreBoard {
                 if closeBoard.contains(tab){
                     theBlender(runActionOn: closeBoard)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {
@@ -335,6 +363,19 @@ class PlayScene: SKScene {
                     introMusic()
                     makeSoundOnButton()
                     introsong?.play()
+                }
+            }
+
+            if more.contains(tab) && ruleBoard?.alpha == 0 && contactLearnMore?.parent == nil{
+                theBlender(runActionOn: Cloud9)
+                theBlender(runActionOn: more)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.makeMore()})
+            }
+            if let _ = close{
+                if close!.contains(tab){
+                    theBlender(runActionOn: close!)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.close!.run(SKAction.removeFromParent())
+                        self.contactLearnMore!.run(SKAction.removeFromParent())})
                 }
             }
         }
