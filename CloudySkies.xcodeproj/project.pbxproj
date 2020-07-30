@@ -20,6 +20,7 @@
 		3836383924CB90E600FFB634 /* LightBrownBunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836383824CB90E500FFB634 /* LightBrownBunny.atlas */; };
 		3836383B24CBC27E00FFB634 /* StoreScene1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3836383A24CBC27E00FFB634 /* StoreScene1.swift */; };
 		3836383D24CBC29700FFB634 /* StoreScene1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3836383C24CBC29700FFB634 /* StoreScene1.sks */; };
+		3845629424CE739B0023A57D /* BirdAnimation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3845629324CE739B0023A57D /* BirdAnimation.atlas */; };
 		384DEAFD24B4E53F00939D83 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384DEAFC24B4E53F00939D83 /* PlayScene.swift */; };
 		384DEB0324B5A17300939D83 /* TextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384DEB0224B5A17300939D83 /* TextExtension.swift */; };
 		385E7EE224B2578B00F4561F /* MainGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385E7EE124B2578B00F4561F /* MainGame.swift */; };
@@ -80,6 +81,7 @@
 		3836383824CB90E500FFB634 /* LightBrownBunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = LightBrownBunny.atlas; sourceTree = "<group>"; };
 		3836383A24CBC27E00FFB634 /* StoreScene1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreScene1.swift; sourceTree = "<group>"; };
 		3836383C24CBC29700FFB634 /* StoreScene1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StoreScene1.sks; sourceTree = "<group>"; };
+		3845629324CE739B0023A57D /* BirdAnimation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BirdAnimation.atlas; sourceTree = "<group>"; };
 		384DEAFC24B4E53F00939D83 /* PlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 		384DEAFE24B501CA00939D83 /* PlayScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PlayScene.sks; sourceTree = "<group>"; };
 		384DEB0224B5A17300939D83 /* TextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtension.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		38804EE924986D9900B330F1 /* CloudySkies */ = {
 			isa = PBXGroup;
 			children = (
+				3845629324CE739B0023A57D /* BirdAnimation.atlas */,
 				3836383824CB90E500FFB634 /* LightBrownBunny.atlas */,
 				3836383024CB619300FFB634 /* Shiny.atlas */,
 				3836382E24CAB08A00FFB634 /* DarkBrownBunny.atlas */,
@@ -343,6 +346,7 @@
 				38C4DCF424BA1FFA0014FF29 /* Actions.sks in Resources */,
 				387E1FF624C13A55003D3F87 /* AirPlaneSound.m4a in Resources */,
 				3801C34124BBFA1D002F737A /* BunnyHop.wav in Resources */,
+				3845629424CE739B0023A57D /* BirdAnimation.atlas in Resources */,
 				3836381524C8175800FFB634 /* Bunny.atlas in Resources */,
 				3836381B24C8180700FFB634 /* BeigeBunny.atlas in Resources */,
 				386B353524BE2D9B007FCD38 /* IntroScene.sks in Resources */,
