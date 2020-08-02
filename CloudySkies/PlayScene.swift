@@ -322,7 +322,6 @@ class PlayScene: SKScene {
         }
         for touch in touches{
             let tab = touch.location(in: self)
-            print(rulesTab.contains(tab), ruleBoard.alpha, close as Any)
             if rulesTab.contains(tab) && ruleBoard?.alpha == 0 && close == nil{
                 theBlender(runActionOn: rulesTab)
                 theBlender(runActionOn: rulesText)
