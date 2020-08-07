@@ -152,7 +152,7 @@ class StoreScene: SKScene, UIScrollViewDelegate {
         self.addChild(BrownRabbit)
         bunnyList.append("BrownRabbit")
         bunnyDictionary["BrownRabbit"] = BrownRabbit
-        bunnyPriceList["BrownRabbit"] = 0
+        bunnyPriceList["BrownRabbit"] = 500
         
         LightBrownBunny = SKSpriteNode(imageNamed: "LightBrownBunny1")
         LightBrownBunny.name = "LightBrownBunny"
@@ -162,7 +162,7 @@ class StoreScene: SKScene, UIScrollViewDelegate {
         self.addChild(LightBrownBunny)
         bunnyList.append("LightBrownBunny")
         bunnyDictionary["LightBrownBunny"] = LightBrownBunny
-        bunnyPriceList["LightBrownBunny"] = 0
+        bunnyPriceList["LightBrownBunny"] = 500
         
         DarkBrownBunny = SKSpriteNode(imageNamed: "DarkBrownBunny1")
         DarkBrownBunny.name = "DarkBrownBunny"
@@ -172,7 +172,7 @@ class StoreScene: SKScene, UIScrollViewDelegate {
         self.addChild(DarkBrownBunny)
         bunnyList.append("DarkBrownBunny")
         bunnyDictionary["DarkBrownBunny"] = DarkBrownBunny
-        bunnyPriceList["DarkBrownBunny"] = 0
+        bunnyPriceList["DarkBrownBunny"] = 500
         
         GrayBunny = SKSpriteNode(imageNamed: "GrayBunny1")
         GrayBunny.name = "GrayBunny"
@@ -182,7 +182,7 @@ class StoreScene: SKScene, UIScrollViewDelegate {
         self.addChild(GrayBunny)
         bunnyList.append("GrayBunny")
         bunnyDictionary["GrayBunny"] = GrayBunny
-        bunnyPriceList["GrayBunny"] = 1
+        bunnyPriceList["GrayBunny"] = 500
         
         BlackBunnyLight = SKSpriteNode(imageNamed: "BlackBunnyLight1")
         BlackBunnyLight.name = "BlackBunnyLight"
@@ -192,7 +192,7 @@ class StoreScene: SKScene, UIScrollViewDelegate {
         self.addChild(BlackBunnyLight)
         bunnyList.append("BlackBunnyLight")
         bunnyDictionary["BlackBunnyLight"] = BlackBunnyLight
-        bunnyPriceList["BlackBunnyLight"] = 0
+        bunnyPriceList["BlackBunnyLight"] = 500
         
         SpottedBlackBunny = SKSpriteNode(imageNamed: "SpottedBlackBunny1")
         SpottedBlackBunny.name = "SpottedBlackBunny"
@@ -202,7 +202,7 @@ class StoreScene: SKScene, UIScrollViewDelegate {
         self.addChild(SpottedBlackBunny)
         bunnyList.append("SpottedBlackBunny")
         bunnyDictionary["SpottedBlackBunny"] = SpottedBlackBunny
-        bunnyPriceList["SpottedBlackBunny"] = 1
+        bunnyPriceList["SpottedBlackBunny"] = 500
     }
     
     
