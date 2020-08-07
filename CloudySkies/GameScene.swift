@@ -37,7 +37,7 @@ class GameScene: SKScene {
     }
         
     private func firstLaunchSettings(){
-        if UserDefaults().bool(forKey: "First Launch") == true{
+if UserDefaults().bool(forKey: "hasLaunched") == false{
             UserDefaults.standard.set(true, forKey: "SoundOffOrOn")
             UserDefaults.standard.set("Bunny", forKey: "bunnyType")
             UserDefaults.standard.set("", forKey: "RabbitaColor")
@@ -45,8 +45,9 @@ class GameScene: SKScene {
             UserDefaults.standard.set("StoreScene", forKey: "StoreScene")
             UserDefaults.standard.set(0, forKey: "highscore")
             UserDefaults.standard.set(0, forKey: "highestTotalScore")
-        AllBunnyInfo.ownsList["Bunny"] = true; AllBunnyInfo.ownsList["YellowRabbita"] = false; AllBunnyInfo.ownsList["BrownRabbit"] = false; AllBunnyInfo.ownsList["BeigeBunny"] = true; AllBunnyInfo.ownsList["Shiny"] = false; AllBunnyInfo.ownsList["LightBrownBunny"] = false; AllBunnyInfo.ownsList["DarkBrownBunny"] = false; AllBunnyInfo.ownsList["GreenRabbita"] = false; AllBunnyInfo.ownsList["BlueRabbita"] = false; AllBunnyInfo.ownsList["BlackBunny"] = false; AllBunnyInfo.ownsList["PinkRabbita"] = false; AllBunnyInfo.ownsList["Rabbita"] = false; AllBunnyInfo.ownsList["OrangeRabbita"] = false; AllBunnyInfo.ownsList["RedRabbita"] = false; AllBunnyInfo.ownsList["PurpleRabbita"] = false; AllBunnyInfo.ownsList["GrayBunny"] = false; AllBunnyInfo.ownsList["SpottedBlackBunny"] = false;
+        AllBunnyInfo.ownsList["Bunny"] = true; AllBunnyInfo.ownsList["YellowRabbita"] = false; AllBunnyInfo.ownsList["BrownRabbit"] = false; AllBunnyInfo.ownsList["BeigeBunny"] = true; AllBunnyInfo.ownsList["Shiny"] = false; AllBunnyInfo.ownsList["LightBrownBunny"] = false; AllBunnyInfo.ownsList["DarkBrownBunny"] = false; AllBunnyInfo.ownsList["GreenRabbita"] = false; AllBunnyInfo.ownsList["BlueRabbita"] = false; AllBunnyInfo.ownsList["BlackBunny"] = false; AllBunnyInfo.ownsList["PinkRabbita"] = false; AllBunnyInfo.ownsList["Rabbita"] = false; AllBunnyInfo.ownsList["OrangeRabbita"] = false; AllBunnyInfo.ownsList["RedRabbita"] = false; AllBunnyInfo.ownsList["PurpleRabbita"] = false; AllBunnyInfo.ownsList["GrayBunny"] = false; AllBunnyInfo.ownsList["SpottedBlackBunny"] = false; AllBunnyInfo.ownsList["BlackBunnyLight"] = false; AllBunnyInfo.ownsList["BabyBlueRabbita"] = false
             UserDefaults.standard.set(AllBunnyInfo.ownsList, forKey: "Owned")
+            UserDefaults.standard.set(true, forKey: "hasLaunched")
         }
     }
         func touchDown(atPoint pos : CGPoint) {
