@@ -55,3 +55,8 @@ extension String{
            return self[self.index(self.startIndex, offsetBy: anint)]
     }
 }
+
+class StoreSong{
+    static var stoppedSongForMain = Bool()
+    static var storeSongPlaying = Bool()
+}
