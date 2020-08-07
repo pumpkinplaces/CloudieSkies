@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3801C34124BBFA1D002F737A /* BunnyHop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3801C34024BBFA1D002F737A /* BunnyHop.wav */; };
 		3836381324C816F100FFB634 /* BrownRabbit.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836381224C816F100FFB634 /* BrownRabbit.atlas */; };
-		3836381524C8175800FFB634 /* Bunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836381424C8175800FFB634 /* Bunny.atlas */; };
 		3836381724C817A700FFB634 /* Rabbita.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836381624C817A700FFB634 /* Rabbita.atlas */; };
 		3836381B24C8180700FFB634 /* BeigeBunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836381A24C8180700FFB634 /* BeigeBunny.atlas */; };
 		3836381D24C88C7600FFB634 /* StoreScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3836381C24C88C7600FFB634 /* StoreScene.sks */; };
@@ -23,15 +22,21 @@
 		3845629424CE739B0023A57D /* BirdAnimation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3845629324CE739B0023A57D /* BirdAnimation.atlas */; };
 		384DEAFD24B4E53F00939D83 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384DEAFC24B4E53F00939D83 /* PlayScene.swift */; };
 		384DEB0324B5A17300939D83 /* TextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384DEB0224B5A17300939D83 /* TextExtension.swift */; };
+		3855FB1224D73B0F000CBA8A /* StoreScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3855FB1124D73B0F000CBA8A /* StoreScene2.swift */; };
+		3855FB1424D73B37000CBA8A /* StoreScene2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3855FB1324D73B37000CBA8A /* StoreScene2.sks */; };
+		3855FB1A24D8F385000CBA8A /* Bunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3855FB1924D8F384000CBA8A /* Bunny.atlas */; };
+		3855FB1C24D8FA3F000CBA8A /* GrayBunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3855FB1B24D8FA3F000CBA8A /* GrayBunny.atlas */; };
+		3855FB2224D92B43000CBA8A /* BlackBunnyLight.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3855FB2124D92B43000CBA8A /* BlackBunnyLight.atlas */; };
+		3855FB2824DB9991000CBA8A /* Chirp.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3855FB2724DB998F000CBA8A /* Chirp.m4a */; };
+		3855FB2C24DB99CA000CBA8A /* Splat.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3855FB2B24DB99CA000CBA8A /* Splat.m4a */; };
 		385E7EE224B2578B00F4561F /* MainGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385E7EE124B2578B00F4561F /* MainGame.swift */; };
+		38631EF924DD21CB0003AB96 /* BlackCloud.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38631EF824DD21CB0003AB96 /* BlackCloud.m4a */; };
+		3865C5A324DCA904006DC340 /* storeSong.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3865C5A224DCA904006DC340 /* storeSong.m4a */; };
+		3865C5A724DCF15E006DC340 /* SpottedBlackBunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3865C5A624DCF15E006DC340 /* SpottedBlackBunny.atlas */; };
 		386B353324BE2D88007FCD38 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B353224BE2D88007FCD38 /* GameScene.swift */; };
 		386B353524BE2D9B007FCD38 /* IntroScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 386B353424BE2D9B007FCD38 /* IntroScene.sks */; };
 		387E1FE824BFAD43003D3F87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 387E1FE724BFAD43003D3F87 /* Assets.xcassets */; };
-		387E1FEC24C11198003D3F87 /* PlaneHitBunny.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 387E1FEB24C11197003D3F87 /* PlaneHitBunny.m4a */; };
-		387E1FF024C111CC003D3F87 /* blackCloudSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 387E1FEF24C111CB003D3F87 /* blackCloudSound.m4a */; };
-		387E1FF424C12272003D3F87 /* planeSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 387E1FF324C12272003D3F87 /* planeSound.m4a */; };
 		387E1FF624C13A55003D3F87 /* AirPlaneSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 387E1FF524C13A55003D3F87 /* AirPlaneSound.m4a */; };
-		387E1FFE24C13F12003D3F87 /* BlackCloud.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 387E1FFD24C13F12003D3F87 /* BlackCloud.m4a */; };
 		387E200024C14084003D3F87 /* PlaneHit.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 387E1FFF24C14084003D3F87 /* PlaneHit.m4a */; };
 		38804EF124986D9900B330F1 /* IntroScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38804EF024986D9900B330F1 /* IntroScene.swift */; };
 		38804EF324986D9900B330F1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38804EF224986D9900B330F1 /* GameViewController.swift */; };
@@ -48,6 +53,7 @@
 		38DDC8BF24BCD7AA00B556B7 /* BunnyDidntHop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 38DDC8BE24BCD7AA00B556B7 /* BunnyDidntHop.wav */; };
 		38DDC8C124BCD8CB00B556B7 /* Intro.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38DDC8C024BCD8CB00B556B7 /* Intro.m4a */; };
 		38DDC8C524BCDF1E00B556B7 /* BunnyFell.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38DDC8C424BCDF1D00B556B7 /* BunnyFell.m4a */; };
+		38E958AE24DCFE95007F23B2 /* planeSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 38E958AD24DCFE95007F23B2 /* planeSound.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +76,6 @@
 /* Begin PBXFileReference section */
 		3801C34024BBFA1D002F737A /* BunnyHop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BunnyHop.wav; sourceTree = "<group>"; };
 		3836381224C816F100FFB634 /* BrownRabbit.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BrownRabbit.atlas; sourceTree = "<group>"; };
-		3836381424C8175800FFB634 /* Bunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Bunny.atlas; sourceTree = "<group>"; };
 		3836381624C817A700FFB634 /* Rabbita.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Rabbita.atlas; sourceTree = "<group>"; };
 		3836381A24C8180700FFB634 /* BeigeBunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BeigeBunny.atlas; sourceTree = "<group>"; };
 		3836381C24C88C7600FFB634 /* StoreScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StoreScene.sks; sourceTree = "<group>"; };
@@ -87,17 +92,23 @@
 		384DEB0224B5A17300939D83 /* TextExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtension.swift; sourceTree = "<group>"; };
 		384DEB0424B69E9B00939D83 /* Bistroblock-oygz.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Bistroblock-oygz.ttf"; sourceTree = "<group>"; };
 		384F550C24A1CB7800DDC3C5 /* MainGame.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainGame.sks; sourceTree = "<group>"; };
+		3855FB1124D73B0F000CBA8A /* StoreScene2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreScene2.swift; sourceTree = "<group>"; };
+		3855FB1324D73B37000CBA8A /* StoreScene2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StoreScene2.sks; sourceTree = "<group>"; };
+		3855FB1924D8F384000CBA8A /* Bunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Bunny.atlas; sourceTree = "<group>"; };
+		3855FB1B24D8FA3F000CBA8A /* GrayBunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = GrayBunny.atlas; sourceTree = "<group>"; };
+		3855FB2124D92B43000CBA8A /* BlackBunnyLight.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BlackBunnyLight.atlas; sourceTree = "<group>"; };
+		3855FB2724DB998F000CBA8A /* Chirp.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chirp.m4a; sourceTree = "<group>"; };
+		3855FB2B24DB99CA000CBA8A /* Splat.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Splat.m4a; sourceTree = "<group>"; };
 		385E7EE124B2578B00F4561F /* MainGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGame.swift; sourceTree = "<group>"; };
+		38631EF824DD21CB0003AB96 /* BlackCloud.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlackCloud.m4a; sourceTree = "<group>"; };
+		3865C5A224DCA904006DC340 /* storeSong.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = storeSong.m4a; sourceTree = "<group>"; };
+		3865C5A624DCF15E006DC340 /* SpottedBlackBunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = SpottedBlackBunny.atlas; sourceTree = "<group>"; };
 		386B353224BE2D88007FCD38 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		386B353424BE2D9B007FCD38 /* IntroScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = IntroScene.sks; sourceTree = "<group>"; };
 		387E1FE724BFAD43003D3F87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		387E1FEB24C11197003D3F87 /* PlaneHitBunny.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlaneHitBunny.m4a; sourceTree = "<group>"; };
-		387E1FEF24C111CB003D3F87 /* blackCloudSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = blackCloudSound.m4a; sourceTree = "<group>"; };
-		387E1FF324C12272003D3F87 /* planeSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = planeSound.m4a; path = ../../../../../Downloads/planeSound.m4a; sourceTree = "<group>"; };
 		387E1FF524C13A55003D3F87 /* AirPlaneSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = AirPlaneSound.m4a; sourceTree = "<group>"; };
-		387E1FFD24C13F12003D3F87 /* BlackCloud.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlackCloud.m4a; sourceTree = "<group>"; };
 		387E1FFF24C14084003D3F87 /* PlaneHit.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlaneHit.m4a; sourceTree = "<group>"; };
-		38804EE724986D9900B330F1 /* Cloudy Skies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cloudy Skies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		38804EE724986D9900B330F1 /* Cloudie Skies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cloudie Skies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38804EEC24986D9900B330F1 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		38804EEE24986D9900B330F1 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		38804EF024986D9900B330F1 /* IntroScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroScene.swift; sourceTree = "<group>"; };
@@ -115,6 +126,7 @@
 		38DDC8BE24BCD7AA00B556B7 /* BunnyDidntHop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BunnyDidntHop.wav; sourceTree = "<group>"; };
 		38DDC8C024BCD8CB00B556B7 /* Intro.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Intro.m4a; sourceTree = "<group>"; };
 		38DDC8C424BCDF1D00B556B7 /* BunnyFell.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = BunnyFell.m4a; sourceTree = "<group>"; };
+		38E958AD24DCFE95007F23B2 /* planeSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = planeSound.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,7 +167,7 @@
 		38804EE824986D9900B330F1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				38804EE724986D9900B330F1 /* Cloudy Skies.app */,
+				38804EE724986D9900B330F1 /* Cloudie Skies.app */,
 				38804F0124986D9C00B330F1 /* CloudySkiesTests.xctest */,
 				38804F0C24986D9C00B330F1 /* CloudySkiesUITests.xctest */,
 			);
@@ -165,6 +177,15 @@
 		38804EE924986D9900B330F1 /* CloudySkies */ = {
 			isa = PBXGroup;
 			children = (
+				38631EF824DD21CB0003AB96 /* BlackCloud.m4a */,
+				38E958AD24DCFE95007F23B2 /* planeSound.m4a */,
+				3865C5A624DCF15E006DC340 /* SpottedBlackBunny.atlas */,
+				3865C5A224DCA904006DC340 /* storeSong.m4a */,
+				3855FB2B24DB99CA000CBA8A /* Splat.m4a */,
+				3855FB2724DB998F000CBA8A /* Chirp.m4a */,
+				3855FB2124D92B43000CBA8A /* BlackBunnyLight.atlas */,
+				3855FB1B24D8FA3F000CBA8A /* GrayBunny.atlas */,
+				3855FB1924D8F384000CBA8A /* Bunny.atlas */,
 				3845629324CE739B0023A57D /* BirdAnimation.atlas */,
 				3836383824CB90E500FFB634 /* LightBrownBunny.atlas */,
 				3836383024CB619300FFB634 /* Shiny.atlas */,
@@ -172,22 +193,17 @@
 				3836382824CA5BE100FFB634 /* AppDelegate.swift */,
 				3836381A24C8180700FFB634 /* BeigeBunny.atlas */,
 				3836381624C817A700FFB634 /* Rabbita.atlas */,
-				3836381424C8175800FFB634 /* Bunny.atlas */,
 				3836381224C816F100FFB634 /* BrownRabbit.atlas */,
 				38DDC8C424BCDF1D00B556B7 /* BunnyFell.m4a */,
-				387E1FFD24C13F12003D3F87 /* BlackCloud.m4a */,
 				387E1FF524C13A55003D3F87 /* AirPlaneSound.m4a */,
 				387E1FFF24C14084003D3F87 /* PlaneHit.m4a */,
-				387E1FEB24C11197003D3F87 /* PlaneHitBunny.m4a */,
 				387E1FE724BFAD43003D3F87 /* Assets.xcassets */,
 				38DDC8BE24BCD7AA00B556B7 /* BunnyDidntHop.wav */,
-				387E1FF324C12272003D3F87 /* planeSound.m4a */,
 				38DDC8C024BCD8CB00B556B7 /* Intro.m4a */,
-				387E1FEF24C111CB003D3F87 /* blackCloudSound.m4a */,
+				386B353224BE2D88007FCD38 /* GameScene.swift */,
 				38DDC8BA24BCD79200B556B7 /* GetCarrot.m4a */,
 				3801C34024BBFA1D002F737A /* BunnyHop.wav */,
 				384DEB0224B5A17300939D83 /* TextExtension.swift */,
-				386B353224BE2D88007FCD38 /* GameScene.swift */,
 				386B353424BE2D9B007FCD38 /* IntroScene.sks */,
 				38804EEE24986D9900B330F1 /* Actions.sks */,
 				38804EF024986D9900B330F1 /* IntroScene.swift */,
@@ -198,6 +214,8 @@
 				3836381C24C88C7600FFB634 /* StoreScene.sks */,
 				3836381E24C88C9700FFB634 /* StoreScene.swift */,
 				3836383A24CBC27E00FFB634 /* StoreScene1.swift */,
+				3855FB1124D73B0F000CBA8A /* StoreScene2.swift */,
+				3855FB1324D73B37000CBA8A /* StoreScene2.sks */,
 				3836383C24CBC29700FFB634 /* StoreScene1.sks */,
 				384DEB0424B69E9B00939D83 /* Bistroblock-oygz.ttf */,
 				38804EF224986D9900B330F1 /* GameViewController.swift */,
@@ -244,7 +262,7 @@
 			);
 			name = CloudySkies;
 			productName = CloudySkies;
-			productReference = 38804EE724986D9900B330F1 /* Cloudy Skies.app */;
+			productReference = 38804EE724986D9900B330F1 /* Cloudie Skies.app */;
 			productType = "com.apple.product-type.application";
 		};
 		38804F0024986D9C00B330F1 /* CloudySkiesTests */ = {
@@ -332,34 +350,39 @@
 			buildActionMask = 2147483647;
 			files = (
 				38C4DCFE24BA23870014FF29 /* Bistroblock-oygz.ttf in Resources */,
+				38631EF924DD21CB0003AB96 /* BlackCloud.m4a in Resources */,
 				38C4DCF724BA200C0014FF29 /* MainGame.sks in Resources */,
 				38DDC8C124BCD8CB00B556B7 /* Intro.m4a in Resources */,
-				387E1FF424C12272003D3F87 /* planeSound.m4a in Resources */,
 				3836382F24CAB08A00FFB634 /* DarkBrownBunny.atlas in Resources */,
 				3836381724C817A700FFB634 /* Rabbita.atlas in Resources */,
 				387E1FE824BFAD43003D3F87 /* Assets.xcassets in Resources */,
+				3865C5A324DCA904006DC340 /* storeSong.m4a in Resources */,
+				3855FB2824DB9991000CBA8A /* Chirp.m4a in Resources */,
+				3855FB1A24D8F385000CBA8A /* Bunny.atlas in Resources */,
 				38C4DCF624BA20050014FF29 /* PlayScene.sks in Resources */,
 				3836383924CB90E600FFB634 /* LightBrownBunny.atlas in Resources */,
-				387E1FFE24C13F12003D3F87 /* BlackCloud.m4a in Resources */,
 				38C4DCF524BA20000014FF29 /* GameScene.sks in Resources */,
+				3865C5A724DCF15E006DC340 /* SpottedBlackBunny.atlas in Resources */,
 				387E200024C14084003D3F87 /* PlaneHit.m4a in Resources */,
 				38C4DCF424BA1FFA0014FF29 /* Actions.sks in Resources */,
 				387E1FF624C13A55003D3F87 /* AirPlaneSound.m4a in Resources */,
+				3855FB2224D92B43000CBA8A /* BlackBunnyLight.atlas in Resources */,
 				3801C34124BBFA1D002F737A /* BunnyHop.wav in Resources */,
 				3845629424CE739B0023A57D /* BirdAnimation.atlas in Resources */,
-				3836381524C8175800FFB634 /* Bunny.atlas in Resources */,
 				3836381B24C8180700FFB634 /* BeigeBunny.atlas in Resources */,
+				3855FB2C24DB99CA000CBA8A /* Splat.m4a in Resources */,
 				386B353524BE2D9B007FCD38 /* IntroScene.sks in Resources */,
 				3836381324C816F100FFB634 /* BrownRabbit.atlas in Resources */,
 				38DDC8BF24BCD7AA00B556B7 /* BunnyDidntHop.wav in Resources */,
 				38C4DCF324BA1FF60014FF29 /* Main.storyboard in Resources */,
-				387E1FEC24C11198003D3F87 /* PlaneHitBunny.m4a in Resources */,
+				3855FB1424D73B37000CBA8A /* StoreScene2.sks in Resources */,
+				38E958AE24DCFE95007F23B2 /* planeSound.m4a in Resources */,
 				38DDC8C524BCDF1E00B556B7 /* BunnyFell.m4a in Resources */,
 				3836383D24CBC29700FFB634 /* StoreScene1.sks in Resources */,
 				3836381D24C88C7600FFB634 /* StoreScene.sks in Resources */,
 				38C4DCF224BA1FF10014FF29 /* LaunchScreen.storyboard in Resources */,
 				3836383124CB619300FFB634 /* Shiny.atlas in Resources */,
-				387E1FF024C111CC003D3F87 /* blackCloudSound.m4a in Resources */,
+				3855FB1C24D8FA3F000CBA8A /* GrayBunny.atlas in Resources */,
 				38DDC8BB24BCD79200B556B7 /* GetCarrot.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,6 +409,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3836382924CA5BE200FFB634 /* AppDelegate.swift in Sources */,
+				3855FB1224D73B0F000CBA8A /* StoreScene2.swift in Sources */,
 				385E7EE224B2578B00F4561F /* MainGame.swift in Sources */,
 				384DEAFD24B4E53F00939D83 /* PlayScene.swift in Sources */,
 				386B353324BE2D88007FCD38 /* GameScene.swift in Sources */,
@@ -574,7 +598,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "My-Home.CloudySkies";
-				PRODUCT_NAME = "Cloudy Skies";
+				PRODUCT_NAME = "Cloudie Skies";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -592,7 +616,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "My-Home.CloudySkies";
-				PRODUCT_NAME = "Cloudy Skies";
+				PRODUCT_NAME = "Cloudie Skies";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -603,7 +627,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = H45HXXY45P;
 				INFOPLIST_FILE = CloudySkiesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -624,7 +650,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = H45HXXY45P;
 				INFOPLIST_FILE = CloudySkiesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
