@@ -156,13 +156,13 @@ class PlayScene: SKScene {
         Cloud12.setScale(0.119)
         Cloud12.zPosition = 1
         
-        fluffy = SKLabelNode(text: "Cloudy Skies")
+        fluffy = SKLabelNode(text: "Cloudie Skies")
         fluffy.position = CGPoint(x: 0, y: 179)
         fluffy.setScale(2)
         fluffy.fontName = "Noteworthy-Bold"
         fluffy.fontColor = UIColor(red: 209, green: 10, blue: 10)
         fluffy.zPosition = 3
-        makeTheBorder(fluffy, color: UIColor.black, posit: CGPoint(x: -165, y: 179), scaleTo: 2)
+        makeTheBorder(fluffy, color: UIColor.black, posit: CGPoint(x: -171, y: 179), scaleTo: 2)
     }
     
     private func makeMore(){
