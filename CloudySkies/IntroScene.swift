@@ -32,24 +32,13 @@ class IntroScene: SKScene {
             self.addChild(background2)
             self.addChild(Cloud)
         }
-        
-        private func slideOff(node: SKNode, float: CGFloat) -> SKAction {
-            return SKAction.run() {
-                var yPos = node.position.y
-                while yPos >= -self.frame.height/2 - node.frame.height {
-                    let move = SKAction.moveTo(y: yPos - float, duration: 1.24)
-                    node.run(move)
-                    yPos -= float
-                }
-            }
-        }
-        
+    
         
         private func setUpUI(){
             Bunny = SKSpriteNode(imageNamed: "Bunny1")
             Bunny.setScale(0.485)
-            Bunny.position = CGPoint(x: 0, y: 110)
             Bunny.zPosition = 4
+            Bunny.position = CGPoint(x: 0, y: 110)
             
             label = SKLabelNode(text: "Cloudy Skies")
             label!.setScale(0.67)
