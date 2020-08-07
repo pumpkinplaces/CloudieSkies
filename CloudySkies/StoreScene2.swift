@@ -11,19 +11,15 @@ import SpriteKit
 import GameplayKit
 
 
+
+
 class StoreScene2: SKScene {
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
 
-    var BlueRabbita = SKSpriteNode()
-    var PinkRabbita = SKSpriteNode()
-    var GreenRabbita = SKSpriteNode()
-    var BlackBunny = SKSpriteNode()
-    var PurpleRabbita = SKSpriteNode()
-    var OrangeRabbita = SKSpriteNode()
-    var RedRabbita = SKSpriteNode()
-    var GrayBunny = SKSpriteNode()
+    var Shiny = SKSpriteNode()
+    var BabyBlueRabbita = SKSpriteNode()
     
     var useSquare = SKSpriteNode()
     var use = SKLabelNode()
@@ -37,7 +33,7 @@ class StoreScene2: SKScene {
     var priceTag = SKSpriteNode()
     var Carrot = SKSpriteNode()
     var price = SKLabelNode()
-    var bunnyList:[String] = []
+    private var bunnyList:[String] = []
     var bunnyPriceList:[String:Int] = [:]
     var bunnyDictionary: [String: SKSpriteNode] = [:]
     var yourCarrots = SKLabelNode()
@@ -56,14 +52,15 @@ class StoreScene2: SKScene {
     var sorryTabClosed = true
     
     var sorryTab = SKSpriteNode()
-    var sorryLabel = SKLabelNode()
     var sorryNum = SKLabelNode()
-    var sorryEnd = SKLabelNode()
-    var close = SKLabelNode()
+    var close = SKSpriteNode()
+    
+    var getMoreCarrots = SKSpriteNode()
+    var soundOff = SKSpriteNode(), soundOn = SKSpriteNode()
+    
     
     override func didMove(to view: SKView) {
     // Get label node from scene and store it for use later
-        //self.backgroundColor = UIColor(red: 41, green: 54, blue: 43)
         inMovedToView = true
         storeBackground = SKSpriteNode(imageNamed: "StoreBackground2")
         storeBackground.setScale(3.5)
@@ -82,6 +79,8 @@ class StoreScene2: SKScene {
         self.addChild(select)
         setPrices(list: bunnyList)
         makeYourCarrots()
+        setUpStoreSong()
+        addNotifications()
         inMovedToView = false
     }
         
@@ -103,6 +102,17 @@ class StoreScene2: SKScene {
         arrow.position = CGPoint(x: 0, y: 5 * self.frame.height/10 - self.frame.height/20 - 11)
         arrow.zPosition = 3
         self.addChild(arrow)
+    }
+    
+    private func setUpStoreSong(){
+        if UserDefaults().bool(forKey: "SoundOffOrOn") == true{makeSoundOnButton()
+            if !StoreSong.storeSongPlaying{
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "PlayBackgroundSound"), object: self)
+            StoreSong.storeSongPlaying = true
+            }
+        }
+        else{makeSoundOffButton()
+        }
     }
     
     private func makeYourCarrots(){
@@ -127,94 +137,76 @@ class StoreScene2: SKScene {
         let tenthHeight = self.frame.height/10; let tenthHeightMid = self.frame.height/20
         let halfiwdthMid = self.frame.width/2 - self.frame.width/4
         
-        RedRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        RedRabbita.run(SKAction.colorize(with: UIColor.systemRed, colorBlendFactor: 0.6, duration: 0))
-        RedRabbita.name = "RedRabbita"
-        RedRabbita.zPosition = 3
-        RedRabbita.position = CGPoint(x: -halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
-        RedRabbita.size = CGSize(width: 120, height: 120)
-        self.addChild(RedRabbita)
-        bunnyList.append("RedRabbita")
-        bunnyDictionary["RedRabbita"] = RedRabbita
-        bunnyPriceList["RedRabbita"] = 1
+        Shiny = SKSpriteNode(imageNamed: "Shiny1")
+        Shiny.name = "Shiny"
+        Shiny.zPosition = 3
+        Shiny.position = CGPoint(x: -halfiwdthMid, y: 2 * tenthHeight - tenthHeightMid)
+        Shiny.size = CGSize(width: 120, height: 120)
+        self.addChild(Shiny)
+        bunnyList.append("Shiny")
+        bunnyDictionary["Shiny"] = Shiny
+        bunnyPriceList["Shiny"] = 0
         
-        OrangeRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        OrangeRabbita.name = "OrangeRabbita"
-        OrangeRabbita.run(SKAction.colorize(with: UIColor(red: 235, green: 149, blue: 152), colorBlendFactor: 0.7, duration: 0))
-        OrangeRabbita.zPosition = 3
-        OrangeRabbita.position = CGPoint(x: -halfiwdthMid, y: 2 * tenthHeight - tenthHeightMid)
-        OrangeRabbita.size = CGSize(width: 120, height: 120)
-        self.addChild(OrangeRabbita)
-        bunnyList.append("OrangeRabbita")
-        bunnyDictionary["OrangeRabbita"] = OrangeRabbita
-        bunnyPriceList["OrangeRabbita"] = 1
-        
-        BlueRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        BlueRabbita.run(SKAction.colorize(with: UIColor.blue, colorBlendFactor: 0.9, duration: 0))
-        BlueRabbita.name = "BlueRabbita"
-        BlueRabbita.zPosition = 3
-        BlueRabbita.position = CGPoint(x: -halfiwdthMid, y: -tenthHeightMid)
-        BlueRabbita.size = CGSize(width: 120, height: 120)
-        self.addChild(BlueRabbita)
-        bunnyList.append("BlueRabbita")
-        bunnyDictionary["BlueRabbita"] = BlueRabbita
-        bunnyPriceList["BlueRabbita"] = 1
-        
-        PinkRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        PinkRabbita.run(SKAction.colorize(with: UIColor.systemPink, colorBlendFactor: 0.3, duration: 0))
-        PinkRabbita.name = "PinkRabbita"
-        PinkRabbita.zPosition = 3
-        PinkRabbita.position = CGPoint(x: -halfiwdthMid, y: -2 * tenthHeight - tenthHeightMid)
-        PinkRabbita.size = CGSize(width: 120, height: 120)
-        self.addChild(PinkRabbita)
-        bunnyList.append("PinkRabbita")
-        bunnyDictionary["PinkRabbita"] = PinkRabbita
-        bunnyPriceList["PinkRabbita"] = 1
-        
-        GreenRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        GreenRabbita.run(SKAction.colorize(with: UIColor(red: 82, green: 171, blue: 75), colorBlendFactor: 0.4, duration: 0))
-        GreenRabbita.name = "GreenRabbita"
-        GreenRabbita.zPosition = 3
-        GreenRabbita.position = CGPoint(x: halfiwdthMid, y: -tenthHeightMid)
-        GreenRabbita.size = CGSize(width: 120, height: 120)
-        self.addChild(GreenRabbita)
-        bunnyList.append("GreenRabbita")
-        bunnyDictionary["GreenRabbita"] = GreenRabbita
-        bunnyPriceList["GreenRabbita"] = 1
-        
-        BlackBunny = SKSpriteNode(imageNamed: "BlackBunny1")
-        BlackBunny.run(SKAction.colorize(with: UIColor.gray, colorBlendFactor: 0.7, duration: 0))
-        BlackBunny.name = "BlackBunny"
-        BlackBunny.zPosition = 3
-        BlackBunny.position = CGPoint(x: halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
-        BlackBunny.size = CGSize(width: 120, height: 120)
-        self.addChild(BlackBunny)
-        bunnyList.append("BlackBunny")
-        bunnyDictionary["BlackBunny"] = BlackBunny
-        bunnyPriceList["BlackBunny"] = 1
-        
-        PurpleRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        PurpleRabbita.run(SKAction.colorize(with: UIColor(red: 123, green: 75, blue: 171), colorBlendFactor: 0.7, duration: 0))
-        PurpleRabbita.name = "PurpleRabbita"
-        PurpleRabbita.zPosition = 3
-        PurpleRabbita.position = CGPoint(x: halfiwdthMid, y: 2 * tenthHeight - tenthHeightMid)
-        PurpleRabbita.size = CGSize(width: 120, height: 120)
-        self.addChild(PurpleRabbita)
-        bunnyList.append("PurpleRabbita")
-        bunnyDictionary["PurpleRabbita"] = PurpleRabbita
-        bunnyPriceList["PurpleRabbita"] = 1
-        
-        GrayBunny = SKSpriteNode(imageNamed: "GrayBunny1")
-        GrayBunny.name = "GrayBunny"
-        GrayBunny.zPosition = 3
-        GrayBunny.position = CGPoint(x: halfiwdthMid, y: -2 * tenthHeight - tenthHeightMid)
-        GrayBunny.size = CGSize(width: 120, height: 120)
-        self.addChild(GrayBunny)
-        bunnyList.append("GrayBunny")
-        bunnyDictionary["GrayBunny"] = GrayBunny
-        bunnyPriceList["GrayBunny"] = 1
+        BabyBlueRabbita = SKSpriteNode(imageNamed: "Rabbita1")
+        BabyBlueRabbita.run(SKAction.colorize(with: UIColor(red: 98, green: 154, blue: 204), colorBlendFactor: 0.9, duration: 0))
+        BabyBlueRabbita.name = "BabyBlueRabbita"
+        BabyBlueRabbita.zPosition = 3
+        BabyBlueRabbita.position = CGPoint(x: -halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
+        BabyBlueRabbita.size = CGSize(width: 120, height: 120)
+        self.addChild(BabyBlueRabbita)
+        bunnyList.append("BabyBlueRabbita")
+        bunnyDictionary["BabyBlueRabbita"] = BabyBlueRabbita
+        bunnyPriceList["BabyBlueRabbita"] = 2000
     }
     
+    private func makeSoundOffButton(){
+         soundOff = SKSpriteNode(imageNamed: "SoundOffButton")
+         soundOff.name = "SoundOff"
+         soundOff.position = CGPoint(x: -self.frame.width/2 + 50, y: self.frame.height/2 - 35)
+         soundOff.zPosition = 9
+         soundOff.setScale(0.12)
+         self.addChild(soundOff)
+     }
+     
+    
+      private func makeSoundOnButton(){
+         soundOn = SKSpriteNode(imageNamed: "SoundButton")
+         soundOn.name = "SoundOn"
+         soundOn.position = CGPoint(x: -self.frame.width/2 + 50, y: self.frame.height/2 - 35)
+         soundOn.zPosition = 9
+         soundOn.setScale(0.12)
+         self.addChild(soundOn)
+     }
+    
+    
+    private func rememberSoundSettings(_ soundPic: SKSpriteNode){
+        if soundPic.name == "SoundOff"{
+            UserDefaults.standard.set(true, forKey: "SoundOffOrOn")}
+        else if soundPic.name == "SoundOn"{UserDefaults.standard.set(false, forKey: "SoundOffOrOn")}
+    }
+    
+    
+    private func addNotifications(){
+        NotificationCenter.default.addObserver(self, selector: #selector(pauseEverything(_:)), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playNow(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+    
+    private func removeNotifications(){
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+    
+    @objc private func pauseEverything(_ application: UIApplication){
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "PauseBackgroundSound"), object: self)
+        self.isPaused = true
+       }
+       
+    @objc private func playNow(_ application: UIApplication){
+        if UserDefaults().bool(forKey: "SoundOffOrOn") == true{
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "ResumeBackGroundSound"), object: self)
+        }
+           self.isPaused = false
+    }
     
     private func setPrices(list: [String]){
         for each in list{
@@ -317,46 +309,35 @@ class StoreScene2: SKScene {
         let wid = 1.5 * self.frame.width/2
         sorryTab.size = CGSize(width: wid, height: wid)
         self.addChild(sorryTab)
-        
-        sorryLabel = SKLabelNode(text: "Sorry, You need: ")
-        sorryLabel.setScale(0.8)
-        sorryLabel.fontName = "Noteworthy-Bold"
-        sorryLabel.fontSize = 30
-        sorryLabel.position = CGPoint(x: 0, y: 50)
-        sorryLabel.zPosition = 7
-        sorryLabel.fontColor = UIColor(red: 218, green: 211, blue: 244)
-        sorryTab.addChild(sorryLabel)
-        
+
         let difference = bunnyPriceList[selectedBunny!.name!]! - UserDefaults().integer(forKey: "CarrotCount")
         let diffString: String! = String(difference)
         sorryNum = SKLabelNode(text: diffString)
         sorryNum.setScale(0.8)
         sorryNum.fontName = "Noteworthy-Bold"
-        sorryNum.fontSize = 30
-        sorryNum.position = CGPoint.zero
+        sorryNum.fontSize = 35
+        sorryNum.position = CGPoint(x: 0, y: 0)
         sorryNum.zPosition = 7
-        sorryNum.fontColor = UIColor(red: 218, green: 211, blue: 244)
+        sorryNum.fontColor = UIColor.white
         sorryTab.addChild(sorryNum)
         
-        sorryEnd = SKLabelNode(text: "more carrots!")
-        sorryEnd.setScale(0.8)
-        sorryEnd.fontName = "Noteworthy-Bold"
-        sorryEnd.fontSize = 30
-        sorryEnd.position = CGPoint(x: 0, y: -50)
-        sorryEnd.zPosition = 7
-        sorryEnd.fontColor = UIColor(red: 218, green: 211, blue: 244)
-        sorryTab.addChild(sorryEnd)
-        
         let halfWid = wid/2
-        close = SKLabelNode(text: "Close")
-        close.setScale(0.599)
-        close.fontName = "Noteworthy-Bold"
-        close.fontSize = 30
-        close.position = CGPoint(x: -halfWid + 40, y: halfWid - 40)
+        close = SKSpriteNode(imageNamed: "closeSorrySquare")
+        close.setScale(0.3)
+        close.position = CGPoint(x: halfWid - 45, y: halfWid - 35)
         close.zPosition = 7
-        close.fontColor = UIColor(red: 218, green: 211, blue: 244)
         sorryTab.addChild(close)
+        
+        getMoreCarrots = SKSpriteNode(imageNamed: "GetMoreCarrots")
+        getMoreCarrots.setScale(0.25)
+        let halfheight = sorryTab.frame.height/2
+        getMoreCarrots.position = CGPoint(x: 0, y: sorryTab.position.y - halfheight + 59)
+        getMoreCarrots.zPosition = 7
+        sorryTab.addChild(getMoreCarrots)
     }
+
+    
+    
     private func resetRabbita(){
         UserDefaults().string(forKey: "RabbitaColor")
         if UserDefaults().string(forKey: "RabbitaColor") != "" {
@@ -365,42 +346,21 @@ class StoreScene2: SKScene {
         }
     }
     
+    
     private func selectPosition(animationType: String){
         switch animationType{
-        case "PurpleRabbita": select.position = PurpleRabbita.position; selectedBunny = PurpleRabbita; bunnyBeingUsed = PurpleRabbita
-        case "PinkRabbita": select.position = PinkRabbita.position; selectedBunny = PinkRabbita; bunnyBeingUsed = PinkRabbita
-        case "GreenRabbita": select.position = GreenRabbita.position; selectedBunny = GreenRabbita; bunnyBeingUsed = GreenRabbita
-        case "BlueRabbita": select.position =  BlueRabbita.position; selectedBunny = BlueRabbita; bunnyBeingUsed = BlueRabbita
-        case "OrangeRabbita": select.position = OrangeRabbita.position; selectedBunny = OrangeRabbita; bunnyBeingUsed = OrangeRabbita
-        case "RedRabbita": select.position = RedRabbita.position; selectedBunny = RedRabbita; bunnyBeingUsed = RedRabbita
-        case "BlackBunny": select.position = BlackBunny.position; selectedBunny = BlackBunny; bunnyBeingUsed = BlackBunny
-        case "GrayBunny": select.position = GrayBunny.position; selectedBunny = GrayBunny; bunnyBeingUsed = GrayBunny
+        case "Shiny": select.position = Shiny.position; selectedBunny = Shiny; bunnyBeingUsed = Shiny
+        case "BabyBlueRabbita": select.position = BabyBlueRabbita.position; selectedBunny = BabyBlueRabbita; bunnyBeingUsed = BabyBlueRabbita
         default: break
         }
     }
     
-    private func selectRabbitaCol(bunny: SKSpriteNode){
-        switch bunny {
-        case BlackBunny: UserDefaults.standard.set("", forKey: "RabbitaColor")
-        case GreenRabbita: UserDefaults.standard.set("Green", forKey: "RabbitaColor")
-        case BlueRabbita: UserDefaults.standard.set("Blue", forKey: "RabbitaColor")
-        case PurpleRabbita: UserDefaults.standard.set("Purple", forKey: "RabbitaColor")
-        case OrangeRabbita: UserDefaults.standard.set("Orange", forKey: "RabbitaColor")
-        case RedRabbita: UserDefaults.standard.set("Red", forKey: "RabbitaColor")
-        case PinkRabbita: UserDefaults.standard.set("Pink", forKey: "RabbitaColor")
-        case GrayBunny: UserDefaults.standard.set("", forKey: "RabbitaColor")
-        default:
-            break
-        }
-    }
     
     private func theBlender<T: SKNode>(runActionOn thisnode: T){
-           let blendIt = SKAction.colorize(with: UIColor.black, colorBlendFactor: 0.25, duration: 0.75)
-           let wait = SKAction.wait(forDuration: 0.05)
-           let unBlend = SKAction.colorize(withColorBlendFactor: -0.9, duration: 0.25)
-           let sequ = SKAction.sequence([blendIt, wait, unBlend])
-           thisnode.run(sequ)
-       }
+     let blendIt = SKAction.colorize(with: UIColor.black, colorBlendFactor: 0.4, duration: 0.2)
+        thisnode.run(blendIt)
+    }
+    
     
     private func makeTheBorder(_ labelNode: SKLabelNode, color: UIColor, posit: CGPoint, scaleTo: CGFloat, theborder: inout SKShapeNode){
            if let path =  labelNode.createBorderPathForText(labelNode.text!) {
@@ -448,51 +408,65 @@ class StoreScene2: SKScene {
                 let loca = touch.location(in: self)
                 if sorryTabClosed{
                 if exit.contains(loca) {
+                    removeNotifications()
+                    self.removeAllActions()
                     theBlender(runActionOn: exit)
+                    StoreSong.stoppedSongForMain = true
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "StopBackgroundSound"), object: self)
+                    StoreSong.storeSongPlaying = false
                     let mainGame = MainGame(fileNamed: "MainGame")
                     let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                     self.scene?.view?.presentScene(mainGame!, transition: fadeAway)
                 }
-                if BlueRabbita.contains(loca){
-                    select.run(SKAction.move(to: BlueRabbita.position, duration: 0))
-                    selectedBunny = BlueRabbita
+                if Shiny.contains(loca){
+                    select.run(SKAction.move(to: Shiny.position, duration: 0))
+                    selectedBunny = Shiny
                 }
-                if OrangeRabbita.contains(loca){
-                    select.run(SKAction.move(to: OrangeRabbita.position, duration: 0))
-                    selectedBunny = OrangeRabbita
+                if BabyBlueRabbita.contains(loca){
+                    select.run(SKAction.move(to: BabyBlueRabbita.position, duration: 0))
+                    selectedBunny = BabyBlueRabbita
                 }
-                if RedRabbita.contains(loca){
-                    select.run(SKAction.move(to: RedRabbita.position, duration: 0))
-                    selectedBunny = RedRabbita
-                }
-                if GreenRabbita.contains(loca){
-                    select.run(SKAction.move(to: GreenRabbita.position, duration: 0))
-                    selectedBunny = GreenRabbita
-                }
-                if PinkRabbita.contains(loca){
-                    select.run(SKAction.move(to: PinkRabbita.position, duration: 0))
-                    selectedBunny = PinkRabbita
-                }
-                if BlackBunny.contains(loca){
-                    select.run(SKAction.move(to: BlackBunny.position, duration: 0))
-                    selectedBunny = BlackBunny
-                }
-                if PurpleRabbita.contains(loca){
-                    select.run(SKAction.move(to: PurpleRabbita.position, duration: 0))
-                    selectedBunny = PurpleRabbita
-                }
-                    if GrayBunny.contains(loca){
-                        select.run(SKAction.move(to: GrayBunny.position, duration: 0))
-                        selectedBunny = GrayBunny
-                    }
+                    
                 if arrow.contains(loca){
-                    let storeScene = StoreScene(fileNamed: "StoreScene")
+                    removeNotifications()
+                    let storeScene = StoreScene1(fileNamed: "StoreScene1")
                     let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                     self.scene?.view?.presentScene(storeScene!, transition: fadeAway)
                 }
                 }
-                if sorryTab.contains(loca){
-                    sorryTabClosed = true; sorryTab.removeFromParent();
+                if close.contains(loca){
+                    theBlender(runActionOn: close)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {self.sorryTabClosed = true; self.sorryTab.removeFromParent()})
+                }
+                if getMoreCarrots.contains(loca){
+                    removeNotifications()
+                    theBlender(runActionOn: getMoreCarrots)
+                    StoreSong.stoppedSongForMain = true
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "StopBackgroundSound"), object: self)
+                    StoreSong.storeSongPlaying = false
+                    self.removeAllActions()
+                    let mainGame = MainGame(fileNamed: "MainGame")
+                    let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
+                    self.scene?.view?.presentScene(mainGame!, transition: fadeAway)
+                }
+                if let _ = soundOn.parent{
+                    if soundOn.contains(loca){
+                        rememberSoundSettings(soundOn)
+                        StoreSong.stoppedSongForMain = false
+                        StoreSong.storeSongPlaying = false
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "StopBackgroundSound"), object: self)
+                        soundOn.removeFromParent()
+                        makeSoundOffButton()
+                    }
+                }
+                else if let _ = soundOff.parent{
+                    if soundOff.contains(loca){
+                        rememberSoundSettings(soundOff)
+                        StoreSong.storeSongPlaying = true
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "PlayBackgroundSound"), object: self)
+                        soundOff.removeFromParent()
+                        makeSoundOnButton()
+                    }
                 }
                 var counter = -1
                 for each in useOrPriceList{
@@ -509,8 +483,9 @@ class StoreScene2: SKScene {
                                     createUseIcon(bunny: oldBunny!, justBoughtIt: false, num: nil)}
                                     usingTab.removeFromParent()
                                     createUsingTab(usePict: each, num: counter)
-                                    UserDefaults.standard.set("StoreScene1", forKey: "StoreScene")
-                                    selectRabbitaCol(bunny: selectedBunny!)
+                                    UserDefaults.standard.set("StoreScene2", forKey: "StoreScene")
+                                    if selectedBunny != BabyBlueRabbita{UserDefaults.standard.set("", forKey: "RabbitaColor")}
+                                    else{UserDefaults.standard.set("BabyBlue", forKey: "RabbitaColor")}
                                     }
                                 }
                             else{
