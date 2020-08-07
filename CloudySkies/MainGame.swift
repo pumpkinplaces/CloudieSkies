@@ -1750,7 +1750,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 }
             }
             else if bunnysdone == false {
-                if Bird.contains(local){
+                if Bird.contains(local) && self.isPaused == false{
                     Bird.xScale = Bird.xScale * -1
                     birdCanPoo = false
                     birdTap = true
