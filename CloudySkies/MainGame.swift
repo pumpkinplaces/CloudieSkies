@@ -17,6 +17,7 @@ import AVFoundation
 struct PhysicsCategory{
     static let Bunny:UInt32 = 0x1 << 3
     static let Poo:UInt32 = 0x1 << 2
+    static let AirPlane: UInt32 = 0x1 << 1
 }
 
 var bunnyFellSound: AVAudioPlayer?
@@ -24,6 +25,7 @@ var bunnyDidntHop: AVAudioPlayer?
 var planeHitSound: AVAudioPlayer?
 var blackCloudsound:AVAudioPlayer?
 var planeSound:AVAudioPlayer?
+var splat: AVAudioPlayer?
 
 
 class MainGame: SKScene, SKPhysicsContactDelegate {
@@ -71,7 +73,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     var scorenum:Int = 0
     var sorryTryAgain: SKLabelNode!
     
-    var cloudMoveTime:CGFloat = 0.0041
+    var cloudMoveTime:CGFloat = 0.005
     var cloudDelayTime = 0.59
     var bunnyHopTime = 0.482
     var bestScore = UserDefaults().integer(forKey: "highscore")
@@ -165,10 +167,11 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     var pooCount = 0
     var birdTap = Bool()
     var birdCanPoo = true
-    
+    var airPlaneHitBunny = false
     var cameToPause = false
+    var leftGame = false
     
-    var url: URL!, url1: URL!, url2: URL!, url3: URL!, url4:URL!
+    var url: URL!, url1: URL!, url2: URL!, url3: URL!, url4:URL!, url5: URL!
     
     
 
@@ -306,18 +309,21 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(playNow(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
+    private func removeGestureRecognizers(){
+        self.view!.removeGestureRecognizer(tapScreen); self.view!.removeGestureRecognizer(leftSwipe); self.view!.removeGestureRecognizer(rightSwipe); self.view!.removeGestureRecognizer(upSwipe); self.view!.removeGestureRecognizer(downSwipe)
+    }
     
     private func makeBunnyAnimation(name: String){
         RabbitTextureAtlas = SKTextureAtlas(named: name)
         for i in 1...RabbitTextureAtlas.textureNames.count {
-            let Name = "\(name)\(i).png"; RabbitTextureArray.append(SKTexture(imageNamed: Name))
-        }
+                let Name = "\(name)\(i).png"; RabbitTextureArray.append(SKTexture(imageNamed: Name))
+            }
 }
     
     
     private func choosePhysicsBody(bunnytype: String){
         switch bunnytype{
-        case "LightBrownRabbit", "DarkBrownRabbit", "BlackBunny", "SpottedBlackBunny":
+        case "LightBrownRabbit", "DarkBrownRabbit", "BlackBunny", "SpottedBlackBunny", "BlackBunnyLight":
              Bunny.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: Bunny.frame.width * 0.5, height: Bunny.frame.height * 0.03), center: CGPoint(x: Bunny.position.x, y: Bunny.position.y - 11))
         case "GrayBunny":
             Bunny.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: Bunny.frame.width * 0.5, height: Bunny.frame.height * 0.03), center: CGPoint(x: Bunny.position.x, y: Bunny.position.y - 22))
@@ -334,7 +340,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             Bunny.size = CGSize(width: 135, height: 135)
         case "DarkBrownBunny", "LightBrownBunny", "GrayBunny":
             Bunny.size = CGSize(width: 130, height: 130)
-        case "BlackBunny", "SpottedBlackBunny": Bunny.size = CGSize(width: 140, height: 140)
+        case "BlackBunny", "SpottedBlackBunny", "BlackBunnyLight": Bunny.size = CGSize(width: 140, height: 140)
         default: break
         }
     }
@@ -344,11 +350,12 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
            switch animation {
            case "Yellow":  let color = SKAction.colorize(with: UIColor(red: 245, green: 225, blue: 77), colorBlendFactor: 0.4, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
            case "Blue": let color = SKAction.colorize(with: UIColor.blue, colorBlendFactor: 0.9, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
-           case "Green": let color = SKAction.colorize(with: UIColor(red: 82, green: 171, blue: 75), colorBlendFactor: 0.4, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
-           case "Pink": let color = SKAction.colorize(with: UIColor.systemPink, colorBlendFactor: 0.3, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
-           case "Purple": let color = SKAction.colorize(with: UIColor(red: 123, green: 75, blue: 171), colorBlendFactor: 0.7, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
-           case "Orange": let color = SKAction.colorize(with: UIColor(red: 255, green: 145, blue: 0), colorBlendFactor: 0.9, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
+           case "Green": let color =  SKAction.colorize(with: UIColor(red: 82, green: 171, blue: 55), colorBlendFactor: 0.5, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
+           case "Pink": let color = SKAction.colorize(with: UIColor.systemPink, colorBlendFactor: 0.4, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
+            case "Purple": let color = SKAction.colorize(with: UIColor(red: 150, green: 3, blue: 255), colorBlendFactor: 0.9, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
+           case "Orange": let color = SKAction.colorize(with: UIColor(red: 255, green: 153, blue: 0), colorBlendFactor: 0.9, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
            case "Red": let color = SKAction.colorize(with: UIColor.systemRed, colorBlendFactor: 0.6, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
+           case "BabyBlue": let color = SKAction.colorize(with: UIColor(red: 59, green: 194, blue: 235), colorBlendFactor: 0.9, duration: 0); Bunny.run(color); smallBunnyImage!.run(color)
            default:
               break
            }
@@ -379,7 +386,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 smallBunnyImage!.size = CGSize(width: 75, height: 75)
             case "DarkBrownBunny", "LightBrownBunny", "GrayBunny":
                 smallBunnyImage!.size = CGSize(width: 71, height: 71)
-        case "BlackBunny", "SpottedBlackBunny": smallBunnyImage!.size = CGSize(width: 80, height: 80)
+        case "BlackBunny", "SpottedBlackBunny", "BlackBunnyLight": smallBunnyImage!.size = CGSize(width: 80, height: 80)
             default: break
         }
     }
@@ -586,20 +593,21 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             planeSound?.pause(); planeSoundPaused = true}
         if gameIsActive{
             cameToPause = true
-            if playButton.parent == nil{
-                pauseButton.removeFromParent(); createPlayButton()
-                pauseCounter = true
-                self.isPaused = true
-                soundTrack = false
-            }
+            pauseCounter = true
+            soundTrack = false
+            leftGame = true
+            self.isPaused = true
         }
     }
     
     @objc private func playNow(_ application: UIApplication){
         if gameIsActive && cameToPause{
+            if playButton.parent == nil{
+                pauseButton.removeFromParent()
+                createPlayButton()}
             pauseCounter = true
-            self.isPaused = true
             cameToPause = false
+            self.isPaused = true
         }
     }
     
@@ -647,6 +655,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     
     private func createPlayButton(){
+        if let _ = pauseButton.parent{
+            pauseButton.removeFromParent()
+        }
         playButton = SKSpriteNode(imageNamed: "PlayButton")
         playButton.position = CGPoint(x: -self.frame.width/2 + 40, y: self.frame.height/2 - 40)
         playButton.setScale(0.1)
@@ -748,7 +759,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             score.fontName = "Noteworthy-Bold"
             score.run(SKAction.colorize(with: UIColor.white, colorBlendFactor: 1, duration: 0))
             let scorefadein = SKAction.fadeIn(withDuration: endGameFadeInTime)
-            score.position = CGPoint(x: 0, y: -63)
+            score.position = CGPoint(x: 0, y: 0)
             score.setScale(0.975)
             score.run(scorefadein)
         }
@@ -761,7 +772,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         highestCombinedScoreText.fontColor = UIColor.white
         highestCombinedScoreText.fontName = "Noteworthy-Bold"
         highestCombinedScoreText.fontSize = 35
-        highestCombinedScoreText.position = CGPoint(x: -15, y: 64)
+        highestCombinedScoreText.position = CGPoint(x: 0, y: 64)
         highestCombinedScoreText.zPosition = 7
         highestCombinedScoreText.setScale(0.77)
         highestCombinedScoreText.alpha = 0
@@ -775,7 +786,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         combinedScore.fontName = "Noteworthy-Bold"
         combinedScore.fontSize = 45
         combinedScore.zPosition = 7
-        combinedScore.position = CGPoint(x: 0, y: 0)
+        combinedScore.position = CGPoint(x: 0, y: -63)
         combinedScore.alpha = 0
         combinedScore.setScale(0.9)
         combinedScore.run(SKAction.fadeIn(withDuration: endGameFadeInTime))
@@ -784,27 +795,16 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     
     private func createHighestScoreLabel(){
-        mostHops = SKLabelNode(text: "Most Hops:")
+        mostHops = SKLabelNode(text: "Most Hops: " + String(bestScore))
         mostHops.color = UIColor.white
         mostHops.fontName = "Noteworthy-Bold"
         mostHops.fontSize = 35
-        mostHops.position = CGPoint(x: -60, y: 120)
+        mostHops.position = CGPoint(x: 0, y: 120)
         mostHops.zPosition = 7
         mostHops.setScale(0.77)
         mostHops.alpha = 0
         mostHops.run(SKAction.fadeIn(withDuration: endGameFadeInTime))
-        
-        highScoreText = SKLabelNode(text: String(bestScore))
-        highScoreText.color = UIColor.white
-        highScoreText.fontName = "Noteworthy-Bold"
-        highScoreText.fontSize = 35
-        highScoreText.position = CGPoint(x: 57, y: 120)
-        highScoreText.zPosition = 7
-        highScoreText.setScale(0.77)
-        highScoreText.alpha = 0
-        highScoreText.run(SKAction.fadeIn(withDuration: endGameFadeInTime))
         self.addChild(mostHops)
-        self.addChild(highScoreText)
     }
     
     
@@ -910,25 +910,27 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             airPlane!.position.y = CGFloat(randFloat)
         }
         let randNum = Int.random(in: 1...2)
+        var xD = self.frame.width + 2 * airPlane!.frame.width
         if randNum == 1{
+            airPlane!.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: airPlane!.frame.width/2, height: airPlane!.frame.height - airPlane!.frame.height/3), center: CGPoint(x: -airPlane!.frame.width/4, y: 0))
             airPlane!.position.x = -self.frame.width / 2 - airPlane!.frame.width/2
-            let xD = self.frame.width + 2 * airPlane!.frame.width
-            let moveIt = SKAction.moveBy(x: xD, y: 0, duration: 5)
-            let removePlane = SKAction.removeFromParent()
-            let seq = SKAction.sequence([moveIt, removePlane])
-            makePlaneSound()
-            airPlane!.run(seq)
         }
         else{
             airPlane!.xScale = airPlane!.xScale * -1
             airPlane!.position.x = self.frame.width / 2 + airPlane!.frame.width/2
-            let xD = self.frame.width + 2 * airPlane!.frame.width
-            let moveIt = SKAction.moveBy(x: -xD, y: 0, duration: 6.5)
-            let removePlane = SKAction.removeFromParent()
-            let seq = SKAction.sequence([moveIt, removePlane])
-            makePlaneSound()
-            airPlane!.run(seq)
+            xD *= -1
+            airPlane!.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: airPlane!.frame.width/2, height: airPlane!.frame.height - airPlane!.frame.height/3), center: CGPoint(x: airPlane!.frame.width/4, y: 0))
         }
+        airPlane!.physicsBody?.categoryBitMask = PhysicsCategory.AirPlane
+        airPlane!.physicsBody?.affectedByGravity = false
+        airPlane!.physicsBody?.isDynamic = true
+        airPlane!.physicsBody?.collisionBitMask = 0
+        airPlane!.physicsBody?.contactTestBitMask = PhysicsCategory.Bunny
+        makePlaneSound()
+        let moveIt = SKAction.moveBy(x: xD, y: 0, duration: 5)
+        let removePlane = SKAction.removeFromParent()
+        let seq = SKAction.sequence([moveIt, removePlane])
+        airPlane!.run(seq)
         self.addChild(airPlane!)
     }
     
@@ -948,23 +950,6 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     }
     
     
-    private func airPlaneHitBunny() -> Bool {
-        if let _ = Bunny.parent{
-            let convertedBunnyPos = self.convert(Bunny.position, from: Bunny.parent!)
-            if airPlaneXScale == airPlane!.xScale{
-                if convertedBunnyPos.x < airPlane!.position.x && convertedBunnyPos.x > airPlane!.position.x - airPlane!.frame.width/2 && convertedBunnyPos.y < airPlane!.position.y + airPlane!.frame.height/4 && convertedBunnyPos.y > airPlane!.position.y - airPlane!.frame.height/4{
-                    return true
-                }
-            }
-        else {
-            if convertedBunnyPos.x > airPlane!.position.x && convertedBunnyPos.x < airPlane!.position.x + airPlane!.frame.width/2 && convertedBunnyPos.y < airPlane!.position.y + airPlane!.frame.height/4 && convertedBunnyPos.y > airPlane!.position.y - airPlane!.frame.height/4{
-                return true
-            }
-        }
-    }
-    return false
-    }
-    
     private func animateBird(){
         BirdTextureAtlas = SKTextureAtlas(named: "BirdAnimation")
         for i in 1...BirdTextureAtlas.textureNames.count {
@@ -973,6 +958,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     }
     
     private func makeBird(){
+        birdCanPoo = true
         birdHasReachedPoint = true
         Bird = SKSpriteNode(imageNamed: "Bird1")
         initialBirdXScale = Bird.xScale
@@ -992,12 +978,13 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             distance = distance * -1
         }
         
-        let moveDist = SKAction.moveBy(x: distance, y: 0, duration: 2.7)
-        let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.7) / (Double(BirdTextureArray.count) * 11))
+        let moveDist = SKAction.moveBy(x: distance, y: 0, duration: 2.8)
+        let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.8) / (Double(BirdTextureArray.count) * 10))
         let flapForever = SKAction.repeatForever(flapWings)
         let remove = SKAction.removeFromParent()
         let groupMove = SKAction.group([moveDist, flapForever])
-        Bird.run(SKAction.sequence([groupMove, remove]))
+        Bird.run(SKAction.sequence([groupMove, remove]), withKey: "Firstflight")
+        makeBirdChirp()
         self.addChild(Bird)
     }
     
@@ -1021,6 +1008,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         let secondContactBody = contact.bodyB
         if firstContactBody.categoryBitMask == PhysicsCategory.Bunny && secondContactBody.categoryBitMask == PhysicsCategory.Poo || firstContactBody.categoryBitMask == PhysicsCategory.Poo && secondContactBody.categoryBitMask == PhysicsCategory.Bunny{
             if resetCalled == false{
+                makeSplatSound()
                 let joint = SKPhysicsJointFixed.joint(withBodyA: firstContactBody, bodyB: secondContactBody, anchor: CGPoint(x: Bunny.position.x, y: Bunny.position.y))
                 physicsWorld.add(joint)
                 resetCalled = true
@@ -1031,6 +1019,10 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 restartButton()
 
             }
+        }
+        else if firstContactBody.categoryBitMask == PhysicsCategory.Bunny && secondContactBody.categoryBitMask == PhysicsCategory.AirPlane || firstContactBody.categoryBitMask == PhysicsCategory.AirPlane && secondContactBody.categoryBitMask == PhysicsCategory.Bunny{
+            planeHitBunny()
+            airPlaneHitBunny = true
         }
     }
     
@@ -1064,12 +1056,12 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func chooseSky(){
            if scorenum == 1{
                savedScore = scorenum
-               skyTimeWait = Int.random(in: 5...10)
+               skyTimeWait = Int.random(in: 20...35)
            }
            else if scorenum > 1{
                if scorenum == savedScore + skyTimeWait{
                    savedScore = scorenum
-                   skyTimeWait = Int.random(in: 5...10)
+                   skyTimeWait = Int.random(in: 20...35)
                    changeTheSky()
                }
            }
@@ -1092,10 +1084,10 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         }
         else if scorenum < 100{
                 let randomNum1 = Int.random(in: 3...4)
-                if randomNum1 == savedSky && savedSky > 5 {
+                if randomNum1 == savedSky && savedSky > 3 {
                        savedSky = randomNum1 - 1
                 }
-                else if randomNum1 == savedSky && savedSky == 5 {
+                else if randomNum1 == savedSky && savedSky == 3 {
                     savedSky = randomNum1 + 1
                 }
                 else{
@@ -1221,7 +1213,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 let randNum = Int.random(in: 1...10)
                 if randNum == 1{
                     makeCarrot()
-                    carrot!.position.x = cloud1!.position.x + xdistance
+                    carrot!.position.x = cloud1!.position.x
                     carrot!.position.y = cloud1!.position.y + ydistance
                     carrotlist.append(carrot!)
                     countTheTriples[countfirst]!!.addChild(carrot!)
@@ -1509,8 +1501,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func restartGame(){
         self.removeAllActions()
         self.removeAllChildren()
-        bunnysdone = false; firsttouch = false; savepos = 0; countfirst = 0; scorenum = 0; onACloud = false; resetCalled = false; cloudMoveTime = 0.005; cloudDelayTime = 0.59; bunnyHopTime = 0.482; listOfSkies = []; colorCloudBlendFactor = 0; carrotsNum = 0; listOfCloudColors = []; listOfHopsFontColors = []; combinedScoreNum = 0; RabbitTextureArray = []; pauseCounter = false; soundTrack = true; bunnyMoveWithSound = true; pausedAfterOpening = false; gameIsActive = false; blackCloudList = [:]; planeCount = 0; lowerPlaneBound = 10; upperPlaneBound = 15; planeSoundPaused = false; listOfCarrots = [:]; triplesChildren = []; countTheTriples = [:]; listOfChildren = [:]; BirdTextureArray = []; birdHasReachedPoint = false; airPlanesAlive = false; ranWasCalled = false; pooPooPos = 0; pooCount = 0; cameToPause = false; birdCanPoo = true
+        bunnysdone = false; firsttouch = false; savepos = 0; countfirst = 0; scorenum = 0; onACloud = false; resetCalled = false; cloudMoveTime = 0.005; cloudDelayTime = 0.59; bunnyHopTime = 0.482; listOfSkies = []; colorCloudBlendFactor = 0; carrotsNum = 0; listOfCloudColors = []; listOfHopsFontColors = []; combinedScoreNum = 0; RabbitTextureArray = []; pauseCounter = false; soundTrack = true; bunnyMoveWithSound = true; pausedAfterOpening = false; gameIsActive = false; blackCloudList = [:]; planeCount = 0; lowerPlaneBound = 10; upperPlaneBound = 15; planeSoundPaused = false; listOfCarrots = [:]; triplesChildren = []; countTheTriples = [:]; listOfChildren = [:]; BirdTextureArray = []; birdHasReachedPoint = false; airPlanesAlive = false; ranWasCalled = false; pooPooPos = 0; pooCount = 0; cameToPause = false; birdCanPoo = true; airPlaneHitBunny = false; leftGame = false
         
+        removeGestureRecognizers()
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil); cloudGap = 0; cloudsChange = true; saveCloudChangeNum = 0;  bunnyFellSound = nil; bunnyDidntHop = nil; planeHitSound = nil; blackCloudsound = nil
         createOurScene()
@@ -1519,14 +1512,17 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func transitionToStoreScene(scene: String){
         switch scene {
         case "StoreScene":
+            removeGestureRecognizers()
             let storeScene = StoreScene(fileNamed: "StoreScene")
             let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
             self.scene?.view?.presentScene(storeScene!, transition: fadeAway)
         case "StoreScene1":
+            removeGestureRecognizers()
             let storeScene = StoreScene1(fileNamed: "StoreScene1")
             let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
             self.scene?.view?.presentScene(storeScene!, transition: fadeAway)
         case "StoreScene2":
+            removeGestureRecognizers()
             let storeScene = StoreScene2(fileNamed: "StoreScene2")
             let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
             self.scene?.view?.presentScene(storeScene!, transition: fadeAway)
@@ -1613,6 +1609,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         let pathToSound5 = Bundle.main.path(forResource: "planeSound", ofType: "m4a")
         url4 = URL(fileURLWithPath: pathToSound5!)
         
+        let pathToSound7 = Bundle.main.path(forResource: "Splat", ofType: "m4a")
+        url5 = URL(fileURLWithPath: pathToSound7!)
+        
         do{ planeSound = try AVAudioPlayer(contentsOf: url4) }
         catch{}
         planeSound?.prepareToPlay()
@@ -1632,6 +1631,11 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         do{ bunnyFellSound = try AVAudioPlayer(contentsOf: url) }
         catch{}
         bunnyFellSound?.prepareToPlay()
+        
+        do { splat = try AVAudioPlayer(contentsOf: url5)}
+        catch{}
+        splat?.prepareToPlay()
+
     }
  
 
@@ -1685,6 +1689,19 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    private func makeBirdChirp(){
+        if UserDefaults().bool(forKey: "SoundOffOrOn") == true && soundTrack{
+            self.run(SKAction.playSoundFileNamed("Chirp.m4a", waitForCompletion: false))
+        }
+    }
+    
+    private func makeSplatSound(){
+        if UserDefaults().bool(forKey: "SoundOffOrOn") == true && soundTrack{
+            DispatchQueue.global().async {
+                splat?.play()
+            }
+        }
+    }
     func touchDown(atPoint pos : CGPoint) {
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
@@ -1726,6 +1743,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 if mainMenu.contains(local) && !mainMenuText.hasActions(){
                     theBlender(runActionOn: mainMenu)
                     theBlender(runActionOn: mainMenuText)
+                    removeGestureRecognizers()
                     let playScene = PlayScene(fileNamed: "PlayScene")
                     let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                     self.scene?.view?.presentScene(playScene!, transition: fadeAway)
@@ -1737,11 +1755,27 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                     birdCanPoo = false
                     birdTap = true
                     if Bird.xScale > 0{
-                        Bird.run(SKAction.moveTo(x: self.frame.width/2 + Bird.frame.width, duration: 2))}
-                    else{Bird.run(SKAction.moveTo(x: -self.frame.width/2 - Bird.frame.width, duration: 2))}
+                        let flight: CGFloat = self.frame.width/2 + Bird.frame.width
+                        Bird.removeAction(forKey: "Firstflight")
+                        let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.8) / (Double(BirdTextureArray.count) * 10))
+                        let moveDist = SKAction.moveTo(x: flight, duration: Double(flight * 0.0075))
+                        let flapForever = SKAction.repeatForever(flapWings)
+                        let remove = SKAction.removeFromParent()
+                        let groupMove = SKAction.group([moveDist, flapForever])
+                        Bird.run(SKAction.sequence([groupMove, remove]))
+                    }
+                    else{let flight: CGFloat = -self.frame.width/2 - Bird.frame.width
+                        Bird.removeAction(forKey: "Firstflight")
+                        let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.8) / (Double(BirdTextureArray.count) * 10))
+                        let moveDist = SKAction.moveTo(x: flight, duration: Double(flight * -0.0075))
+                        let flapForever = SKAction.repeatForever(flapWings)
+                        let remove = SKAction.removeFromParent()
+                        let groupMove = SKAction.group([moveDist, flapForever])
+                        Bird.run(SKAction.sequence([groupMove, remove]))
+                    }
                 }
+            
                 else{birdTap = false
-                    birdCanPoo = true
                 }
                 if !pauseButton.contains(local) && playButton.parent != nil{
                     pausedAfterOpening = true
@@ -1749,16 +1783,18 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 else if !pauseButton.contains(local){
                     pauseCounter = false
                 }
-                if pauseButton.contains(local) && self.isPaused == false {
-                    self.isPaused = true
+                if pauseButton.contains(local) && self.isPaused == false && !leftGame{
                     pauseButton.removeFromParent()
-                    createPlayButton()
+                    if playButton.parent == nil{
+                        createPlayButton()}
                     pauseCounter = true
+                    self.isPaused = true
                     if planeSound!.isPlaying{
                         planeSound?.pause(); planeSoundPaused = true
                     }
                 }
                 else if playButton.contains(local) && self.isPaused == true {
+                    leftGame = false
                     self.isPaused = false
                     if UserDefaults().bool(forKey: "SoundOffOrOn") == true{
                         soundTrack = true
@@ -1766,7 +1802,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                     }
                     pausedAfterOpening = false
                     playButton.removeFromParent()
-                    createpauseButton()
+                    if pauseButton.parent == nil{
+                        createpauseButton()}
                 }
                 if !soundOnButton.contains(local) && !soundOffButton.contains(local){
                     bunnyMoveWithSound = true
@@ -1787,7 +1824,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                     }
                 }
                 if let _ = smallBunnyImage{
-                    if smallBunnyImage!.contains(local){
+                    if smallBunnyImage!.contains(local) && !smallBunnyImage!.hasActions(){
                         theBlender(runActionOn: smallBunnyImage!)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -1796,8 +1833,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                         })
                     }
                 }
-                if let _ = miniCloud{
-                    if miniCloud!.contains(local){
+                else if let _ = miniCloud{
+                    if miniCloud!.contains(local) && !miniCloud!.hasActions(){
                         theBlender(runActionOn: miniCloud!)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -2026,12 +2063,11 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             }
         }
         if let plane = airPlane{
-            if airPlaneHitBunny(){
+            if airPlaneHitBunny{
                 if resetCalled == false{
                     Bunny.run(SKAction.fadeOut(withDuration: 1))
                     let currentCarrotCount = UserDefaults().integer(forKey: "CarrotCount")
                     UserDefaults.standard.set(currentCarrotCount + carrotsNum, forKey: "CarrotCount")
-                    planeHitBunny()
                     combinedScoreNum = carrotsNum + scorenum; resetCalled = true; bunnysdone = true; restartButton()
                 }
             }
@@ -2072,7 +2108,6 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                         if pooCount > 3{
                             pooCount = 0
                             birdHasReachedPoint = false
-
                         }
                     }
                 }
