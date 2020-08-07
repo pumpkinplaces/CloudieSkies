@@ -145,7 +145,7 @@ class StoreScene2: SKScene {
         self.addChild(Shiny)
         bunnyList.append("Shiny")
         bunnyDictionary["Shiny"] = Shiny
-        bunnyPriceList["Shiny"] = 0
+        bunnyPriceList["Shiny"] = 300
         
         BabyBlueRabbita = SKSpriteNode(imageNamed: "Rabbita1")
         BabyBlueRabbita.run(SKAction.colorize(with: UIColor(red: 98, green: 154, blue: 204), colorBlendFactor: 0.9, duration: 0))
@@ -156,7 +156,7 @@ class StoreScene2: SKScene {
         self.addChild(BabyBlueRabbita)
         bunnyList.append("BabyBlueRabbita")
         bunnyDictionary["BabyBlueRabbita"] = BabyBlueRabbita
-        bunnyPriceList["BabyBlueRabbita"] = 2000
+        bunnyPriceList["BabyBlueRabbita"] = 300
     }
     
     private func makeSoundOffButton(){
