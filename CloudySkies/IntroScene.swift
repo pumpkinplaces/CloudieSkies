@@ -40,8 +40,8 @@ class IntroScene: SKScene {
             Bunny.zPosition = 4
             Bunny.position = CGPoint(x: 0, y: 110)
             
-            label = SKLabelNode(text: "Cloudy Skies")
-            label!.setScale(0.67)
+            label = SKLabelNode(text: "Cloudie Skies")
+            label!.setScale(0.65)
             label!.position = CGPoint(x: 0, y: -250)
             label!.fontSize = 100
             label!.fontColor = UIColor.systemBlue
