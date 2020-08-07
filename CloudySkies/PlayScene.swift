@@ -53,17 +53,11 @@ class PlayScene: SKScene {
     NotificationCenter.default.addObserver(self, selector: #selector(pauseEverything(_:)), name: UIApplication.willResignActiveNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(playNow(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         setUpUI()
-        if UserDefaults().bool(forKey: "First Launch") == true{
-             introMusic()
-            makeSoundOnButton()
-            UserDefaults.standard.set(true, forKey: "SoundOffOrOn")}
-        else {
-            if UserDefaults().bool(forKey: "SoundOffOrOn") == true{
+        if UserDefaults().bool(forKey: "SoundOffOrOn") == true{
                 introMusic()
                 makeSoundOnButton()
             }
-            else{makeSoundOffButton()}
-        }
+        else{makeSoundOffButton()}
         self.addChild(rulesTab)
         self.addChild(ruleBoard)
         self.addChild(rulesText)
@@ -132,7 +126,7 @@ class PlayScene: SKScene {
         Cloud6.zPosition = 1
         
         Cloud7 = SKSpriteNode(imageNamed: "Cloud2")
-        Cloud7.position = CGPoint(x: -101, y: self.frame.height/4 + 82)
+        Cloud7.position = CGPoint(x: -self.frame.width/2 + 106, y: self.frame.height/4 + 82)
         Cloud7.setScale(0.175)
         Cloud7.zPosition = 1
         
@@ -147,8 +141,8 @@ class PlayScene: SKScene {
         Cloud9.setScale(0.2)
         
         more = SKSpriteNode(imageNamed: "More")
-        more.setScale(0.22)
-        more.position = CGPoint(x: Cloud9.position.x, y: Cloud9.position.y )
+        more.setScale(0.2)
+        more.position = CGPoint(x: -self.frame.width/2 + 59.5, y: self.frame.height/2 - 37.5)
         more.zPosition = 2
         self.addChild(more)
         
@@ -168,9 +162,7 @@ class PlayScene: SKScene {
         fluffy.fontName = "Noteworthy-Bold"
         fluffy.fontColor = UIColor(red: 209, green: 10, blue: 10)
         fluffy.zPosition = 3
-        
         makeTheBorder(fluffy, color: UIColor.black, posit: CGPoint(x: -165, y: 179), scaleTo: 2)
-        
     }
     
     private func makeMore(){
@@ -180,10 +172,10 @@ class PlayScene: SKScene {
         contactLearnMore!.position = CGPoint.zero
         self.addChild(contactLearnMore!)
         
-        close = SKSpriteNode(imageNamed: "Close")
+        close = SKSpriteNode(imageNamed: "closeContactInfo")
         close!.zPosition = 5
-        close!.setScale(0.12)
-        close!.position = CGPoint(x: contactLearnMore!.frame.width/2 - 40, y:contactLearnMore!.frame.height/2 - 30)
+        close!.setScale(0.17)
+        close!.position = CGPoint(x: contactLearnMore!.frame.width/2 - 45, y:contactLearnMore!.frame.height/2 - 30)
         self.addChild(close!)
     }
     
@@ -258,7 +250,7 @@ class PlayScene: SKScene {
     private func makeRuleBoard(){
         ruleBoard = SKSpriteNode(imageNamed: "RuleBoard")
         ruleBoard.position = CGPoint.zero
-        ruleBoard.setScale(0.15)
+        ruleBoard.setScale(0.45)
         ruleBoard.zPosition = 4
         ruleBoard.alpha = 0
         
@@ -290,6 +282,11 @@ class PlayScene: SKScene {
          soundOn.setScale(0.12)
          self.addChild(soundOn)
      }
+    
+    private func removeNotifications(){
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
     
     func touchDown(atPoint pos : CGPoint) {
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
@@ -333,7 +330,9 @@ class PlayScene: SKScene {
             if playTab.contains(tab) && ruleBoard?.alpha == 0 && close == nil{
                 theBlender(runActionOn: playTab)
                 theBlender(runActionOn: startPlaying)
-                introsong?.setVolume(0, fadeDuration: 2.5)
+                introsong?.setVolume(0, fadeDuration: 1)
+                removeNotifications()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {self.introsong?.stop()})
                 let mainGameScene = MainGame(fileNamed: "MainGame")
                 let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                 self.scene?.view?.presentScene(mainGameScene!, transition: fadeAway)
@@ -361,7 +360,7 @@ class PlayScene: SKScene {
                     soundOff.removeFromParent()
                     introMusic()
                     makeSoundOnButton()
-                    introsong?.play()
+                  //  introsong?.play()
                 }
             }
 
