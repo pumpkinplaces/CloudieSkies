@@ -12,7 +12,6 @@ import GameplayKit
 
 
 
-
 class StoreScene2: SKScene {
     
     private var label : SKLabelNode?
@@ -148,7 +147,7 @@ class StoreScene2: SKScene {
         bunnyPriceList["Shiny"] = 300
         
         BabyBlueRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        BabyBlueRabbita.run(SKAction.colorize(with: UIColor(red: 98, green: 154, blue: 204), colorBlendFactor: 0.9, duration: 0))
+        BabyBlueRabbita.run(SKAction.colorize(with: UIColor(red: 59, green: 194, blue: 235), colorBlendFactor: 0.9, duration: 0))
         BabyBlueRabbita.name = "BabyBlueRabbita"
         BabyBlueRabbita.zPosition = 3
         BabyBlueRabbita.position = CGPoint(x: -halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
@@ -156,7 +155,7 @@ class StoreScene2: SKScene {
         self.addChild(BabyBlueRabbita)
         bunnyList.append("BabyBlueRabbita")
         bunnyDictionary["BabyBlueRabbita"] = BabyBlueRabbita
-        bunnyPriceList["BabyBlueRabbita"] = 300
+        bunnyPriceList["BabyBlueRabbita"] = 0
     }
     
     private func makeSoundOffButton(){
