@@ -329,7 +329,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             Bunny.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: Bunny.frame.width * 0.5, height: Bunny.frame.height * 0.03), center: CGPoint(x: Bunny.position.x, y: Bunny.position.y - 22))
         default:
         Bunny.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: Bunny.frame.width * 0.5, height: Bunny.frame.height * 0.03), center: CGPoint(x: Bunny.position.x, y: Bunny.position.y - 5))
-    }
+        }
     }
 
     private func sizeIt(bunnytype: String){
