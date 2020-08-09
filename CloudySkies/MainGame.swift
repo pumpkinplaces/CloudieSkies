@@ -171,6 +171,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     var airPlaneHitBunny = false
     var cameToPause = false
     var leftGame = false
+    var visitBunnyStore:SKLabelNode?
+    var arrow: SKSpriteNode?
     
     var url: URL!, url1: URL!, url2: URL!, url3: URL!, url4:URL!, url5: URL!
     
@@ -178,6 +180,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
 
     override func didMove(to view: SKView) {
         // Get label node from scene and store it for use later
+        //UserDefaults.standard.set(false, forKey: "VisitedStore")
+      //  UserDefaults.standard.set(0, forKey: "VisitedStoreInt")
         createOurScene()
     }
     
@@ -280,6 +284,10 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         rabbitaHasColor(animation: UserDefaults().string(forKey: "RabbitaColor")!)
         }
         createSounds()
+        if UserDefaults().bool(forKey: "VisitedStore") == false{
+            if UserDefaults().integer(forKey: "VisitedStoreInt") < 3 {makeVisitBunnyStore()}
+            else{UserDefaults.standard.set(true, forKey: "VisitedStore")}
+        }
         touchToStart = SKLabelNode(text: "Touch To Start")
         touchToStart.setScale(0.5)
         touchToStart.position = CGPoint(x: 0, y: 0)
@@ -398,6 +406,27 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         carrot!.zPosition = 2
     }
     
+    private func makeVisitBunnyStore(){
+        arrow = SKSpriteNode(imageNamed: "PinkishOrangeArrow")
+        arrow!.position = CGPoint(x: miniCloud!.position.x - miniCloud!.frame.width/2 + 2, y: self.frame.height/2 - 70)
+        arrow!.zPosition = 3
+        arrow?.setScale(0.12)
+        let dull = SKAction.colorize(with: UIColor.black, colorBlendFactor: 0.7, duration: 0.5)
+        let brighten = SKAction.colorize(with: UIColor.black, colorBlendFactor: -0.7, duration: 0.5)
+        let seq = SKAction.sequence([dull, brighten])
+        let repeatIt = SKAction.repeatForever(seq)
+        self.addChild(arrow!)
+        arrow?.run(repeatIt)
+        
+        visitBunnyStore = SKLabelNode(text: "Visit the bunny store")
+        visitBunnyStore!.fontName = "Noteworthy-Bold"
+        visitBunnyStore!.fontColor = UIColor(red: 219, green: 192, blue: 177)
+        visitBunnyStore!.fontSize = 22
+        visitBunnyStore!.position = CGPoint(x: arrow!.position.x - arrow!.frame.width/2 - 10 - visitBunnyStore!.frame.width/2, y: self.frame.height/2 - 79)
+        visitBunnyStore!.zPosition = 3
+        visitBunnyStore!.alpha = 1
+        self.addChild(visitBunnyStore!)
+    }
     
     private func makeAllSkies(){
         bluishGrey = SKSpriteNode(imageNamed: "BlueGrayish")
@@ -1534,12 +1563,13 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     }
     
     private func theBlender<T: SKNode>(runActionOn thisnode: T){
-        let blendIt = SKAction.colorize(with: UIColor.black, colorBlendFactor: 0.25, duration: 0.75)
+        let blendIt = SKAction.colorize(with: UIColor.black, colorBlendFactor: 0.45, duration: 0.35)
         let wait = SKAction.wait(forDuration: 0.05)
         let unBlend = SKAction.colorize(withColorBlendFactor: -0.9, duration: 0.25)
         let sequ = SKAction.sequence([blendIt, wait, unBlend])
         thisnode.run(sequ)
     }
+
     
 
     private func rotateRabbit(recognizerDirection: UISwipeGestureRecognizer.Direction){
@@ -1832,7 +1862,13 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 }
                 if let _ = smallBunnyImage{
                     if smallBunnyImage!.contains(local) && !smallBunnyImage!.hasActions(){
+                        if UserDefaults().bool(forKey: "VisitedStore") == false{
+                            var firstthree = UserDefaults().integer(forKey: "VisitedStoreInt")
+                            firstthree += 1
+                            UserDefaults.standard.set(firstthree, forKey: "VisitedStoreInt")
+                        }
                         theBlender(runActionOn: smallBunnyImage!)
+                        theBlender(runActionOn: miniCloud!)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
@@ -1842,6 +1878,12 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 }
                 else if let _ = miniCloud{
                     if miniCloud!.contains(local) && !miniCloud!.hasActions(){
+                         if UserDefaults().bool(forKey: "VisitedStore") == false{
+                            var firstthree = UserDefaults().integer(forKey: "VisitedStoreInt")
+                            firstthree += 1
+                            UserDefaults.standard.set(firstthree, forKey: "VisitedStoreInt")
+                        }
+                        theBlender(runActionOn: smallBunnyImage!)
                         theBlender(runActionOn: miniCloud!)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
                         NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -1872,8 +1914,11 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 let remove = SKAction.removeFromParent(); let groupThem = SKAction.sequence([fadeAlph, remove])
                 touchToStart.run(groupThem)
                 let fadeAway = SKAction.fadeOut(withDuration: 1)
-                smallBunnyImage!.run(SKAction.sequence([fadeAway, remove]), completion: {self.smallBunnyImage = nil})
-                miniCloud!.run(SKAction.sequence([fadeAway, remove]), completion: {self.miniCloud = nil})
+                let seque = SKAction.sequence([fadeAway, remove])
+                smallBunnyImage!.run(seque, completion: {self.smallBunnyImage = nil})
+                miniCloud!.run(seque, completion: {self.miniCloud = nil})
+                arrow?.run(seque, completion: {self.arrow = nil})
+                visitBunnyStore?.run(seque, completion: {self.visitBunnyStore = nil})
             }
         }
     }
