@@ -23,6 +23,7 @@ class GameScene: SKScene {
     // Get label node from scene and store it for use later
        // self.backgroundColor = UIColor(red: 128, green: 75, blue: 71)
         firstLaunchSettings()
+        firstUpdateSettings()
         self.backgroundColor = UIColor.black
         image = SKSpriteNode(imageNamed: "AirDares")
         image.position = CGPoint(x: 0, y: 0)
@@ -37,7 +38,7 @@ class GameScene: SKScene {
     }
         
     private func firstLaunchSettings(){
-if UserDefaults().bool(forKey: "hasLaunched") == false{
+        if UserDefaults().bool(forKey: "hasLaunched") == false{
             UserDefaults.standard.set(true, forKey: "SoundOffOrOn")
             UserDefaults.standard.set("Bunny", forKey: "bunnyType")
             UserDefaults.standard.set("", forKey: "RabbitaColor")
@@ -49,6 +50,13 @@ if UserDefaults().bool(forKey: "hasLaunched") == false{
             UserDefaults.standard.set(AllBunnyInfo.ownsList, forKey: "Owned")
             UserDefaults.standard.set(true, forKey: "hasLaunched")
         }
+    }
+    
+    private func firstUpdateSettings(){
+        if UserDefaults().bool(forKey: "FirstUpdate") == false{
+            UserDefaults.standard.set(false, forKey: "VisitedStore")
+            UserDefaults.standard.set(0, forKey: "VisitedStoreInt")
+            UserDefaults.standard.set(true, forKey: "FirstUpdate")}
     }
         func touchDown(atPoint pos : CGPoint) {
             if let n = self.spinnyNode?.copy() as! SKShapeNode? {
