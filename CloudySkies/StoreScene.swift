@@ -68,7 +68,6 @@ class StoreScene: SKScene, UIScrollViewDelegate {
     override func didMove(to view: SKView) {
     // Get label node from scene and store it for use later
         inMovedToView = true
-        bunnyBeingUsed = Bunny
         storeBackground = SKSpriteNode(imageNamed: "StoreBackground2")
         storeBackground.setScale(3.5)
         storeBackground.position = CGPoint.zero
