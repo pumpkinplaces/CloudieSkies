@@ -40,6 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults().bool(forKey: "hasLaunched") != true{
             UserDefaults.standard.set(false, forKey: "hasLaunched")
         }
+        if UserDefaults().bool(forKey: "FirstUpdate") != true{
+            UserDefaults.standard.set(false, forKey: "FirstUpdate")
+        }
     }
 }
 
