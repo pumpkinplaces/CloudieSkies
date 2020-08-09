@@ -166,6 +166,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     var pooPooPos = Float()
     var pooCount = 0
     var birdTap = Bool()
+    var firstBirdTap = Bool()
     var birdCanPoo = true
     var airPlaneHitBunny = false
     var cameToPause = false
@@ -959,6 +960,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     private func makeBird(){
         birdCanPoo = true
+        firstBirdTap = true
         birdHasReachedPoint = true
         Bird = SKSpriteNode(imageNamed: "Bird1")
         initialBirdXScale = Bird.xScale
@@ -1501,7 +1503,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func restartGame(){
         self.removeAllActions()
         self.removeAllChildren()
-        bunnysdone = false; firsttouch = false; savepos = 0; countfirst = 0; scorenum = 0; onACloud = false; resetCalled = false; cloudMoveTime = 0.005; cloudDelayTime = 0.59; bunnyHopTime = 0.482; listOfSkies = []; colorCloudBlendFactor = 0; carrotsNum = 0; listOfCloudColors = []; listOfHopsFontColors = []; combinedScoreNum = 0; RabbitTextureArray = []; pauseCounter = false; soundTrack = true; bunnyMoveWithSound = true; pausedAfterOpening = false; gameIsActive = false; blackCloudList = [:]; planeCount = 0; lowerPlaneBound = 10; upperPlaneBound = 15; planeSoundPaused = false; listOfCarrots = [:]; triplesChildren = []; countTheTriples = [:]; listOfChildren = [:]; BirdTextureArray = []; birdHasReachedPoint = false; airPlanesAlive = false; ranWasCalled = false; pooPooPos = 0; pooCount = 0; cameToPause = false; birdCanPoo = true; airPlaneHitBunny = false; leftGame = false
+        bunnysdone = false; firsttouch = false; savepos = 0; countfirst = 0; scorenum = 0; onACloud = false; resetCalled = false; cloudMoveTime = 0.005; cloudDelayTime = 0.59; bunnyHopTime = 0.482; listOfSkies = []; colorCloudBlendFactor = 0; carrotsNum = 0; listOfCloudColors = []; listOfHopsFontColors = []; combinedScoreNum = 0; RabbitTextureArray = []; pauseCounter = false; soundTrack = true; bunnyMoveWithSound = true; pausedAfterOpening = false; gameIsActive = false; blackCloudList = [:]; planeCount = 0; lowerPlaneBound = 10; upperPlaneBound = 15; planeSoundPaused = false; listOfCarrots = [:]; triplesChildren = []; countTheTriples = [:]; listOfChildren = [:]; BirdTextureArray = []; birdHasReachedPoint = false; airPlanesAlive = false; ranWasCalled = false; pooPooPos = 0; pooCount = 0; cameToPause = false; birdCanPoo = true; airPlaneHitBunny = false; leftGame = false;
         
         removeGestureRecognizers()
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
@@ -1751,27 +1753,32 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             }
             else if bunnysdone == false {
                 if Bird.contains(local) && self.isPaused == false{
-                    Bird.xScale = Bird.xScale * -1
                     birdCanPoo = false
                     birdTap = true
-                    if Bird.xScale > 0{
-                        let flight: CGFloat = self.frame.width/2 + Bird.frame.width
-                        Bird.removeAction(forKey: "Firstflight")
-                        let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.8) / (Double(BirdTextureArray.count) * 10))
-                        let moveDist = SKAction.moveTo(x: flight, duration: Double(flight * 0.0075))
-                        let flapForever = SKAction.repeatForever(flapWings)
-                        let remove = SKAction.removeFromParent()
-                        let groupMove = SKAction.group([moveDist, flapForever])
-                        Bird.run(SKAction.sequence([groupMove, remove]))
-                    }
-                    else{let flight: CGFloat = -self.frame.width/2 - Bird.frame.width
-                        Bird.removeAction(forKey: "Firstflight")
-                        let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.8) / (Double(BirdTextureArray.count) * 10))
-                        let moveDist = SKAction.moveTo(x: flight, duration: Double(flight * -0.0075))
-                        let flapForever = SKAction.repeatForever(flapWings)
-                        let remove = SKAction.removeFromParent()
-                        let groupMove = SKAction.group([moveDist, flapForever])
-                        Bird.run(SKAction.sequence([groupMove, remove]))
+                    if firstBirdTap{
+                        Bird.xScale = Bird.xScale * -1
+                        if Bird.xScale > 0{
+                            firstBirdTap = false
+                            let flight: CGFloat = self.frame.width/2 + Bird.frame.width
+                            Bird.removeAction(forKey: "Firstflight")
+                            let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.8) / (Double(BirdTextureArray.count) * 10))
+                            let moveDist = SKAction.moveTo(x: flight, duration: Double(flight * 0.0075))
+                            let flapForever = SKAction.repeatForever(flapWings)
+                            let remove = SKAction.removeFromParent()
+                            let groupMove = SKAction.group([moveDist, flapForever])
+                            Bird.run(SKAction.sequence([groupMove, remove]))
+                        }
+                        else{
+                            firstBirdTap = false
+                            let flight: CGFloat = -self.frame.width/2 - Bird.frame.width
+                            Bird.removeAction(forKey: "Firstflight")
+                            let flapWings = SKAction.animate(with: BirdTextureArray, timePerFrame: Double(2.8) / (Double(BirdTextureArray.count) * 10))
+                            let moveDist = SKAction.moveTo(x: flight, duration: Double(flight * -0.0075))
+                            let flapForever = SKAction.repeatForever(flapWings)
+                            let remove = SKAction.removeFromParent()
+                            let groupMove = SKAction.group([moveDist, flapForever])
+                            Bird.run(SKAction.sequence([groupMove, remove]))
+                        }
                     }
                 }
             
