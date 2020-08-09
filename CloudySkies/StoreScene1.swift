@@ -194,7 +194,7 @@ class StoreScene1: SKScene {
         bunnyPriceList["PinkRabbita"] = 300
         
         GreenRabbita = SKSpriteNode(imageNamed: "Rabbita1")
-        GreenRabbita.run(SKAction.colorize(with: UIColor(red: 82, green: 171, blue: 55), colorBlendFactor: 0.4, duration: 0))
+        GreenRabbita.run(SKAction.colorize(with: UIColor(red: 82, green: 171, blue: 55), colorBlendFactor: 0.5, duration: 0))
         GreenRabbita.name = "GreenRabbita"
         GreenRabbita.zPosition = 3
         GreenRabbita.position = CGPoint(x: halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
