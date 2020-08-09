@@ -155,7 +155,7 @@ class StoreScene2: SKScene {
         self.addChild(BabyBlueRabbita)
         bunnyList.append("BabyBlueRabbita")
         bunnyDictionary["BabyBlueRabbita"] = BabyBlueRabbita
-        bunnyPriceList["BabyBlueRabbita"] = 0
+        bunnyPriceList["BabyBlueRabbita"] = 300
     }
     
     private func makeSoundOffButton(){
