@@ -11,7 +11,9 @@ import SpriteKit
 import GameplayKit
 
 
-class StoreScene: SKScene, UIScrollViewDelegate {
+
+
+class StoreScene: SKScene {
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
@@ -61,6 +63,7 @@ class StoreScene: SKScene, UIScrollViewDelegate {
     var bunnyBeingUsed:SKSpriteNode?
     var inMovedToView = Bool()
     var getMoreCarrots = SKSpriteNode()
+    
     
     var soundOff = SKSpriteNode(), soundOn = SKSpriteNode()
     
