@@ -180,8 +180,6 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
 
     override func didMove(to view: SKView) {
         // Get label node from scene and store it for use later
-        //UserDefaults.standard.set(false, forKey: "VisitedStore")
-      //  UserDefaults.standard.set(0, forKey: "VisitedStoreInt")
         createOurScene()
     }
     
@@ -287,7 +285,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         if UserDefaults().bool(forKey: "VisitedStore") == false{
             if UserDefaults().integer(forKey: "VisitedStoreInt") < 3 {makeVisitBunnyStore()}
             else{UserDefaults.standard.set(true, forKey: "VisitedStore")}
-        }
+        } 
         touchToStart = SKLabelNode(text: "Touch To Start")
         touchToStart.setScale(0.5)
         touchToStart.position = CGPoint(x: 0, y: 0)
