@@ -408,7 +408,6 @@ class StoreScene2: SKScene {
                 if sorryTabClosed{
                 if exit.contains(loca) {
                     removeNotifications()
-                    self.removeAllActions()
                     theBlender(runActionOn: exit)
                     StoreSong.stoppedSongForMain = true
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "StopBackgroundSound"), object: self)
@@ -443,7 +442,6 @@ class StoreScene2: SKScene {
                     StoreSong.stoppedSongForMain = true
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "StopBackgroundSound"), object: self)
                     StoreSong.storeSongPlaying = false
-                    self.removeAllActions()
                     let mainGame = MainGame(fileNamed: "MainGame")
                     let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                     self.scene?.view?.presentScene(mainGame!, transition: fadeAway)
