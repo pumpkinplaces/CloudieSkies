@@ -89,6 +89,7 @@ class StoreScene1: SKScene {
         addNotifications()
         inMovedToView = false
     }
+    
         
     private func setUpStore(){
         exit = SKLabelNode(text: "Exit")
