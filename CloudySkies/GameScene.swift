@@ -21,7 +21,6 @@ class GameScene: SKScene {
         
     override func didMove(to view: SKView) {
     // Get label node from scene and store it for use later
-       // self.backgroundColor = UIColor(red: 128, green: 75, blue: 71)
         firstLaunchSettings()
         firstUpdateSettings()
         self.backgroundColor = UIColor.black
