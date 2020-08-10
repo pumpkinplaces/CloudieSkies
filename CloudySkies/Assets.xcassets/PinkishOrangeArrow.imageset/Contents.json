@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Rabbit.png",
+      "filename" : "PinkishOrangeArrow@0.5x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "PinkishOrangeArrow.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "PinkishOrangeArrow@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
