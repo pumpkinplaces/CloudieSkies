@@ -1,103 +1,103 @@
 {
   "images" : [
     {
-      "filename" : "Asset 8@2x-1.png",
+      "filename" : "CloudieSkiesAppIcon Image20@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "Asset 8@3x.png",
+      "filename" : "CloudieSkiesAppIcon Image20@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "Asset 7@2x.png",
+      "filename" : "CloudieSkiesAppIcon Image29@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "Asset 7@3x.png",
+      "filename" : "CloudieSkiesAppIcon Image29@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "Asset 14@2x-1.png",
+      "filename" : "CloudieSkiesAppIcon Image40@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "Asset 14@3x.png",
+      "filename" : "CloudieSkiesAppIcon Image40@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "Asset 9@2x.png",
+      "filename" : "CloudySkiesAppIcon 60@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "Asset 9@3x.png",
+      "filename" : "CloudySkiesAppIcon 60@3x.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "Asset 8.png",
+      "filename" : "CloudieSkiesAppIcon Image20.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "20x20"
     },
     {
-      "filename" : "Asset 8@2x.png",
+      "filename" : "CloudieSkiesAppIcon Image20@2x-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "Asset 7.png",
+      "filename" : "CloudieSkiesAppIcon Image29.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "29x29"
     },
     {
-      "filename" : "Asset 6@2x.png",
+      "filename" : "CloudieSkiesAppIcon Image29@2x-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "Asset 14.png",
+      "filename" : "CloudieSkiesAppIcon Image40.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "40x40"
     },
     {
-      "filename" : "Asset 14@2x.png",
+      "filename" : "CloudieSkiesAppIcon Image40@2x-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "Asset 4.png",
+      "filename" : "CloudieSkiesAppIcon Image76.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "76x76"
     },
     {
-      "filename" : "Asset 3@2x.png",
+      "filename" : "CloudieSkiesAppIcon Image76@2x.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "76x76"
     },
     {
-      "filename" : "Asset 2@2x.png",
+      "filename" : "CloudieSkiesAppIcon@2x.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "83.5x83.5"

@@ -1,15 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "MainMenu.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "StoreBackground.png",
+      "filename" : "MainMenu@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "MainMenu@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
