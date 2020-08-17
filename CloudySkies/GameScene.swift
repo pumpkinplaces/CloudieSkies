@@ -57,6 +57,11 @@ class GameScene: SKScene {
             UserDefaults.standard.set(0, forKey: "VisitedStoreInt")
             UserDefaults.standard.set(true, forKey: "FirstUpdate")}
     }
+    private func secondUpdateSettings(){
+        if UserDefaults().bool(forKey: "SecondUpdate") == false{
+            UserDefaults.standard.set(0, forKey: "IndexPathRow")
+        }
+    }
         func touchDown(atPoint pos : CGPoint) {
             if let n = self.spinnyNode?.copy() as! SKShapeNode? {
                 n.position = pos
