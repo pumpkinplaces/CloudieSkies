@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import CloudySkies
+@testable import Cloudie_Skies
 
 class CloudySkiesTests: XCTestCase {
 
