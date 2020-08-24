@@ -35,6 +35,7 @@ extension SKLabelNode{
             return nil
         }
     }
+    
 }
 
 
@@ -60,3 +61,21 @@ class StoreSong{
     static var stoppedSongForMain = Bool()
     static var storeSongPlaying = Bool()
 }
+
+
+class StorePrices{
+    static var bunnyPriceList:[String:Int] = ["Bunny": 400, "BeigeBunny": 400, "BrownRabbit": 400, "LightBrownBunny": 400, "DarkBrownBunny": 400, "GrayBunny": 300, "BlackBunnyLight": 400, "SpottedBlackBunny": 400, "Rabbita": 300, "RedRabbita": 300, "OrangeRabbita": 300, "YellowRabbita": 300, "GreenRabbita": 300, "BlueRabbita": 300, "PurpleRabbita": 0, "PinkRabbita": 300, "BabyBlueRabbita": 300, "Joyce": 400, "Joshie": 400, "Jason": 400]
+}
+
+
+class GameScore{
+    static var score = Int()
+    static var viewController: GameViewController!
+    static var gameCenterButton: UIButton!
+    static var playerIsAuthentic = false
+}
+
+class Views{
+    static var initialScrollDone = false
+}
+
