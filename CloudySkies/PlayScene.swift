@@ -8,17 +8,15 @@
 
 import Foundation
 import SpriteKit
-import GameplayKit
-import UIKit
 import AVFoundation
+import UIKit
 
 
-class PlayScene: SKScene {
+class PlayScene: SKScene, UICollectionViewDelegate {
     
-
+ 
     private var spinnyNode : SKShapeNode?
     
-    var ruleBoard:SKSpriteNode!
     var rulesTab:SKSpriteNode!
     var rulesText: SKLabelNode!
     var Cloud = SKSpriteNode()
@@ -27,7 +25,6 @@ class PlayScene: SKScene {
     var startPlaying:SKLabelNode!
     var Cloud1 = SKSpriteNode()
     var Cloud2 = SKSpriteNode()
-    var closeScoreBoard: SKSpriteNode?
     var Cloud3 = SKSpriteNode()
     var Cloud4 = SKSpriteNode()
     var Cloud5 = SKSpriteNode()
@@ -46,6 +43,10 @@ class PlayScene: SKScene {
     var contactLearnMore:SKSpriteNode?
     var more = SKSpriteNode()
     var close: SKSpriteNode?
+    var website: SKLabelNode?
+    var email: SKLabelNode?
+    var collectionView: UICollectionView!
+    let data = [PlayData(image: #imageLiteral(resourceName: "PlayPic1")), PlayData(image: #imageLiteral(resourceName: "PlayPic2"))]
      
     
     override func didMove(to view: SKView) {
@@ -59,7 +60,6 @@ class PlayScene: SKScene {
             }
         else{makeSoundOffButton()}
         self.addChild(rulesTab)
-        self.addChild(ruleBoard)
         self.addChild(rulesText)
         self.addChild(playTab)
         self.addChild(startPlaying)
@@ -76,7 +76,6 @@ class PlayScene: SKScene {
     
     
     private func setUpUI(){
-        makeRuleBoard()
         makeSilentAudio()
         rulesTab = SKSpriteNode(imageNamed: "CircleStart")
         rulesTab.setScale(0.09)
@@ -84,11 +83,11 @@ class PlayScene: SKScene {
         rulesTab.position = CGPoint(x: -self.frame.width/4 - 12, y: tabsYPos)
         rulesTab.zPosition = 2
         
-        rulesText = SKLabelNode(text: "Rules")
-        rulesText.setScale(0.3)
-        rulesText.position = CGPoint(x: -self.frame.width/4 - 12, y: tabsYPos - 13)
+        rulesText = SKLabelNode(text: "Tips & Tricks")
+        rulesText.setScale(0.2)
+        rulesText.position = CGPoint(x: -self.frame.width/4 - 12, y: tabsYPos - 10)
         rulesText.zPosition = 3
-        rulesText.fontSize = 150
+        rulesText.fontSize = 120
         rulesText.fontName = "Noteworthy-Bold"
         rulesText.fontColor = UIColor(red: 150, green: 21, blue: 21)
         
@@ -165,20 +164,58 @@ class PlayScene: SKScene {
         makeTheBorder(fluffy, color: UIColor.black, posit: CGPoint(x: -171, y: 179), scaleTo: 2)
     }
     
+
     private func makeMore(){
-        contactLearnMore = SKSpriteNode(imageNamed: "contactLearnMore")
+        contactLearnMore = SKSpriteNode(imageNamed: "ContactTab")
         contactLearnMore!.setScale(0.75)
         contactLearnMore!.zPosition = 4
         contactLearnMore!.position = CGPoint.zero
         self.addChild(contactLearnMore!)
         
+        email = SKLabelNode(text: "airdaresapps@gmail.com")
+        email!.fontSize = 35
+        email!.fontName = "Noteworthy-Bold"
+        email!.fontColor = UIColor(red: 255, green: 221, blue: 115)
+        email!.position = CGPoint(x: 0, y: 15)
+        email!.zPosition = 1
+        contactLearnMore!.addChild(email!)
+        
+        website = SKLabelNode(text: "airdares.net")
+        website!.fontSize = 40
+        website!.fontName = "Noteworthy-Bold"
+        website!.fontColor = UIColor(red: 255, green: 221, blue: 115)
+        website!.position = CGPoint(x: 0, y: -135)
+        website!.zPosition = 5
+        contactLearnMore!.addChild(website!)
+        
         close = SKSpriteNode(imageNamed: "closeContactInfo")
         close!.zPosition = 5
-        close!.setScale(0.17)
+        close!.setScale(0.08)
         close!.position = CGPoint(x: contactLearnMore!.frame.width/2 - 45, y:contactLearnMore!.frame.height/2 - 30)
         self.addChild(close!)
     }
     
+    private func createCollectionView(){
+        collectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+            cv.register(PlayCell.self, forCellWithReuseIdentifier: "playCell")
+        return cv
+        }()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = UIColor.clear.withAlphaComponent(0)
+        self.view?.addSubview(collectionView)
+        let distDown = size.height/2 - 155
+        let distSide = size.width/2 - 165
+        collectionView.topAnchor.constraint(equalTo: self.view!.topAnchor, constant: distDown).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.view!.leadingAnchor, constant: distSide).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.view!.trailingAnchor, constant: -distSide).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.view!.bottomAnchor, constant: -distDown).isActive = true
+    }
     
     @objc private func pauseEverything(_ application: UIApplication){
         introsong?.pause()
@@ -247,23 +284,6 @@ class PlayScene: SKScene {
       }
     
     
-    private func makeRuleBoard(){
-        ruleBoard = SKSpriteNode(imageNamed: "RuleBoard")
-        ruleBoard.position = CGPoint.zero
-        ruleBoard.setScale(0.45)
-        ruleBoard.zPosition = 4
-        ruleBoard.alpha = 0
-        
-        let halfRuleBoardHeight = ruleBoard.frame.height/2
-        let halfRuleBoardWidth = ruleBoard.frame.width/2
-        closeScoreBoard = SKSpriteNode(imageNamed: "CloseButton")
-        closeScoreBoard?.setScale(0.041)
-        closeScoreBoard?.position = CGPoint(x: halfRuleBoardWidth - 30, y: halfRuleBoardHeight - 20)
-        closeScoreBoard?.zPosition = 5
-        closeScoreBoard?.alpha = 0
-        self.addChild(closeScoreBoard!)
-    }
-    
     private func makeSoundOffButton(){
          soundOff = SKSpriteNode(imageNamed: "SoundOffButton")
          soundOff.name = "SoundOff"
@@ -319,33 +339,46 @@ class PlayScene: SKScene {
         }
         for touch in touches{
             let tab = touch.location(in: self)
-            if rulesTab.contains(tab) && ruleBoard?.alpha == 0 && close == nil{
+            if rulesTab.contains(tab) && close == nil{
                 theBlender(runActionOn: rulesTab)
                 theBlender(runActionOn: rulesText)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.11, execute: {
-                    self.ruleBoard.alpha = 1
-                    self.closeScoreBoard?.alpha = 1
+                    if self.collectionView == nil {
+                        self.createCollectionView()
+                    }
+                    else{
+                        if self.collectionView.superview == nil{
+                            self.createCollectionView()
+                        }
+                    }
                 })
             }
-            if playTab.contains(tab) && ruleBoard?.alpha == 0 && close == nil{
+            if playTab.contains(tab) && close == nil{
                 theBlender(runActionOn: playTab)
                 theBlender(runActionOn: startPlaying)
-                introsong?.setVolume(0, fadeDuration: 1)
-                removeNotifications()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {self.introsong?.stop()})
-                let mainGameScene = MainGame(fileNamed: "MainGame")
-                let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
-                self.scene?.view?.presentScene(mainGameScene!, transition: fadeAway)
-            }
-            if let closeBoard = closeScoreBoard {
-                if closeBoard.contains(tab){
-                    theBlender(runActionOn: closeBoard)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {
-                        self.ruleBoard.alpha = 0
-                        self.closeScoreBoard?.alpha = 0
-                    })
+                if collectionView == nil{
+                    introsong?.setVolume(0, fadeDuration: 1)
+                    removeNotifications()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {self.introsong?.stop()})
+                    Views.initialScrollDone = false
+                    let mainGameScene = MainGame(fileNamed: "MainGame")
+                    let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
+                    self.scene?.view?.presentScene(mainGameScene!, transition: fadeAway)
+                }
+                else{
+                    if collectionView.superview == nil{
+                        introsong?.setVolume(0, fadeDuration: 1)
+                        removeNotifications()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {self.introsong?.stop()})
+                        Views.initialScrollDone = false
+                        let mainGameScene = MainGame(fileNamed: "MainGame")
+                        let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
+                        self.scene?.view?.presentScene(mainGameScene!, transition: fadeAway)
+
+                    }
                 }
             }
+            
             if let _ = soundOn.parent{
                 if soundOn.contains(tab){
                     rememberSoundSettings(soundOn)
@@ -360,20 +393,44 @@ class PlayScene: SKScene {
                     soundOff.removeFromParent()
                     introMusic()
                     makeSoundOnButton()
-                  //  introsong?.play()
                 }
             }
 
-            if more.contains(tab) && ruleBoard?.alpha == 0 && contactLearnMore?.parent == nil{
-                theBlender(runActionOn: Cloud9)
+            if more.contains(tab) {
                 theBlender(runActionOn: more)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.makeMore()})
+                if collectionView == nil{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.makeMore()})
+                }
+                else{
+                    if collectionView.superview == nil{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.makeMore()})
+                    }
+                }
             }
-            if let _ = close{
-                if close!.contains(tab){
-                    theBlender(runActionOn: close!)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.close!.run(SKAction.removeFromParent())
-                        self.contactLearnMore!.run(SKAction.removeFromParent())})
+            if let close = close{
+                if close.contains(tab){
+                    theBlender(runActionOn: close)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {close.run(SKAction.removeFromParent())
+                        if let contactlearnmore = self.contactLearnMore{
+                            contactlearnmore.run(SKAction.removeFromParent())}
+                    })
+                }
+            }
+        
+            if let website = website{
+                if website.contains(tab){
+                    theBlender(runActionOn: website)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {let url = URL(string: "http://airdares.net")!
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)})
+                }
+            }
+            if let email = email{
+                if email.contains(tab){
+                    theBlender(runActionOn: email)
+                    let mailname = "airdaresapps@gmail.com"
+                    if let url = URL(string: "mailto:\(mailname)") {
+                        UIApplication.shared.open(url)
+                    }
                 }
             }
         }
@@ -395,3 +452,60 @@ class PlayScene: SKScene {
         // Called before each frame is rendered
     }
 }
+
+
+extension PlayScene: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, layout CollectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
+        return CGSize(width: 275, height: 310)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playCell", for: indexPath) as! PlayCell
+        cell.backgroundColor = UIColor.clear.withAlphaComponent(0)
+        cell.data = self.data[indexPath.row]
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.removeFromSuperview()
+    }
+}
+
+
+
+class PlayCell: UICollectionViewCell{
+
+    fileprivate let imageView = UIImageView()
+    var data: PlayData? {
+        didSet{
+            guard let data = data else {return}
+            imageView.image = data.image
+        }
+    }
+
+    override init(frame: CGRect){
+        super.init(frame: frame)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleToFill
+        imageView.clipsToBounds = true
+        
+        contentView.addSubview(imageView)
+        imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+}
+
+struct PlayData{
+    var image: UIImage
+}
+
+
