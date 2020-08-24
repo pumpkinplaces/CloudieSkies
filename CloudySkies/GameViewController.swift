@@ -10,24 +10,32 @@ import UIKit
 import SpriteKit
 import GameplayKit
 import AVFoundation
+import GameKit
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINavigationControllerDelegate, GKLocalPlayerListener {
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true, completion: nil)
+    }
+    
      var mainGameScene = GameScene()
      var storeSong: AVAudioPlayer?
+     var initialScrollDone = Bool()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.playBackGroundSound(_:)), name: NSNotification.Name(rawValue: "PlayBackgroundSound"), object: nil)
-
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.stopBackGroundSound(_:)), name: NSNotification.Name(rawValue: "StopBackgroundSound"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.pauseBackGroundSound(_:)), name: NSNotification.Name(rawValue: "PauseBackgroundSound"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.resumeBackGroundSound(_:)), name: NSNotification.Name(rawValue: "ResumeBackGroundSound"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.leaderboard(_:)), name:  NSNotification.Name(rawValue: "GameCenterLeaderBoard"), object: nil)
         //createGradientLayer()
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene")  {
                 // Set the scale mode to scale to fit the window
+                 GameScore.viewController = self
+                 authenticatePlayer()
                 scene.scaleMode = .aspectFill
                 
                 // Present the scene
@@ -37,9 +45,21 @@ class GameViewController: UIViewController {
             view.ignoresSiblingOrder = true
             view.showsFPS = false
             view.showsNodeCount = false
+            view.showsPhysics = false
         }
     }
 
+    private func authenticatePlayer(){
+        let localPlayer = GKLocalPlayer.local
+        localPlayer.authenticateHandler = {(ViewController, error) -> Void in
+        guard error == nil else { return }
+        if GKLocalPlayer.local.isAuthenticated {
+            GKLocalPlayer.local.register(self)
+        }
+        if let vc = ViewController {self.present(vc, animated: true, completion: nil)}
+        }
+    }
+    
     
     @objc private func playBackGroundSound(_ notification: Notification){
         let pathToSound1 = Bundle.main.path(forResource: "storeSong", ofType: "m4a")
@@ -71,6 +91,28 @@ class GameViewController: UIViewController {
         storeSong?.play()
     }
     
+    @objc func willAddTarget(){
+        GameScore.gameCenterButton.addTarget(self, action: #selector(leaderboard), for: .touchUpInside)
+    }
+    
+    @objc func leaderboard(_ notification: Notification){
+        let vc = GKGameCenterViewController()
+        vc.gameCenterDelegate = self
+        vc.viewState = .leaderboards
+        vc.leaderboardIdentifier = "e4r8i9m1k2"
+        present(vc, animated: true, completion: nil)
+    }
+    
+    func saveHighScore(thescore: Int){
+        if GKLocalPlayer.local.isAuthenticated{
+            GameScore.playerIsAuthentic = true
+            let scoreReporter = GKScore(leaderboardIdentifier: "e4r8i9m1k2")
+            scoreReporter.value = Int64(thescore)
+            let scoreArray:[GKScore] = [scoreReporter]
+            GKScore.report(scoreArray, withCompletionHandler: nil)
+        }
+    }
+     
     override var shouldAutorotate: Bool {
         return true
     }
@@ -86,4 +128,10 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        Views.initialScrollDone = true
+    }
 }
+
