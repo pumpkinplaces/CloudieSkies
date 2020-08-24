@@ -1788,35 +1788,6 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    
-    private func makeItRain1(){
-        rainDrops = SKSpriteNode(imageNamed: "Rain1")
-        rainDrops!.setScale(3.5)
-        rainDrops!.position = CGPoint(x: 0, y: 0)
-        rainDrops!.zPosition = 9
-        self.addChild(rainDrops!)
-        listOfSkies[savedSky].run(SKAction.colorize(with: UIColor.systemGray, colorBlendFactor: 0.7, duration: 1))
-        let animateRain = SKAction.animate(with: rainTextureArray, timePerFrame: Double(2.5) / Double(rainTextureArray.count))
-        let repeatRain = SKAction.repeat(animateRain, count: rainTimes)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {self.makeItRain2()})
-        rainDrops!.run(repeatRain, completion: {let randNum = Int.random(in: 20...40); self.rainDrops!.removeFromParent(); self.rainDrops = nil; self.saveRain = self.scorenum + randNum;})
-    }
-    
-    
-    private func makeItRain2(){
-        if !bunnysdone{
-            rain2 = SKSpriteNode(imageNamed: "Rain1")
-            rain2!.setScale(3.5)
-            rain2!.position = CGPoint.zero
-            rain2!.zPosition = 9
-            self.addChild(rain2!)
-            let animateRain = SKAction.animate(with: rainTextureArray, timePerFrame: Double(2.5) / Double(rainTextureArray.count))
-            let repeatRain = SKAction.repeat(animateRain, count: rainTimes)
-            rain2!.run(repeatRain, completion: {self.rain2!.removeFromParent(); self.rain2 = nil; if let light = self.lightening{
-                light.run(SKAction.fadeOut(withDuration: 1))}; self.listOfSkies[self.savedSky].run(SKAction.colorize(with: UIColor.systemGray, colorBlendFactor: -0.7, duration: 1)); DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {self.itsRaining = false;})})
-        }
-    }
-    
 
     private func willItRain(){
         if scorenum == 0{
