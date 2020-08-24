@@ -22,7 +22,7 @@ class IntroScene: SKScene {
         var Cloud = SKSpriteNode()
         var background2 = SKSpriteNode()
         var startScreenDone = false
-
+        
         
         override func didMove(to view: SKView) {
             // Get label node from scene and store it for use later
@@ -113,10 +113,9 @@ class IntroScene: SKScene {
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
             if label!.hasActions() == false {
-                let introscene = PlayScene(fileNamed: "PlayScene")
+                let loadingScene = LoadingScene(fileNamed: "LoadingScene")
                 let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
-                self.scene?.view?.presentScene(introscene!, transition: fadeAway)
-            
+                self.scene?.view?.presentScene(loadingScene!, transition: fadeAway)
             }
         }
     }
