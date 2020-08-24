@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "closeContactInfo@0.5x.png",
+      "filename" : "closeContactInfo.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "closeContactInfo.png",
+      "filename" : "closeContactInfo@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
