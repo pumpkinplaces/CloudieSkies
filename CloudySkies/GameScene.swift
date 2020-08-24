@@ -18,22 +18,20 @@ class GameScene: SKScene {
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     var image = SKSpriteNode()
+    var isLoading = true
         
     override func didMove(to view: SKView) {
     // Get label node from scene and store it for use later
         firstLaunchSettings()
         firstUpdateSettings()
+        secondUpdateSettings()
         self.backgroundColor = UIColor.black
         image = SKSpriteNode(imageNamed: "AirDares")
         image.position = CGPoint(x: 0, y: 0)
         image.setScale(1.22)
         self.addChild(image)
         image.zPosition = 1
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-            let intro = IntroScene(fileNamed: "PlayScene")
-            let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
-            self.scene?.view?.presentScene(intro!, transition: fadeAway)
-        })
+        loadEverything()
     }
         
     private func firstLaunchSettings(){
@@ -41,7 +39,7 @@ class GameScene: SKScene {
             UserDefaults.standard.set(true, forKey: "SoundOffOrOn")
             UserDefaults.standard.set("Bunny", forKey: "bunnyType")
             UserDefaults.standard.set("", forKey: "RabbitaColor")
-            UserDefaults.standard.set(0, forKey: "CarrotCount")
+            UserDefaults.standard.set(100000, forKey: "CarrotCount")
             UserDefaults.standard.set("StoreScene", forKey: "StoreScene")
             UserDefaults.standard.set(0, forKey: "highscore")
             UserDefaults.standard.set(0, forKey: "highestTotalScore")
@@ -60,8 +58,55 @@ class GameScene: SKScene {
     private func secondUpdateSettings(){
         if UserDefaults().bool(forKey: "SecondUpdate") == false{
             UserDefaults.standard.set(0, forKey: "IndexPathRow")
+            UserDefaults.standard.set(true, forKey: "SecondUpdate")
+            var dict = UserDefaults().dictionary(forKey: "Owned")
+            dict!["Joyce"] = false
+            dict!["Joshie"] = false
+            dict!["Jason"] = false
+            dict!.removeValue(forKey: "Shiny")
+            UserDefaults.standard.set(dict, forKey: "Owned")
         }
     }
+    
+    private func loadEverything(){
+        BunnyTexts.picList.append(BunnyTexts.Cloud1)
+        BunnyTexts.picList.append(BunnyTexts.Cloud2)
+        BunnyTexts.picList.append(BunnyTexts.Cloud3)
+        BunnyTexts.picList.append(BunnyTexts.Cloud4)
+        BunnyTexts.picList.append(BunnyTexts.Bird)
+        BunnyTexts.picList.append(BunnyTexts.AirPlane)
+        BunnyTexts.picList.append(BunnyTexts.RainDrop)
+        BunnyTexts.picList.append(BunnyTexts.Lightening)
+        BunnyTexts.picList.append(BunnyTexts.BlueSky)
+        BunnyTexts.picList.append(BunnyTexts.BlueGrayish)
+        BunnyTexts.picList.append(BunnyTexts.PurpleSky)
+        BunnyTexts.picList.append(BunnyTexts.RedOrangeYellow)
+        BunnyTexts.picList.append(BunnyTexts.BluishBlack)
+        BunnyTexts.picList.append(BunnyTexts.TheOriginal)
+        BunnyTexts.picList.append(BunnyTexts.PinkBlue)
+        BunnyTexts.picList.append(BunnyTexts.BrightBlueSky)
+        BunnyTexts.picList.append(BunnyTexts.DarkRedOrangeYellow)
+        BunnyTexts.picList.append(BunnyTexts.BluishBrown)
+        BunnyTexts.picList.append(BunnyTexts.PurpleBlack)
+        BunnyTexts.picList.append(BunnyTexts.NorthernLights)
+        BunnyTexts.picList.append(BunnyTexts.LightAndDarkBlue)
+        BunnyTexts.picList.append(BunnyTexts.BrightBluishBrown)
+        BunnyTexts.picList.append(BunnyTexts.Rainbow)
+        BunnyTexts.picList.append(BunnyTexts.PinkAndGreen)
+        BunnyTexts.picList.append(BunnyTexts.BlueGreen)
+        BunnyTexts.picList.append(BunnyTexts.Midnight)
+        BunnyTexts.picList.append(BunnyTexts.BirdPoo)
+        BunnyTexts.picList.append(BunnyTexts.PlayAgainBar)
+        BunnyTexts.picList.append(BunnyTexts.MainMenu)
+        BunnyTexts.picList.append(BunnyTexts.PlayButton)
+        BunnyTexts.picList.append(BunnyTexts.SoundOffButton)
+        BunnyTexts.picList.append(BunnyTexts.SoundButton)
+        BunnyTexts.picList.append(BunnyTexts.PauseButton)
+        BunnyTexts.picList.append(BunnyTexts.Carrot)
+        SKTexture.preload(BunnyTexts.picList, withCompletionHandler: {self.isLoading = false})
+    }
+    
+    
         func touchDown(atPoint pos : CGPoint) {
             if let n = self.spinnyNode?.copy() as! SKShapeNode? {
                 n.position = pos
@@ -106,6 +151,11 @@ class GameScene: SKScene {
         
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
+            if isLoading == false{
+                let intro = IntroScene(fileNamed: "PlayScene")
+                let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
+                self.scene?.view?.presentScene(intro!, transition: fadeAway)
+            }
         }
     }
 
