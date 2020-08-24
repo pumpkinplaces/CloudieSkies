@@ -39,7 +39,7 @@ class GameScene: SKScene {
             UserDefaults.standard.set(true, forKey: "SoundOffOrOn")
             UserDefaults.standard.set("Bunny", forKey: "bunnyType")
             UserDefaults.standard.set("", forKey: "RabbitaColor")
-            UserDefaults.standard.set(100000, forKey: "CarrotCount")
+            UserDefaults.standard.set(0, forKey: "CarrotCount")
             UserDefaults.standard.set("StoreScene", forKey: "StoreScene")
             UserDefaults.standard.set(0, forKey: "highscore")
             UserDefaults.standard.set(0, forKey: "highestTotalScore")
