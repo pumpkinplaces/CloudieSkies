@@ -43,6 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults().bool(forKey: "FirstUpdate") != true{
             UserDefaults.standard.set(false, forKey: "FirstUpdate")
         }
+        if UserDefaults().bool(forKey: "SecondUpdate") != true{
+            UserDefaults.standard.set(false, forKey: "SecondUpdate")
+        }
     }
 }
 
