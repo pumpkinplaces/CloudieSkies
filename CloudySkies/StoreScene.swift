@@ -12,30 +12,15 @@ import GameplayKit
 
 
 
-
-class StoreScene: SKScene {
+class StoreScene: SKScene, UICollectionViewDelegate {
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
 
-    var Bunny = SKSpriteNode()
-    var BrownRabbit = SKSpriteNode()
-    var LightBrownBunny = SKSpriteNode()
-    var DarkBrownBunny = SKSpriteNode()
-    var GrayBunny = SKSpriteNode()
-    var BlackBunnyLight = SKSpriteNode()
-    var SpottedBlackBunny = SKSpriteNode()
-    var Shiny = SKSpriteNode()
-    var BeigeBunny = SKSpriteNode()
-    
-    var useSquare = SKSpriteNode()
     var use = SKLabelNode()
     var exit = SKLabelNode()
     var exitBorder = SKShapeNode()
 
-    var using = SKLabelNode()
-    var usingTab = SKSpriteNode()
-    var select = SKSpriteNode()
     var storeBackground = SKSpriteNode()
     var rabbitaColor = UserDefaults().string(forKey: "RabbitaColor")
     
@@ -52,7 +37,6 @@ class StoreScene: SKScene {
 
     var useOrPriceList:[SKSpriteNode] = []
     var useOrPriceDict:[SKSpriteNode:SKSpriteNode] = [:]
-    var arrow = SKSpriteNode()
     
     var sorryTab = SKSpriteNode()
     var sorryLabel = SKLabelNode()
@@ -63,6 +47,33 @@ class StoreScene: SKScene {
     var bunnyBeingUsed:SKSpriteNode?
     var inMovedToView = Bool()
     var getMoreCarrots = SKSpriteNode()
+    var collectionView: UICollectionView!
+    var collectionCount = 0
+    var saveCollectionCount = 0
+    var trackSavedCollectionCount = 0
+    var usingCellName: String!
+    var firstSelectedCell:CustomCell!
+    var firstSelectedCellName: String!
+    var selectedCellName: String!
+    var selectedCellIndexPath: IndexPath!
+    var usingIndexPath: IndexPath!
+    var selectedCell: CustomCell?
+    var sorryImage: UIImageView!
+    var closeButton: UIButton!
+    var previouslySelecrtedCell: CustomCell!
+    var previousCell: CustomCell!
+    var usingCell: CustomCell!
+    var previouslyUsingCellIndePath: IndexPath!
+    var savedFirstIndexPath: IndexPath!
+    var calledScrollThingy = false
+    var firstUsingPath: IndexPath?
+    var selectedCellChanged = false
+    var selectCellCalled = false
+    
+
+    var data = [CustomData(title: "BunnyName", image: #imageLiteral(resourceName: "Dock")), CustomData(title: "DarkBrownBunnyName", image: #imageLiteral(resourceName: "Heidi")), CustomData(title: "Bunny", image: #imageLiteral(resourceName: "Bunny1.png")), CustomData(title: "DarkBrownBunny", image: #imageLiteral(resourceName: "DarkBrownBunny1")), CustomData(title: "BunnyUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "DarkBrownBunnyUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "BeigeBunnyName", image: #imageLiteral(resourceName: "Chloe")), CustomData(title: "GrayBunnyName", image: #imageLiteral(resourceName: "Gus")), CustomData(title: "BeigeBunny", image: UIImage(named: "BeigeBunny1")!), CustomData(title: "GrayBunny", image: #imageLiteral(resourceName: "GrayBunny1")), CustomData(title: "BeigeBunnyUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "GrayBunnyUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "BrownRabbitName", image: #imageLiteral(resourceName: "Casey")), CustomData(title: "BlackBunnyLightName", image: #imageLiteral(resourceName: "Klaus")), CustomData(title: "BrownRabbit", image: #imageLiteral(resourceName: "BrownRabbit1")), CustomData(title: "BlackBunnyLight", image: #imageLiteral(resourceName: "BlackBunnyLight1")), CustomData(title: "BrownRabbitUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "BlackBunnyLightUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "LightBrownBunnyName", image:#imageLiteral(resourceName: "Benji")), CustomData(title: "SpottedBlackBunnyName", image: #imageLiteral(resourceName: "Felicity")), CustomData(title: "LightBrownBunny", image: #imageLiteral(resourceName: "LightBrownBunny1")), CustomData(title: "SpottedBlackBunny", image: #imageLiteral(resourceName: "SpottedBlackBunny1")),CustomData(title: "LightBrownBunnyUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "SpottedBlackBunnyUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "JoshieName", image: #imageLiteral(resourceName: "PapaJoshie")), CustomData(title: "JoyceName", image:#imageLiteral(resourceName: "GrandmaJoyce")), CustomData(title: "Joshie", image: #imageLiteral(resourceName: "Joshie1")), CustomData(title: "Joyce", image: #imageLiteral(resourceName: "Joyce1")),  CustomData(title: "JoshieUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "JoyceUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "JasonName", image: #imageLiteral(resourceName: "JasonPeck")), CustomData(title: "RabbitaName", image: #imageLiteral(resourceName: "Marshmallow")), CustomData(title: "Jason", image: #imageLiteral(resourceName: "Jason1")), CustomData(title: "Rabbita", image: #imageLiteral(resourceName: "Rabbita1")), CustomData(title: "JasonUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "RabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "RedRabbitaName", image: #imageLiteral(resourceName: "Cherry")), CustomData(title: "BlueRabbitaName", image: #imageLiteral(resourceName: "Spencer")), CustomData(title: "RedRabbita", image: #imageLiteral(resourceName: "RedRabbita1")), CustomData(title: "BlueRabbita", image: #imageLiteral(resourceName: "BlueRabbita1")), CustomData(title: "RedRabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "BlueRabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "OrangeRabbitaName", image: #imageLiteral(resourceName: "Ginger")), CustomData(title: "PurpleRabbitaName", image: #imageLiteral(resourceName: "Tulip")), CustomData(title: "OrangeRabbita", image: #imageLiteral(resourceName: "OrangeRabbita1")), CustomData(title: "PurpleRabbita", image: #imageLiteral(resourceName: "PurpleRabbita1")), CustomData(title: "OrangeRabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "PurpleRabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "YellowRabbitaName", image: #imageLiteral(resourceName: "Katie")), CustomData(title: "PinkRabbitaName", image: #imageLiteral(resourceName: "Paris")), CustomData(title: "YellowRabbita", image: #imageLiteral(resourceName: "YellowRabbita1")), CustomData(title: "PinkRabbita", image: #imageLiteral(resourceName: "PinkRabbita1")), CustomData(title: "YellowRabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "PinkRabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "GreenRabbitaName", image: #imageLiteral(resourceName: "Lucky")), CustomData(title: "BabyBlueRabbitaName", image: #imageLiteral(resourceName: "Scooter")), CustomData(title: "GreenRabbita", image: #imageLiteral(resourceName: "GreenBunny-1")), CustomData(title: "BabyBlueRabbita", image: #imageLiteral(resourceName: "BabyBlueRabbita1")),  CustomData(title: "GreenRabbitaUse", image: #imageLiteral(resourceName: "Use1")), CustomData(title: "BabyBlueRabbitaUse", image: #imageLiteral(resourceName: "Use1"))]
+
+
     
     
     var soundOff = SKSpriteNode(), soundOn = SKSpriteNode()
@@ -71,46 +82,83 @@ class StoreScene: SKScene {
     override func didMove(to view: SKView) {
     // Get label node from scene and store it for use later
         inMovedToView = true
+        setUpStore()
+        resetRabbita()
+        firstSelectedCellName = UserDefaults().string(forKey: "bunnyType")
+        addPriceTags()
+        setUpStoreSong()
+        addNotifications()
+        makeCollectionView()
+    }
+    
+    private func addPriceTags(){
+        var counter = 0
+        let dataCount =  data.count - 1
+        for each in 0...dataCount{
+            if data[each].title.hasSuffix("Use"){
+                let thetitle =  data[each].title
+                let lastindex = thetitle.endIndex
+                let prefix = thetitle.index(lastindex, offsetBy: -4)
+                let bunnyName:String =  String(thetitle[thetitle.startIndex...prefix])
+                if UserDefaults().dictionary(forKey: "Owned")![bunnyName] as! Bool == false{
+                    if StorePrices.bunnyPriceList[bunnyName] == 400{
+                    data[each] = CustomData(title: bunnyName + "Price", image: #imageLiteral(resourceName: "PriceTag-1"))
+                    }
+                    else{data[each] = CustomData(title: bunnyName + "Price", image: #imageLiteral(resourceName: "PriceTag300"))}
+                }
+            }
+            counter += 1
+        }
+    }
+    
+
+    private func makeCollectionView(){
+        collectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cellWidth: CGFloat = 115
+        let doubleWidthDiff: CGFloat = 2 * cellWidth
+            let distIn = self.frame.width/4 - 57.5
+        let min = self.frame.width - doubleWidthDiff - (distIn * 2)
+        layout.minimumInteritemSpacing = min
+        layout.scrollDirection = .vertical
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+            cv.register(CustomCell.self, forCellWithReuseIdentifier: "cell")
+        return cv
+        }()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = UIColor.clear.withAlphaComponent(0)
+        self.view?.addSubview(collectionView)
+        let distDown = exit.position.y - exit.frame.height/2 - 10
+        let distUp = self.frame.height/2 - distDown
+        let yourCarrotsYPos = yourCarrots.position.y + yourCarrots.frame.height + 10
+        let bottomsUp = self.frame.height/2 + yourCarrotsYPos
+        let distIn = self.frame.width/4 - 57.5
+        collectionView.topAnchor.constraint(equalTo: self.view!.topAnchor, constant: distUp).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.view!.leadingAnchor, constant: distIn).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.view!.trailingAnchor, constant: -distIn).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.view!.bottomAnchor, constant: -bottomsUp).isActive = true
+    }
+    
+    private func setUpStore(){
         storeBackground = SKSpriteNode(imageNamed: "StoreBackground2")
         storeBackground.setScale(3.5)
         storeBackground.position = CGPoint.zero
         storeBackground.zPosition = 0
         self.addChild(storeBackground)
-        resetRabbita()
-        setUpStore()
-        select = SKSpriteNode(color: UIColor.white, size: CGSize(width: 130, height: 120))
-        select.alpha = 0.35
-        select.zPosition = 1
-        if bunnyList.contains(UserDefaults().string(forKey: "bunnyType")!){
-            selectPosition(animationType: UserDefaults().string(forKey: "bunnyType")!)
-        }
-        else{select.position = CGPoint(x: 2 * self.frame.width, y: 0); selectedBunny = nil}
-        self.addChild(select)
-        setPrices(list: bunnyList)
-        makeYourCarrots()
-        setUpStoreSong()
-        addNotifications()
-        inMovedToView = false
-    }
-    
-    
-    private func setUpStore(){
+        
         exit = SKLabelNode(text: "Exit")
         exit.fontName = "Noteworthy-Bold"
         exit.fontSize = 30
         exit.fontColor = UIColor.black
         exit.zPosition = 3
         exit.position = CGPoint(x: self.frame.width/2 - 50, y: self.frame.height/2 - 55)
-        setUpAnimals()
          self.addChild(exit)
         makeTheBorder(exit, color: UIColor.white, posit: CGPoint(x: self.frame.width/2 - 75, y: self.frame.height/2 - 55), scaleTo: 1, theborder: &exitBorder)
         exitBorder.zPosition = 2
-        
-        arrow = SKSpriteNode(imageNamed: "Arrow")
-        arrow.setScale(0.17)
-        arrow.position = CGPoint(x: 0, y: 5 * self.frame.height/10 - self.frame.height/20 - 11)
-        arrow.zPosition = 3
-        self.addChild(arrow)
+        makeYourCarrots()
     }
     
     private func setUpStoreSong(){
@@ -123,89 +171,7 @@ class StoreScene: SKScene {
         else{makeSoundOffButton()
         }
     }
-    private func setUpAnimals(){
-        let tenthHeight = self.frame.height/10; let tenthHeightMid = self.frame.height/20
-        let halfiwdthMid = self.frame.width/2 - self.frame.width/4
-        Bunny = SKSpriteNode(imageNamed: "Bunny1")
-        Bunny.name = "Bunny"
-        Bunny.zPosition = 3
-        Bunny.position = CGPoint(x: -halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
-        Bunny.size = CGSize(width: 93, height: 93)
-        self.addChild(Bunny)
-        bunnyList.append("Bunny")
-        bunnyDictionary["Bunny"] = Bunny
-        bunnyPriceList["Bunny"] = 0
-        
-        BeigeBunny = SKSpriteNode(imageNamed: "BeigeBunny1")
-        BeigeBunny.name = "BeigeBunny"
-        BeigeBunny.zPosition = 3
-        BeigeBunny.position = CGPoint(x: -halfiwdthMid, y: 2 * tenthHeight - tenthHeightMid)
-        BeigeBunny.size = CGSize(width: 120, height: 120)
-        self.addChild(BeigeBunny)
-        bunnyList.append("BeigeBunny")
-        bunnyDictionary["BeigeBunny"] = BeigeBunny
-        bunnyPriceList["BeigeBunny"] = 0
-        
-        BrownRabbit = SKSpriteNode(imageNamed: "BrownRabbit1")
-        BrownRabbit.name = "BrownRabbit"
-        BrownRabbit.zPosition = 3
-        BrownRabbit.position = CGPoint(x: -halfiwdthMid, y: -tenthHeightMid)
-        BrownRabbit.size = CGSize(width: 120, height: 120)
-        self.addChild(BrownRabbit)
-        bunnyList.append("BrownRabbit")
-        bunnyDictionary["BrownRabbit"] = BrownRabbit
-        bunnyPriceList["BrownRabbit"] = 500
-        
-        LightBrownBunny = SKSpriteNode(imageNamed: "LightBrownBunny1")
-        LightBrownBunny.name = "LightBrownBunny"
-        LightBrownBunny.zPosition = 3
-        LightBrownBunny.position = CGPoint(x: -halfiwdthMid, y: -2 * tenthHeight - tenthHeightMid)
-        LightBrownBunny.size = CGSize(width: 120, height: 120)
-        self.addChild(LightBrownBunny)
-        bunnyList.append("LightBrownBunny")
-        bunnyDictionary["LightBrownBunny"] = LightBrownBunny
-        bunnyPriceList["LightBrownBunny"] = 500
-        
-        DarkBrownBunny = SKSpriteNode(imageNamed: "DarkBrownBunny1")
-        DarkBrownBunny.name = "DarkBrownBunny"
-        DarkBrownBunny.zPosition = 3
-        DarkBrownBunny.position = CGPoint(x: halfiwdthMid, y: 4 * tenthHeight - tenthHeightMid)
-        DarkBrownBunny.size = CGSize(width: 120, height: 120)
-        self.addChild(DarkBrownBunny)
-        bunnyList.append("DarkBrownBunny")
-        bunnyDictionary["DarkBrownBunny"] = DarkBrownBunny
-        bunnyPriceList["DarkBrownBunny"] = 500
-        
-        GrayBunny = SKSpriteNode(imageNamed: "GrayBunny1")
-        GrayBunny.name = "GrayBunny"
-        GrayBunny.zPosition = 3
-        GrayBunny.position = CGPoint(x: halfiwdthMid, y: 2 * tenthHeight - tenthHeightMid)
-        GrayBunny.size = CGSize(width: 120, height: 120)
-        self.addChild(GrayBunny)
-        bunnyList.append("GrayBunny")
-        bunnyDictionary["GrayBunny"] = GrayBunny
-        bunnyPriceList["GrayBunny"] = 500
-        
-        BlackBunnyLight = SKSpriteNode(imageNamed: "BlackBunnyLight1")
-        BlackBunnyLight.name = "BlackBunnyLight"
-        BlackBunnyLight.zPosition = 3
-        BlackBunnyLight.position = CGPoint(x: halfiwdthMid, y: -tenthHeightMid)
-        BlackBunnyLight.size = CGSize(width: 120, height: 120)
-        self.addChild(BlackBunnyLight)
-        bunnyList.append("BlackBunnyLight")
-        bunnyDictionary["BlackBunnyLight"] = BlackBunnyLight
-        bunnyPriceList["BlackBunnyLight"] = 500
-        
-        SpottedBlackBunny = SKSpriteNode(imageNamed: "SpottedBlackBunny1")
-        SpottedBlackBunny.name = "SpottedBlackBunny"
-        SpottedBlackBunny.zPosition = 3
-        SpottedBlackBunny.position = CGPoint(x: halfiwdthMid, y: -2 * tenthHeight - tenthHeightMid)
-        SpottedBlackBunny.size = CGSize(width: 120, height: 120)
-        self.addChild(SpottedBlackBunny)
-        bunnyList.append("SpottedBlackBunny")
-        bunnyDictionary["SpottedBlackBunny"] = SpottedBlackBunny
-        bunnyPriceList["SpottedBlackBunny"] = 500
-    }
+    
     
     
     private func makeYourCarrots(){
@@ -274,156 +240,11 @@ class StoreScene: SKScene {
         else if soundPic.name == "SoundOn"{UserDefaults.standard.set(false, forKey: "SoundOffOrOn")}
     }
     
-    private func setPrices(list: [String]){
-        for each in list{
-            if UserDefaults().dictionary(forKey: "Owned")![each] as! Bool == true{
-                if bunnyDictionary[each] != selectedBunny{
-                createUseIcon(bunny: bunnyDictionary[each]!, justBoughtIt: false, num: nil)
-                }
-                else{createUsingTab(usePict: bunnyDictionary[each]!, num: 0)}
-            }
-            else{createPriceLabel(bunnyprice: bunnyDictionary[each]!, bunny: each)}
-        }
-    }
-    
-    private func createUseIcon(bunny: SKSpriteNode, justBoughtIt:Bool, num: Int?){
-        useSquare = SKSpriteNode(imageNamed: "Use")
-        useSquare.name = bunny.name
-        useSquare.size = CGSize(width: 130, height: 45)
-        useSquare.zPosition = 3
-        useSquare.position.y = bunny.position.y - self.frame.height / 10
-        useSquare.position.x = bunny.position.x
-        self.addChild(useSquare)
-        
-        if justBoughtIt{
-            if let pos = num{
-                useOrPriceList[pos] = useSquare
-                useOrPriceDict[useSquare] = selectedBunny
-            }
-        }
-        else{useOrPriceList.append(useSquare)
-            useOrPriceDict[useSquare] = bunny}
-        
-        use = SKLabelNode(text: "Use")
-        use.fontName = "Noteworthy-Bold"
-        use.fontSize = 30
-        use.zPosition = 1
-        use.position = CGPoint(x: 0, y: -11)
-        use.fontColor = UIColor(red: 237, green: 183, blue: 128)
-        useSquare.addChild(use)
-    }
-    
-    private func createPriceLabel(bunnyprice: SKSpriteNode, bunny: String){
-        priceTag = SKSpriteNode(imageNamed: "PriceTag")
-        priceTag.name = bunny
-        priceTag.size = CGSize(width: 130, height: 45)
-        priceTag.zPosition = 3
-        priceTag.position.y = bunnyprice.position.y - self.frame.height / 10
-        priceTag.position.x = bunnyprice.position.x
-        self.addChild(priceTag)
-        
-        let itsPrice:String = String(bunnyPriceList[bunny]!)
-        price = SKLabelNode(text: itsPrice)
-        price.position = CGPoint(x: -11, y: -11)
-        
-        price.fontName = "Noteworthy-Bold"
-        price.fontSize = 22
-        price.fontColor = UIColor(red: 252, green: 250, blue: 230)
-        price.zPosition = 1
-        priceTag.addChild(price)
-        
-        Carrot = SKSpriteNode(imageNamed: "Carrot")
-        Carrot.setScale(0.01)
-        Carrot.position.x = Carrot.frame.width/2 + price.position.x + price.frame.width/2 + 5
-        Carrot.position.y = 2
-        Carrot.zPosition = 1
-        priceTag.addChild(Carrot)
-        
-        useOrPriceList.append(priceTag)
-        useOrPriceDict[priceTag] = bunnyprice
-    }
-
-    
-    private func createUsingTab(usePict: SKSpriteNode, num: Int){
-        usingTab = SKSpriteNode(imageNamed: "Using")
-        if inMovedToView{usingTab.position.y = usePict.position.y - self.frame.height / 10
-            usingTab.position.x = usePict.position.x
-            useOrPriceDict[usingTab] = selectedBunny
-        }
-        else{
-        usingTab.position = usePict.position
-        usePict.removeFromParent()
-        useOrPriceDict[usingTab] = usePict
-        useOrPriceList[num] = usingTab
-        }
-        usingTab.zPosition = 3
-        usingTab.size = CGSize(width: 130, height: 45)
-        self.addChild(usingTab)
-        using = SKLabelNode(text: "Using")
-        using.fontName = "Noteworthy-Bold"
-        using.fontSize = 30
-        using.position = CGPoint(x: 0, y: -11)
-        using.zPosition = 1
-        using.fontColor = UIColor(red: 125, green: 7, blue: 11)
-        usingTab.addChild(using)
-    }
-    
-    
-    private func createSorryTab(){
-        sorryTab = SKSpriteNode(imageNamed: "SorrySquare")
-        sorryTab.position = CGPoint(x: 0, y: 0)
-        sorryTab.zPosition = 6
-        let wid = 1.5 * self.frame.width/2
-        sorryTab.size = CGSize(width: wid, height: wid)
-        self.addChild(sorryTab)
-
-        let difference = bunnyPriceList[selectedBunny!.name!]! - UserDefaults().integer(forKey: "CarrotCount")
-        let diffString: String! = String(difference)
-        sorryNum = SKLabelNode(text: diffString)
-        sorryNum.setScale(0.8)
-        sorryNum.fontName = "Noteworthy-Bold"
-        sorryNum.fontSize = 35
-        sorryNum.position = CGPoint(x: 0, y: 0)
-        sorryNum.zPosition = 7
-        sorryNum.fontColor = UIColor.white
-        sorryTab.addChild(sorryNum)
-        
-        let halfWid = wid/2
-        close = SKSpriteNode(imageNamed: "closeSorrySquare")
-        close.setScale(0.31)
-        close.position = CGPoint(x: halfWid - 45, y: halfWid - 35)
-        close.zPosition = 7
-        sorryTab.addChild(close)
-        
-        getMoreCarrots = SKSpriteNode(imageNamed: "GetMoreCarrots")
-        getMoreCarrots.setScale(0.25)
-        let halfheight = sorryTab.frame.height/2
-        getMoreCarrots.position = CGPoint(x: 0, y: sorryTab.position.y - halfheight + 59)
-        getMoreCarrots.zPosition = 7
-        sorryTab.addChild(getMoreCarrots)
-    }
-
-    
     
     private func resetRabbita(){
         if UserDefaults().string(forKey: "RabbitaColor") != "" {
             let string = UserDefaults().string(forKey: "RabbitaColor")! + "Rabbita"
             UserDefaults.standard.set(string, forKey: "bunnyType")
-        }
-    }
-    
-    private func selectPosition(animationType: String){
-        switch animationType{
-        case "Bunny": select.position = Bunny.position; selectedBunny = Bunny; bunnyBeingUsed = Bunny
-        case "BlackBunnyLight": select.position = BlackBunnyLight.position; selectedBunny = BlackBunnyLight; bunnyBeingUsed = BlackBunnyLight
-        case "BrownRabbit": select.position = BrownRabbit.position; selectedBunny = BrownRabbit; bunnyBeingUsed = BrownRabbit
-        case "BeigeBunny": select.position = BeigeBunny.position; selectedBunny = BeigeBunny; bunnyBeingUsed = BeigeBunny
-        case "SpottedBlackBunny": select.position = SpottedBlackBunny.position; selectedBunny = SpottedBlackBunny; bunnyBeingUsed = SpottedBlackBunny
-        case "Shiny": select.position = Shiny.position; selectedBunny = Shiny; bunnyBeingUsed = Shiny
-        case "LightBrownBunny": select.position = LightBrownBunny.position; selectedBunny = LightBrownBunny; bunnyBeingUsed = LightBrownBunny
-        case "DarkBrownBunny": select.position = DarkBrownBunny.position; selectedBunny = DarkBrownBunny; bunnyBeingUsed = DarkBrownBunny
-        case "GrayBunny": select.position = GrayBunny.position; selectedBunny = GrayBunny;bunnyBeingUsed = GrayBunny
-        default: break
         }
     }
     
@@ -448,7 +269,84 @@ class StoreScene: SKScene {
         }
     }
 
+    private func createSorryTab(name: String){
+        sorryTabClosed = false
+        sorryImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 2 * (self.frame.height - self.frame.height/3), height: 2 * (self.frame.height - self.frame.height/3)))
+        sorryImage.translatesAutoresizingMaskIntoConstraints = false
+        sorryImage.contentMode = .scaleToFill
+        sorryImage.clipsToBounds = true
+        sorryImage.image = #imageLiteral(resourceName: "SorrySquare")
+        sorryImage.isUserInteractionEnabled = true
+        
+        collectionView.addSubview(sorryImage)
+        let boxHeight = self.frame.height - (2 * self.frame.height/3)
+        let width = self.frame.width
+        let heightDifference = width - boxHeight
+        let halfHeightDiff = heightDifference / 2
+        sorryImage.topAnchor.constraint(equalTo: self.view!.topAnchor, constant: self.frame.height/3).isActive = true
+        sorryImage.leadingAnchor.constraint(equalTo: self.view!.leadingAnchor, constant: halfHeightDiff).isActive = true
+        sorryImage.trailingAnchor.constraint(equalTo: self.view!.trailingAnchor, constant: -halfHeightDiff).isActive = true
+        sorryImage.bottomAnchor.constraint(equalTo: self.view!.bottomAnchor, constant: -self.frame.height/3).isActive = true
+        
     
+        let priceDifference = UILabel(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        sorryImage.addSubview(priceDifference)
+        priceDifference.translatesAutoresizingMaskIntoConstraints = false
+        priceDifference.contentMode = .scaleToFill
+        priceDifference.clipsToBounds = true
+        priceDifference.isUserInteractionEnabled = true
+        let difference: String! = String(StorePrices.bunnyPriceList[name]! - UserDefaults().integer(forKey: "CarrotCount"))
+        priceDifference.text = difference
+        priceDifference.textColor = UIColor.white
+        priceDifference.font = UIFont(name: "Noteworthy-Bold", size: 30)
+        priceDifference.center = sorryImage.center
+        priceDifference.textAlignment = .center
+        priceDifference.backgroundColor = UIColor.clear.withAlphaComponent(0)
+        priceDifference.topAnchor.constraint(equalTo: self.view!.topAnchor, constant: self.frame.height/2 - 40).isActive = true
+        priceDifference.leadingAnchor.constraint(equalTo: self.view!.leadingAnchor, constant: self.frame.width/2 - 40).isActive = true
+        priceDifference.trailingAnchor.constraint(equalTo: self.view!.trailingAnchor, constant: -self.frame.width/2 + 40).isActive = true
+        priceDifference.bottomAnchor.constraint(equalTo: self.view!.bottomAnchor, constant: -self.frame.height/2 + 40).isActive = true
+        
+        closeButton = UIButton()
+        sorryImage.addSubview(closeButton)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.backgroundColor = UIColor.clear.withAlphaComponent(0)
+        closeButton.contentMode = .scaleToFill
+        closeButton.clipsToBounds = true
+        closeButton.setImage(UIImage(named: "closeSorrySquare"), for: .normal)
+        closeButton.adjustsImageWhenHighlighted = true
+        closeButton.addTarget(self, action: #selector(self.closeTheSquare), for: .touchUpInside)
+        closeButton.setTitle("closeButton", for: .normal)
+        closeButton.isUserInteractionEnabled = true
+        closeButton.topAnchor.constraint(equalTo: sorryImage.topAnchor, constant: 15).isActive = true
+        closeButton.widthAnchor.constraint(equalTo: sorryImage.widthAnchor, multiplier: 0.2).isActive = true
+        closeButton.trailingAnchor.constraint(equalTo: sorryImage.trailingAnchor, constant: -20).isActive = true
+        closeButton.heightAnchor.constraint(equalTo: sorryImage.heightAnchor, multiplier: 0.15).isActive = true
+    }
+    
+    @IBAction func closeTheSquare(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+            self.closeButton.removeTarget(self, action: #selector(self.closeTheSquare), for: .touchUpInside)
+            self.sorryImage.removeFromSuperview()
+            self.sorryTabClosed = true
+    })
+    }
+    
+    
+    private func hasRabbitaColor(name: String){
+        switch name {
+        case "RedRabbita": UserDefaults.standard.set("Red", forKey: "RabbitaColor")
+        case "OrangeRabbita": UserDefaults.standard.set("Orange", forKey: "RabbitaColor")
+        case "YellowRabbita": UserDefaults.standard.set("Yellow", forKey: "RabbitaColor")
+        case "GreenRabbita": UserDefaults.standard.set("Green", forKey: "RabbitaColor")
+        case "BlueRabbita": UserDefaults.standard.set("Blue", forKey: "RabbitaColor")
+        case "PurpleRabbita": UserDefaults.standard.set("Purple", forKey: "RabbitaColor")
+        case "PinkRabbita": UserDefaults.standard.set("Pink", forKey: "RabbitaColor")
+        case "BabyBlueRabbita": UserDefaults.standard.set("BabyBlue", forKey: "RabbitaColor")
+        default:
+            UserDefaults.standard.set("", forKey: "RabbitaColor")
+        }
+    }
         func touchDown(atPoint pos : CGPoint) {
             if let n = self.spinnyNode?.copy() as! SKShapeNode? {
                 n.position = pos
@@ -478,8 +376,10 @@ class StoreScene: SKScene {
         override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             for touch in touches{
                 let loca = touch.location(in: self)
+                //if collectionView.backgroundColor = UIColor.white
                 if sorryTabClosed{
                 if exit.contains(loca) {
+                    collectionView.removeFromSuperview()
                     removeNotifications()
                     theBlender(runActionOn: exit)
                     StoreSong.stoppedSongForMain = true
@@ -489,62 +389,6 @@ class StoreScene: SKScene {
                     let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                     self.scene?.view?.presentScene(mainGame!, transition: fadeAway)
                 }
-                if BeigeBunny.contains(loca){
-                    select.run(SKAction.move(to: BeigeBunny.position, duration: 0))
-                    selectedBunny = BeigeBunny
-                }
-                if Bunny.contains(loca){
-                    select.run(SKAction.move(to: Bunny.position, duration: 0))
-                    selectedBunny = Bunny
-                }
-                if BrownRabbit.contains(loca){
-                    select.run(SKAction.move(to: BrownRabbit.position, duration: 0))
-                    selectedBunny = BrownRabbit
-                }
-                if SpottedBlackBunny.contains(loca){
-                    select.run(SKAction.move(to: SpottedBlackBunny.position, duration: 0))
-                    selectedBunny = SpottedBlackBunny
-                }
-                if LightBrownBunny.contains(loca){
-                    select.run(SKAction.move(to: LightBrownBunny.position, duration: 0))
-                    selectedBunny = LightBrownBunny
-                }
-                if Shiny.contains(loca){
-                    select.run(SKAction.move(to: Shiny.position, duration: 0))
-                    selectedBunny = Shiny
-                }
-                if DarkBrownBunny.contains(loca){
-                    select.run(SKAction.move(to: DarkBrownBunny.position, duration: 0))
-                    selectedBunny = DarkBrownBunny
-                }
-                if BlackBunnyLight.contains(loca){
-                    select.run(SKAction.move(to: BlackBunnyLight.position, duration: 0))
-                    selectedBunny = BlackBunnyLight
-                }
-                if GrayBunny.contains(loca){
-                    select.run(SKAction.move(to: GrayBunny.position, duration: 0))
-                    selectedBunny = GrayBunny
-                }
-                if arrow.contains(loca){
-                    removeNotifications()
-                    let storeScene1 = StoreScene1(fileNamed: "StoreScene1")
-                    let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
-                    self.scene?.view?.presentScene(storeScene1!, transition: fadeAway)
-                }
-                }
-                if close.contains(loca){
-                    theBlender(runActionOn: close)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {self.sorryTabClosed = true; self.sorryTab.removeFromParent()})
-                }
-                if getMoreCarrots.contains(loca){
-                    removeNotifications()
-                    theBlender(runActionOn: getMoreCarrots)
-                    StoreSong.stoppedSongForMain = true
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "StopBackgroundSound"), object: self)
-                    StoreSong.storeSongPlaying = false
-                    let mainGame = MainGame(fileNamed: "MainGame")
-                    let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
-                    self.scene?.view?.presentScene(mainGame!, transition: fadeAway)
                 }
                 if let _ = soundOn.parent{
                     if soundOn.contains(loca){
@@ -565,61 +409,208 @@ class StoreScene: SKScene {
                         makeSoundOnButton()
                     }
                 }
-
-                var counter = -1
-                for each in useOrPriceList{
-                    counter += 1
-                    if each.contains(loca) && sorryTabClosed{
-                        if selectedBunny == useOrPriceDict[each]!{
-                            if UserDefaults().dictionary(forKey: "Owned")![each.name!] as! Bool == true{
-                                let oldBunny = bunnyBeingUsed
-                                if selectedBunny != bunnyBeingUsed{
-                                    let oldBunnyString = UserDefaults().string(forKey: "bunnyType")
-                                    UserDefaults.standard.set(useOrPriceDict[each]!.name!, forKey: "bunnyType")
-                                    bunnyBeingUsed = selectedBunny
-                                    if bunnyList.contains(oldBunnyString!){
-                                        createUseIcon(bunny: oldBunny!, justBoughtIt: false, num: nil)}
-                                        usingTab.removeFromParent()
-                                        createUsingTab(usePict: each, num: counter)
-                                        UserDefaults.standard.set("StoreScene", forKey: "StoreScene")
-                                        UserDefaults.standard.set("", forKey: "RabbitaColor")
-                                    }
-                                }
-                            else{
-                                if UserDefaults().integer(forKey: "CarrotCount") >= bunnyPriceList[each.name!]!{
-                                    each.removeFromParent()
-                                    createUseIcon(bunny: selectedBunny!, justBoughtIt: true, num: counter)
-                                    var dict = UserDefaults().dictionary(forKey: "Owned")
-                                    dict![each.name!] = true
-                                    UserDefaults.standard.set(dict, forKey: "Owned")
-                                    let carrotCount = UserDefaults().integer(forKey: "CarrotCount")
-                                    let price:Int! = bunnyPriceList[each.name!]
-                                    let difference = carrotCount - price
-                                    UserDefaults.standard.set(difference, forKey: "CarrotCount")
-                                    yourCarrots.removeFromParent()
-                                    blackLine.removeFromParent()
-                                    makeYourCarrots()
-                                }
-                                else{createSorryTab(); sorryTabClosed = false}
-                            }
-                        }
-                    }
-                }
             }
         }
    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
    }
         
-        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-            for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
         }
         
-        override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-            for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-        }
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+    }
         
-        override func update(_ currentTime: TimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
+        if !calledScrollThingy{
+            if Views.initialScrollDone{
+                let savedIndexPathRow: Int! = UserDefaults().integer(forKey: "IndexPathRow")
+                collectionView.scrollToItem(at: [0, savedIndexPathRow], at: UICollectionView.ScrollPosition.centeredVertically, animated: true)
+                calledScrollThingy = true
+                Views.initialScrollDone = false
+            }
         }
     }
+}
+
+
+extension StoreScene: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return data.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomCell
+        cell.data = self.data[indexPath.row]
+        let dataTitle = cell.data!.title
+        if dataTitle == firstSelectedCellName{
+            firstSelectedCellName = ""
+            selectedCellName = dataTitle
+            selectedCell = cell
+            usingCellName = dataTitle
+            selectedCellIndexPath = indexPath
+            usingIndexPath = [indexPath.section, indexPath.row + 2]
+            firstUsingPath = usingIndexPath
+        }
+        if firstUsingPath != nil{
+            if let cellInView = collectionView.cellForItem(at: firstUsingPath!){
+                let useCell = cellInView as! CustomCell
+                usingCell = useCell
+                firstUsingPath = nil
+                useCell.data = CustomData(title: "Using", image: #imageLiteral(resourceName: "Using-1"))
+            }
+        }
+        
+        if selectedCellName == dataTitle {selectedCell = cell; cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)}
+        else {cell.backgroundColor = UIColor.clear.withAlphaComponent(0)}
+       
+        if dataTitle.hasSuffix("Use"){
+            let lastindex = dataTitle.endIndex
+            let prefix = dataTitle.index(lastindex, offsetBy: -4)
+            let bunnyName:String = String(dataTitle[dataTitle.startIndex...prefix])
+            if bunnyName == usingCellName{
+                usingCell = cell
+                cell.data = CustomData(title: "Using", image: #imageLiteral(resourceName: "Using-1"))
+            }
+            else{cell.data = CustomData(title: bunnyName + "Use", image: #imageLiteral(resourceName: "Use1"))}
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout CollectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize{
+        if collectionCount < 4{
+            if collectionCount == 0 || collectionCount == 1{
+                collectionCount += 1
+                return CGSize(width: 115, height: 44.8)
+            }
+            else{collectionCount += 1
+                saveCollectionCount = collectionCount - 2
+                return CGSize(width: 115, height: 115)
+            }
+        }
+        else{
+         if saveCollectionCount == collectionCount || saveCollectionCount + 1 == collectionCount{
+            collectionCount += 1
+            return CGSize(width: 115, height: 115)
+         }
+        else{
+            collectionCount += 1
+            trackSavedCollectionCount = saveCollectionCount
+            if trackSavedCollectionCount + 6 == collectionCount{
+                saveCollectionCount = collectionCount}
+            return CGSize(width: 115, height: 44.8)
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if sorryTabClosed{
+        let cell = collectionView.cellForItem(at: indexPath) as! CustomCell
+        let dataTitle = cell.data!.title
+        if let _ = UserDefaults().dictionary(forKey: "Owned")![dataTitle] {
+            if selectedCell != nil{
+                    previouslySelecrtedCell = selectedCell
+                if let cellInView = collectionView.cellForItem(at: selectedCellIndexPath) {
+                    let oldCell = cellInView
+                    oldCell.backgroundColor = UIColor.clear.withAlphaComponent(0)
+                }
+                else if previouslySelecrtedCell != nil{
+                    previouslySelecrtedCell!.backgroundColor = UIColor.clear.withAlphaComponent(0)
+                }
+                selectedCellName = dataTitle
+                selectedCell = cell
+                selectedCellIndexPath = indexPath
+                cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
+            }
+        }
+        if dataTitle.hasSuffix("Use") && selectedCellName != nil{
+            let lastindex = dataTitle.endIndex
+            let prefix = dataTitle.index(lastindex, offsetBy: -4)
+            let bunnyName:String = String(dataTitle[dataTitle.startIndex...prefix])
+            if selectedCellName == bunnyName{
+                previousCell = usingCell
+            if let onScreen = collectionView.cellForItem(at: usingIndexPath){
+                   let preCell = onScreen as! CustomCell
+                    preCell.data = CustomData(title: usingCellName + "Use", image: #imageLiteral(resourceName: "Use1"))
+                }
+            else if usingCell != nil{
+                if usingCell.data!.title == "Using"{
+                    usingCell.data = CustomData(title: usingCellName + "Use", image: #imageLiteral(resourceName: "Use1"))
+                }
+            }
+                usingCellName = bunnyName
+                
+                usingIndexPath = indexPath
+                usingCell = cell
+                cell.data = CustomData(title: "Using", image: #imageLiteral(resourceName: "Using-1"))
+                UserDefaults.standard.set(bunnyName, forKey: "bunnyType")
+                hasRabbitaColor(name: selectedCellName)
+                UserDefaults.standard.set(indexPath.row, forKey: "IndexPathRow")
+            }
+        }
+        if dataTitle.hasSuffix("Price") && selectedCellName != nil{
+            let lastindex = dataTitle.endIndex
+            let prefix = dataTitle.index(lastindex, offsetBy: -6)
+            let bunnyName:String = String(dataTitle[dataTitle.startIndex...prefix])
+            if bunnyName == selectedCellName{
+                if UserDefaults().integer(forKey: "CarrotCount") >= StorePrices.bunnyPriceList[selectedCellName]!{
+                    cell.data = CustomData(title: selectedCellName + "Use", image: #imageLiteral(resourceName: "Use1"))
+                    self.data[indexPath.row] = cell.data!
+                    var carrotCount = UserDefaults().integer(forKey: "CarrotCount")
+                    carrotCount -= StorePrices.bunnyPriceList[selectedCellName]!
+                    UserDefaults.standard.set(carrotCount, forKey: "CarrotCount")
+                    yourCarrots.removeFromParent()
+                    blackLine.removeFromParent()
+                    makeYourCarrots()
+                    var dict = UserDefaults().dictionary(forKey: "Owned")
+                    dict![selectedCellName] = true
+                    UserDefaults.standard.set(dict, forKey: "Owned")
+                }
+                else{
+                    createSorryTab(name: selectedCellName)
+                }
+                }
+            }
+        }
+    }
+}
+
+
+class CustomCell: UICollectionViewCell{
+
+    fileprivate let imageView = UIImageView()
+    var data: CustomData? {
+        didSet{
+            guard let data = data else {return}
+            imageView.image = data.image
+        }
+    }
+
+    override init(frame: CGRect){
+        super.init(frame: frame)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleToFill
+        imageView.clipsToBounds = true
+        
+        contentView.addSubview(imageView)
+        imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+struct CustomData{
+    var title: String
+    var image: UIImage
+}
+
+
