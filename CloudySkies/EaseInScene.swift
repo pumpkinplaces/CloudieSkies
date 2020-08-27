@@ -29,7 +29,6 @@ class EaseInScene: SKScene {
             addChild(image)
         }
     
-    
         
         func touchDown(atPoint pos : CGPoint) {
             if let n = self.spinnyNode?.copy() as! SKShapeNode? {
