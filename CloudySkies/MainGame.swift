@@ -273,7 +273,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         listOfHopsFontColors.append(UIColor.black)
         savedSky = oldSky
         makeAllSkies()
-        emitRain()
+       // emitRain()
         makeLighteningBolts()
         if UserDefaults().bool(forKey: "SoundOffOrOn") == true{
             soundTrack = true
@@ -319,6 +319,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         upSwipe.direction = .up
         longPress = UILongPressGestureRecognizer(target: self, action: #selector(lighteningHold(_:)))
         longPress.minimumPressDuration = 0.3
+        longPress.allowableMovement = 20
         
         self.view!.addGestureRecognizer(tapScreen)
         self.view!.addGestureRecognizer(leftSwipe)
@@ -722,27 +723,6 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             cameToPause = false
             self.isPaused = true
         }
-    }
-    
-    
-    private func makeTheBorder(_ labelNode: SKLabelNode, color: UIColor, posit: CGPoint, scaleTo: CGFloat) -> SKShapeNode{
-        let theborder = SKShapeNode()
-        if let path =  labelNode.createBorderPathForText(labelNode.text!) {
-            DispatchQueue.global().async {
-                theborder.path = path
-            }
-            theborder.strokeColor = color
-            if labelNode == sorryTryAgain{
-                theborder.lineWidth = 11
-            }
-            else{
-                theborder.lineWidth = 8}
-            theborder.position = posit
-            theborder.zPosition = 2
-            theborder.setScale(scaleTo)
-            self.addChild(theborder)
-        }
-        return theborder
     }
     
     
@@ -1171,7 +1151,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         gameIsActive = false
         highestScore(score: scorenum)
         highestCombinedScore(highest: combinedScoreNum)
-         self.addChild(restart)
+        self.addChild(restart)
         makeSorryTryAgain()
         createTotalScoreLabel()
         createHighestScoreLabel()
@@ -1546,7 +1526,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     private func samePos(bunny: SKSpriteNode, cloudpos1: SKSpriteNode?,  cloudpos2: SKSpriteNode?, cloudpos3: SKSpriteNode?) -> Bool{
         if let onCloud1 = cloudpos1{
-            if bunny.position.x > onCloud1.position.x - 50 + (xdistance) && bunny.position.x < onCloud1.position.x + 50 + (xdistance) && bunny.position.y > onCloud1.position.y - 40 + ydistance && bunny.position.y < onCloud1.position.y + 40 + ydistance {
+            if bunny.position.x > onCloud1.position.x - 35 + (xdistance) && bunny.position.x < onCloud1.position.x + 35 + (xdistance) && bunny.position.y > onCloud1.position.y - 35 + ydistance && bunny.position.y < onCloud1.position.y + 35 + ydistance {
                 isOnCloud = cloudpos1
                 return true}
             else{
@@ -1556,7 +1536,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             }
         }
             else if let onCloud2 = cloudpos2{
-              if bunny.position.x > onCloud2.position.x - 50 + (xdistance) && bunny.position.x < onCloud2.position.x + 50 + (xdistance) && bunny.position.y > onCloud2.position.y - 40 + ydistance && bunny.position.y < onCloud2.position.y + 40 + ydistance {
+              if bunny.position.x > onCloud2.position.x - 35 + (xdistance) && bunny.position.x < onCloud2.position.x + 35 + (xdistance) && bunny.position.y > onCloud2.position.y - 35 + ydistance && bunny.position.y < onCloud2.position.y + 35 + ydistance {
                 isOnCloud = cloudpos2
                    return true}
                 else{
@@ -1566,7 +1546,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 }
             }
             else if let onCloud3 = cloudpos3{
-               if bunny.position.x > onCloud3.position.x - 50 + (xdistance) && bunny.position.x < onCloud3.position.x + 50 + (xdistance) && bunny.position.y > onCloud3.position.y - 40 + ydistance && bunny.position.y < onCloud3.position.y + 40 + ydistance {
+               if bunny.position.x > onCloud3.position.x - 35 + (xdistance) && bunny.position.x < onCloud3.position.x + 35 + (xdistance) && bunny.position.y > onCloud3.position.y - 35 + ydistance && bunny.position.y < onCloud3.position.y + 35 + ydistance {
                 isOnCloud = cloudpos3
                    return true
                }
@@ -1767,10 +1747,10 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func makeItRain(){
         rainFadingOut = false
         makeRainSound()
-        DispatchQueue.global().async {
-            self.rainEmitter!.isPaused = false
-            self.rainEmitter!.isHidden = false
-        }
+        rainEmitter = SKEmitterNode(fileNamed: "Rain")
+        rainEmitter!.zPosition = 15
+        rainEmitter!.position = CGPoint(x: 0, y: size.height)
+        self.addChild(rainEmitter!)
         self.listOfSkies[self.savedSky].run(SKAction.colorize(with: UIColor.systemGray, colorBlendFactor: 0.7, duration: 1))
         let randInt = Int.random(in: 15...30)
         let lightItUp: Double! = Double(randInt)
@@ -1779,19 +1759,16 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     
     private func stopTheRain(){
-        DispatchQueue.global().async {
-            rainSound?.stop()
-            self.rainFadingOut = true
-            self.willMakeRain = false
-            self.rainEmitter!.isHidden = true
-            self.rainEmitter!.isPaused = true
-        }
+        rainSound?.stop()
+        self.rainFadingOut = true
+        self.willMakeRain = false
+        self.rainEmitter!.removeFromParent()
     }
     
 
     private func willItRain(){
         if scorenum == 0{
-            saveRain = Int.random(in: 50...85)
+            saveRain = Int.random(in: 5...10)
         }
         else{
             if scorenum == saveRain || scorenum == saveRain + 1{
@@ -2194,7 +2171,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     guard birdTap == false && lighteningHoldIt == false else { return}
         upOrDownSwipe = false
         if firsttouch == true && gestureRecognizer.state == .ended {
-            if onACloud == true && Bunny.hasActions() == false{
+            if onACloud == true {
                 if inRange(Bunny.parent!){
                     let thispos = countTheTriples[savepos]!!.position.y
                     let thatpos = countTheTriples[savepos+1]!!.position.y
@@ -2226,7 +2203,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         gestureRecognizer.isEnabled = true
         if firsttouch == true{
             if gestureRecognizer.state == .ended {
-                if onACloud == true && Bunny.hasActions() == false {
+                if onACloud == true {
                     switch gestureRecognizer.direction{
                     case .left:
                         if inRange(Bunny.parent!) && bunnyInRangeLeft(Bunny){
@@ -2364,9 +2341,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 checkBunnyCarrotPos()
                 carrotCounter = true
             }
-            if !Bunny.hasActions(){
-                score!.text = "Hops: " + String(scorenum)
-            }
+            score!.text = "Hops: " + String(scorenum)
         }
         else {onACloud = false
             if !Bunny.hasActions() {
@@ -2386,7 +2361,6 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
-                   
         let convertedBunnyPos = self.convert(Bunny.position, from: Bunny.parent!)
         if convertedBunnyPos.y < -self.frame.height / 2 + Bunny.frame.height / 2{
             if resetCalled == false{
