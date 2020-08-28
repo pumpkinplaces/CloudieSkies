@@ -185,7 +185,7 @@ class PlayScene: SKScene, UICollectionViewDelegate {
         website!.fontName = "Noteworthy-Bold"
         website!.fontColor = UIColor(red: 255, green: 221, blue: 115)
         website!.position = CGPoint(x: 0, y: -135)
-        website!.zPosition = 5
+        website!.zPosition = 1
         contactLearnMore!.addChild(website!)
         
         close = SKSpriteNode(imageNamed: "closeContactInfo")
@@ -420,8 +420,8 @@ class PlayScene: SKScene, UICollectionViewDelegate {
             if let website = website{
                 if website.contains(tab){
                     theBlender(runActionOn: website)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {let url = URL(string: "http://airdares.net")!
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)})
+                    let url = URL(string: "http://airdares.net")!
+                    UIApplication.shared.open(url)
                 }
             }
             if let email = email{
