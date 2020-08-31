@@ -64,7 +64,7 @@ class StoreSong{
 
 
 class StorePrices{
-    static var bunnyPriceList:[String:Int] = ["Bunny": 400, "BeigeBunny": 400, "BrownRabbit": 400, "LightBrownBunny": 400, "DarkBrownBunny": 400, "GrayBunny": 300, "BlackBunnyLight": 400, "SpottedBlackBunny": 400, "Rabbita": 300, "RedRabbita": 300, "OrangeRabbita": 300, "YellowRabbita": 300, "GreenRabbita": 300, "BlueRabbita": 300, "PurpleRabbita": 300, "PinkRabbita": 300, "BabyBlueRabbita": 300, "Joyce": 400, "Joshie": 400, "Jason": 400]
+    static var bunnyPriceList:[String:Int] = ["Bunny": 400, "BeigeBunny": 400, "BrownRabbit": 400, "LightBrownBunny": 400, "DarkBrownBunny": 400, "GrayBunny": 300, "BlackBunnyLight": 400, "SpottedBlackBunny": 400, "Rabbita": 300, "RedRabbita": 300, "OrangeRabbita": 300, "YellowRabbita": 300, "GreenRabbita": 300, "BlueRabbita": 300, "PurpleRabbita": 300, "PinkRabbita": 300, "BabyBlueRabbita": 300, "Joyce": 4000, "Joshie": 400, "Jason": 400, "Jackie": 400, "PatchBunny": 400]
 }
 
 
@@ -77,5 +77,9 @@ class GameScore{
 
 class Views{
     static var initialScrollDone = false
+}
+
+class Ads{
+    static var adTimer = 0
 }
 
