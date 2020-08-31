@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>653577364014-oglrpr588ujjt2h8mk54l8r2ud2u8bqp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.653577364014-oglrpr588ujjt2h8mk54l8r2ud2u8bqp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDXawRs0PhlRZUZBhDbD7zUCgj5bFDNHdY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>653577364014</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>My-Home.CloudySkies</string>
+	<key>PROJECT_ID</key>
+	<string>cloudie-skies</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cloudie-skies.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:653577364014:ios:fdb91e83eb3089061ff5bf</string>
+	<key>DATABASE_URL</key>
+	<string>https://cloudie-skies.firebaseio.com</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-9087912874155205~1830063246</string>
+</dict>
+</plist>
