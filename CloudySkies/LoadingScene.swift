@@ -24,6 +24,8 @@ class AllTextureAtlases{
     static var JoyceTextureAtlas = SKTextureAtlas(named: "Joyce")
     static var BirdTextureAtlas = SKTextureAtlas(named: "BirdAnimation")
     static var JasonTextureAtlas = SKTextureAtlas(named: "Jason")
+    static var JackieTextureAtlas = SKTextureAtlas(named: "Jackie")
+    static var PatchBunnyTextureAtlas = SKTextureAtlas(named: "PatchBunny")
     
     static var textureDict:[String: SKTextureAtlas] = [:]
 }
@@ -58,6 +60,8 @@ class LoadingScene: SKScene {
         AllTextureAtlases.textureDict["Joyce"] = AllTextureAtlases.JoyceTextureAtlas
         AllTextureAtlases.textureDict["Joshie"] = AllTextureAtlases.JoshieTextureAtlas
         AllTextureAtlases.textureDict["Jason"] = AllTextureAtlases.JasonTextureAtlas
+        AllTextureAtlases.textureDict["Jackie"] = AllTextureAtlases.JackieTextureAtlas
+        AllTextureAtlases.textureDict["PatchBunny"] = AllTextureAtlases.PatchBunnyTextureAtlas
     
         textureAtlasList.append(AllTextureAtlases.RabbitaTextureAtlas)
         textureAtlasList.append(AllTextureAtlases.BunnyTextureAtlas)
@@ -70,7 +74,10 @@ class LoadingScene: SKScene {
         textureAtlasList.append(AllTextureAtlases.BrownRabbitTextureAtlas)
         textureAtlasList.append(AllTextureAtlases.JoyceTextureAtlas)
         textureAtlasList.append(AllTextureAtlases.JoshieTextureAtlas)
+        textureAtlasList.append(AllTextureAtlases.JasonTextureAtlas)
         textureAtlasList.append(AllTextureAtlases.BirdTextureAtlas)
+        textureAtlasList.append(AllTextureAtlases.JackieTextureAtlas)
+        textureAtlasList.append(AllTextureAtlases.PatchBunnyTextureAtlas)
         SKTextureAtlas.preloadTextureAtlases(textureAtlasList, withCompletionHandler: {self.isLoading = false})
     }
         
