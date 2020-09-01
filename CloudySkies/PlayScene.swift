@@ -104,37 +104,37 @@ class PlayScene: SKScene, UICollectionViewDelegate {
         startPlaying.fontName = "Noteworthy-Bold"
         startPlaying.zPosition = 3
     
-        background = SKSpriteNode(imageNamed: "BlueSky")
+        background = SKSpriteNode(texture: BunnyTexts.BlueSky)
         background.position = CGPoint.zero
         background.setScale(3.5)
         background.zPosition = 0
         
-        Cloud4 = SKSpriteNode(imageNamed: "Cloud4")
+        Cloud4 = SKSpriteNode(texture: BunnyTexts.CloudFour)
         Cloud4.position = CGPoint(x: 81, y: self.frame.height/2 - 102)
         Cloud4.zPosition = 1
         Cloud4.setScale(0.15)
         
-        Cloud5 = SKSpriteNode(imageNamed: "Cloud")
+        Cloud5 = SKSpriteNode(texture: BunnyTexts.Cloud)
         Cloud5.position = CGPoint(x: -self.frame.width/2 + 70, y: 0)
         Cloud5.setScale(0.12)
         Cloud5.zPosition = 1
         
-        Cloud6 = SKSpriteNode(imageNamed: "Cloud3")
+        Cloud6 = SKSpriteNode(texture: BunnyTexts.CloudThree)
         Cloud6.position = CGPoint(x: 80, y: -57)
         Cloud6.setScale(0.135)
         Cloud6.zPosition = 1
         
-        Cloud7 = SKSpriteNode(imageNamed: "Cloud2")
+        Cloud7 = SKSpriteNode(texture: BunnyTexts.CloudTwo)
         Cloud7.position = CGPoint(x: -self.frame.width/2 + 106, y: self.frame.height/4 + 82)
         Cloud7.setScale(0.175)
         Cloud7.zPosition = 1
         
-        Cloud8 = SKSpriteNode(imageNamed: "Cloud")
+        Cloud8 = SKSpriteNode(texture: BunnyTexts.Cloud)
         Cloud8.position = CGPoint(x: self.frame.width/2 - 99, y: -self.frame.height/2 + 90)
         Cloud8.setScale(0.12710)
         Cloud8.zPosition = 1
         
-        Cloud9 = SKSpriteNode(imageNamed: "Cloud2")
+        Cloud9 = SKSpriteNode(texture: BunnyTexts.CloudTwo)
         Cloud9.position = CGPoint(x: -self.frame.width/2 + 88, y: -self.frame.height/2 + 79)
         Cloud9.zPosition = 1
         Cloud9.setScale(0.2)
@@ -145,12 +145,12 @@ class PlayScene: SKScene, UICollectionViewDelegate {
         more.zPosition = 2
         self.addChild(more)
         
-        Cloud10 = SKSpriteNode(imageNamed: "Cloud2")
+        Cloud10 = SKSpriteNode(texture: BunnyTexts.CloudTwo)
         Cloud10.position = CGPoint(x: self.frame.width/2 - 35, y: self.frame.width/2 - 44)
         Cloud10.setScale(0.1)
         Cloud10.zPosition = 1
         
-        Cloud12 = SKSpriteNode(imageNamed: "Cloud3")
+        Cloud12 = SKSpriteNode(texture: BunnyTexts.CloudThree)
         Cloud12.position = CGPoint(x: 0, y: -self.frame.height/2 + 100)
         Cloud12.setScale(0.119)
         Cloud12.zPosition = 1
@@ -398,11 +398,11 @@ class PlayScene: SKScene, UICollectionViewDelegate {
 
             if more.contains(tab) {
                 theBlender(runActionOn: more)
-                if collectionView == nil{
+                if collectionView == nil && contactLearnMore == nil && close == nil{
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.makeMore()})
                 }
                 else{
-                    if collectionView.superview == nil{
+                    if collectionView.superview == nil && contactLearnMore == nil && close == nil{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {self.makeMore()})
                     }
                 }
@@ -410,9 +410,9 @@ class PlayScene: SKScene, UICollectionViewDelegate {
             if let close = close{
                 if close.contains(tab){
                     theBlender(runActionOn: close)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {close.run(SKAction.removeFromParent())
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.22, execute: {close.run(SKAction.removeFromParent(), completion: {self.close = nil})
                         if let contactlearnmore = self.contactLearnMore{
-                            contactlearnmore.run(SKAction.removeFromParent())}
+                            contactlearnmore.run(SKAction.removeFromParent(), completion: {self.contactLearnMore = nil})}
                     })
                 }
             }
