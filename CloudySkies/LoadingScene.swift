@@ -42,7 +42,7 @@ class LoadingScene: SKScene {
         
     override func didMove(to view: SKView) {
     // Get label node from scene and store it for use later
-        image = SKSpriteNode(imageNamed: "BrightBlueSky")
+        image = SKSpriteNode(texture: BunnyTexts.Midnight)
         image.setScale(3.5)
         image.position = CGPoint.zero
         image.zPosition = 1
@@ -128,11 +128,10 @@ class LoadingScene: SKScene {
             // Called before each frame is rendered
             if !isLoading {
                 isLoading = true
-                let easeInScene = EaseInScene(fileNamed: "EaseInScene")
-                easeInScene!.previousScene = self
+                let playScene = PlayScene(fileNamed: "PlayScene")
                 let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                 DispatchQueue.global().async {
-                    self.scene?.view?.presentScene(easeInScene!, transition: fadeAway)
+                    self.scene?.view?.presentScene(playScene!, transition: fadeAway)
                 }
             }
         }
