@@ -11,24 +11,31 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 import GameKit
+import GoogleMobileAds
 
-class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINavigationControllerDelegate, GKLocalPlayerListener {
+class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINavigationControllerDelegate, GKLocalPlayerListener, GADInterstitialDelegate {
+    
+    var mainGameScene = GameScene()
+    var storeSong: AVAudioPlayer?
+    var initialScrollDone = Bool()
+    var interstitialAd: GADInterstitial!
+    
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil)
     }
     
-     var mainGameScene = GameScene()
-     var storeSong: AVAudioPlayer?
-     var initialScrollDone = Bool()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        interstitialAd = createAndLoadInterstitial()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.playBackGroundSound(_:)), name: NSNotification.Name(rawValue: "PlayBackgroundSound"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.stopBackGroundSound(_:)), name: NSNotification.Name(rawValue: "StopBackgroundSound"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.pauseBackGroundSound(_:)), name: NSNotification.Name(rawValue: "PauseBackgroundSound"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.resumeBackGroundSound(_:)), name: NSNotification.Name(rawValue: "ResumeBackGroundSound"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.leaderboard(_:)), name:  NSNotification.Name(rawValue: "GameCenterLeaderBoard"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.playAd(_:)), name: NSNotification.Name(rawValue: "AdPlayer"), object: nil)
         //createGradientLayer()
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -48,6 +55,18 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
             view.showsPhysics = false
         }
     }
+    private func createAndLoadInterstitial() -> GADInterstitial{
+        interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9087912874155205/4047364170")
+        interstitialAd.delegate = self
+        let request = GADRequest()
+        interstitialAd.load(request)
+        return interstitialAd
+    }
+    
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+      interstitialAd = createAndLoadInterstitial()
+    }
+    
 
     private func authenticatePlayer(){
         let localPlayer = GKLocalPlayer.local
@@ -101,6 +120,13 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
         vc.viewState = .leaderboards
         vc.leaderboardIdentifier = "e4r8i9m1k2"
         present(vc, animated: true, completion: nil)
+    }
+    
+    
+    @objc func playAd(_ notification: Notification){
+        if interstitialAd.isReady {
+          interstitialAd.present(fromRootViewController: self)
+        }
     }
     
     func saveHighScore(thescore: Int){
