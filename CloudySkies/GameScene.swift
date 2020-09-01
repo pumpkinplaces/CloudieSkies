@@ -25,6 +25,7 @@ class GameScene: SKScene {
         firstLaunchSettings()
         firstUpdateSettings()
         secondUpdateSettings()
+        thirdUpdateSettings()
         self.backgroundColor = UIColor.black
         image = SKSpriteNode(imageNamed: "AirDares")
         image.position = CGPoint(x: 0, y: 0)
@@ -68,7 +69,33 @@ class GameScene: SKScene {
         }
     }
     
+    
+    private func thirdUpdateSettings(){
+        if UserDefaults().bool(forKey: "ThirdUpdate") == false{
+            var dict = UserDefaults().dictionary(forKey: "Owned")
+            dict!["Jackie"] = false
+            dict!["PatchBunny"] = false
+            UserDefaults.standard.set(dict, forKey: "Owned")
+            
+            UserDefaults.standard.set(0, forKey: "UpSwipesRight")
+            UserDefaults.standard.set(0, forKey: "UpSwipesLeft")
+            UserDefaults.standard.set(0, forKey: "LeftSwipes")
+            UserDefaults.standard.set(0, forKey: "RightSwipes")
+            UserDefaults.standard.set(0, forKey: "Taps")
+            UserDefaults.standard.set(false, forKey: "AllSwipes")
+            
+            UserDefaults.standard.set(0, forKey: "LightningHoldCount")
+            UserDefaults.standard.set(0, forKey: "BirdTapCount")
+            UserDefaults.standard.set(true, forKey: "ThirdUpdate")
+        }
+    }
+    
+    
     private func loadEverything(){
+        BunnyTexts.picList.append(BunnyTexts.Cloud)
+        BunnyTexts.picList.append(BunnyTexts.CloudTwo)
+        BunnyTexts.picList.append(BunnyTexts.CloudThree)
+        BunnyTexts.picList.append(BunnyTexts.CloudFour)
         BunnyTexts.picList.append(BunnyTexts.Cloud1)
         BunnyTexts.picList.append(BunnyTexts.Cloud2)
         BunnyTexts.picList.append(BunnyTexts.Cloud3)
@@ -152,9 +179,12 @@ class GameScene: SKScene {
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
             if isLoading == false{
-                let intro = IntroScene(fileNamed: "PlayScene")
+                isLoading = true
+                let intro = IntroScene(fileNamed: "IntroScene")
                 let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
-                self.scene?.view?.presentScene(intro!, transition: fadeAway)
+                DispatchQueue.global().async {
+                    self.scene?.view?.presentScene(intro!, transition: fadeAway)
+                }
             }
         }
     }
