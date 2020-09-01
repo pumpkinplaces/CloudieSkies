@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "SwipeUpSign.png",
+      "filename" : "SwipeRight.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "SwipeUpSign@2x.png",
+      "filename" : "SwipeRight@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "SwipeUpSign@3x.png",
+      "filename" : "SwipeRight@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
