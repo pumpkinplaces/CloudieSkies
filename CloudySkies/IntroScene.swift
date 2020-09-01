@@ -22,6 +22,7 @@ class IntroScene: SKScene {
         var Cloud = SKSpriteNode()
         var background2 = SKSpriteNode()
         var startScreenDone = false
+        var isChangingScene = false
         
         
         override func didMove(to view: SKView) {
@@ -58,7 +59,8 @@ class IntroScene: SKScene {
             let itllFade = SKAction.fadeIn(withDuration: 1.5)
             
             let moveDown3 = SKAction.moveTo(y: -self.frame.height/2 - 200, duration: 1.7)
-            let sequ2 =  SKAction.sequence([itllFade, waitForIt, moveDown3])
+            let remove = SKAction.removeFromParent()
+            let sequ2 =  SKAction.sequence([itllFade, waitForIt, moveDown3, remove])
             label!.run(sequ2)
 
             Cloud = SKSpriteNode(imageNamed: "Cloud")
@@ -112,10 +114,15 @@ class IntroScene: SKScene {
         
         override func update(_ currentTime: TimeInterval) {
             // Called before each frame is rendered
-            if label!.hasActions() == false {
-                let loadingScene = LoadingScene(fileNamed: "LoadingScene")
-                let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
-                self.scene?.view?.presentScene(loadingScene!, transition: fadeAway)
+            if let label = label{
+                if label.position.y < -size.height/2 - label.frame.height/2 && isChangingScene == false{
+                    isChangingScene = true
+                    let loadingScene = LoadingScene(fileNamed: "LoadingScene")
+                    let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
+                    DispatchQueue.global().async {
+                        self.scene?.view?.presentScene(loadingScene!, transition: fadeAway)
+                    }
+                }
             }
         }
     }
