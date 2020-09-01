@@ -1,5 +1,3 @@
-//FINAL VERSION
-//Best Version
 //
 //  MainGame.swift
 //  CloudySkies
@@ -193,6 +191,26 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     var bunnyIsProtected = false
     var rainSoundPaused = false
     
+    var tapForwardSign: SKSpriteNode?
+    var tapBird: SKSpriteNode?
+    var holdLightning: SKSpriteNode?
+    var swipeUpSign: SKSpriteNode?
+    var swipeRightSign: SKSpriteNode?
+    var swipeLeftSign: SKSpriteNode?
+    var toldDirection = false
+    
+    var tapCounter = 0
+    var upSwipeRightCounter = 0
+    var upSwipeLeftCounter = 0
+    var leftSwipeCounter = 0
+    var rightSwipeCounter = 0
+    var shouldTrackBird = true
+    var shouldTrackLightning = true
+    var expectedDirection = ""
+    var rainCheckDispatchCalled = false
+    var allSwipes = true
+
+    
     override func didMove(to view: SKView) {
         // Get label node from scene and store it for use later
         createOurScene()
@@ -269,11 +287,19 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         blueSky.zPosition = 0
         oldSky = listOfSkies.count
         listOfSkies.append(blueSky)
+        
         listOfCloudColors.append(UIColor.white)
         listOfHopsFontColors.append(UIColor.black)
         savedSky = oldSky
         makeAllSkies()
-       // emitRain()
+        if UserDefaults().integer(forKey: "BirdTapCount") > 4{
+            shouldTrackBird = false
+        }
+        if UserDefaults().integer(forKey: "LightningHoldCount") > 4{
+            shouldTrackLightning = false
+        }
+        if UserDefaults().bool(forKey: "AllSwipes") == false{allSwipes = false}
+        else{allSwipes = true}
         makeLighteningBolts()
         if UserDefaults().bool(forKey: "SoundOffOrOn") == true{
             soundTrack = true
@@ -349,7 +375,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         switch bunnytype{
         case "LightBrownBunny", "DarkBrownBunny", "Joyce", "Rabbita":
              Bunny.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: Bunny.frame.width * 0.5, height: Bunny.frame.height * 0.03), center: CGPoint(x: Bunny.position.x, y: Bunny.position.y - 11))
-        case "GrayBunny":
+        case "GrayBunny", "Jackie", "PatchBunny":
             Bunny.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: Bunny.frame.width * 0.5, height: Bunny.frame.height * 0.03), center: CGPoint(x: Bunny.position.x, y: Bunny.position.y - 22))
         case "Joshie", "SpottedBlackBunny", "BlackBunnyLight":
             Bunny.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: Bunny.frame.width * 0.5, height: Bunny.frame.height * 0.03), center: CGPoint(x: Bunny.position.x, y: Bunny.position.y - 17))
@@ -373,9 +399,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 Bunny.size = CGSize(width: 135, height: 135)}
         case "DarkBrownBunny", "LightBrownBunny", "GrayBunny":
             Bunny.size = CGSize(width: 130, height: 130)
-        case "BlackBunny", "SpottedBlackBunny", "BlackBunnyLight", "Joyce", "Joshie": Bunny.size = CGSize(width: 140, height: 140)
+        case "BlackBunny", "SpottedBlackBunny", "BlackBunnyLight", "Joyce", "Joshie", "PatchBunny", "Jackie": Bunny.size = CGSize(width: 140, height: 140)
         case "Jason":
-            Bunny.size = CGSize(width: 140, height: 140)
+            Bunny.size = CGSize(width: 145, height: 145)
         default: break
         }
     }
@@ -417,7 +443,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         switch bunnytype {
             case "Bunny":
                 smallBunnyImage!.size = CGSize(width: 55, height: 55)
-            case "BeigeBunny", "BrownRabbit", "Shiny", "Rabbita", "Joshie", "Joyce", "Jason":
+            case "BeigeBunny", "BrownRabbit", "Shiny", "Rabbita", "Joshie", "Joyce", "Jason", "PatchBunny", "Jackie":
                 smallBunnyImage!.size = CGSize(width: 75, height: 75)
             case "DarkBrownBunny", "LightBrownBunny", "GrayBunny":
                 smallBunnyImage!.size = CGSize(width: 71, height: 71)
@@ -725,6 +751,167 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    
+    private func removeSwipeTexts(){
+        tapForwardSign?.removeFromParent()
+        swipeUpSign?.removeFromParent()
+        swipeRightSign?.removeFromParent()
+        swipeLeftSign?.removeFromParent()
+    }
+       
+       private func tapSign(){
+           removeSwipeTexts()
+           let wait = SKAction.wait(forDuration: 1.5)
+           let fade2 = SKAction.fadeOut(withDuration: 0.5)
+           let seq = SKAction.sequence([wait, fade2])
+           tapForwardSign = SKSpriteNode(imageNamed: "TapTheScreen")
+           tapForwardSign!.zPosition = 7
+           tapForwardSign!.setScale(2)
+           tapForwardSign!.position = CGPoint(x: 0, y: carrots.position.y - carrots.frame.height/2 - tapForwardSign!.frame.height/2 - 10)
+           self.addChild(tapForwardSign!)
+           tapForwardSign!.run(seq, completion: {self.tapForwardSign = nil})
+       }
+       
+       private func swipeUpMessage(){
+           removeSwipeTexts()
+           let wait = SKAction.wait(forDuration: 1.5)
+           let fade2 = SKAction.fadeOut(withDuration: 0.5)
+           let seq = SKAction.sequence([wait, fade2])
+           swipeUpSign = SKSpriteNode(imageNamed: "SwipeUp")
+           swipeUpSign!.zPosition = 7
+           swipeUpSign!.setScale(2)
+           swipeUpSign!.position = CGPoint(x: 0, y: carrots.position.y - carrots.frame.height/2 - swipeUpSign!.frame.height/2 - 10)
+           self.addChild(swipeUpSign!)
+           swipeUpSign!.run(seq, completion: {self.swipeUpSign = nil})
+       }
+       
+    private func makeSwipeUpSign(){
+        removeSwipeTexts()
+        let wait = SKAction.wait(forDuration: 1.5)
+        let fade2 = SKAction.fadeOut(withDuration: 0.5)
+        let seq = SKAction.sequence([wait, fade2])
+        swipeUpSign = SKSpriteNode(imageNamed: "SwipeUp")
+        swipeUpSign!.zPosition = 7
+        swipeUpSign!.setScale(2)
+        swipeUpSign!.position = CGPoint(x: 0, y: carrots.position.y - carrots.frame.height/2 - swipeUpSign!.frame.height/2 - 10)
+        self.addChild(swipeUpSign!)
+        swipeUpSign!.run(seq, completion: {self.swipeUpSign = nil})
+    }
+    
+    
+    private func makeSwipeLeftSign(){
+        removeSwipeTexts()
+        let wait = SKAction.wait(forDuration: 1.5)
+        let fade2 = SKAction.fadeOut(withDuration: 0.5)
+        let seq = SKAction.sequence([wait, fade2])
+        swipeLeftSign = SKSpriteNode(imageNamed: "SwipeLeft")
+        swipeLeftSign!.zPosition = 7
+        swipeLeftSign!.setScale(2)
+        swipeLeftSign!.position = CGPoint(x: 0, y: carrots.position.y - carrots.frame.height/2 - swipeLeftSign!.frame.height/2 - 10)
+        self.addChild(swipeLeftSign!)
+        swipeLeftSign!.run(seq, completion: {self.swipeLeftSign = nil})
+    }
+    
+    private func makeSwipeRightSign(){
+        removeSwipeTexts()
+        let wait = SKAction.wait(forDuration: 1.5)
+        let fade2 = SKAction.fadeOut(withDuration: 0.5)
+        let seq = SKAction.sequence([wait, fade2])
+        swipeRightSign = SKSpriteNode(imageNamed: "SwipeRight")
+        swipeRightSign!.zPosition = 7
+        swipeRightSign!.setScale(2)
+        swipeRightSign!.position = CGPoint(x: 0, y: carrots.position.y - carrots.frame.height/2 - swipeRightSign!.frame.height/2 - 10)
+        self.addChild(swipeRightSign!)
+        swipeRightSign!.run(seq, completion: {self.swipeRightSign = nil})
+    }
+    
+    private func makeLightningMessage(){
+        removeLabels()
+        let wait = SKAction.wait(forDuration: 1.5)
+        let fade2 = SKAction.fadeOut(withDuration: 0.5)
+        let seq = SKAction.sequence([wait, fade2])
+        holdLightning = SKSpriteNode(imageNamed: "HoldLightning")
+        holdLightning!.zPosition = 9
+        holdLightning!.setScale(2.5)
+        holdLightning!.position = CGPoint.zero
+        self.addChild(holdLightning!)
+        holdLightning!.run(seq, completion: {self.holdLightning = nil})
+    }
+       
+    private func dictateDirection(){
+        if let childList = listOfChildren[savepos+1]{
+            if isOnCloud!.name!.hasSuffix("d3") && childList[0] != nil && childList[1] == nil{
+                if UserDefaults().integer(forKey: "UpSwipesLeft") < 3 && upSwipeLeftCounter < 3{
+                    swipeUpMessage()
+                    toldDirection = true
+                    expectedDirection = "up"
+                }
+            }
+            else if isOnCloud!.name!.hasSuffix("d1") && childList[1] == nil && childList[2] != nil{
+                if UserDefaults().integer(forKey: "UpSwipesRight") < 3 && upSwipeRightCounter < 3{
+                    swipeUpMessage()
+                    toldDirection = true
+                    expectedDirection = "up"
+                }
+            }
+            else if isOnCloud!.name!.hasSuffix("d1") && childList[1] == nil && childList[2] == nil{
+                if tapCounter < 3 && UserDefaults().integer(forKey: "Taps") < 3{
+                    tapSign()
+                    toldDirection = true
+                    expectedDirection = "forward"
+                }
+            }
+            else if isOnCloud!.name!.hasSuffix("d2") && childList[0] == nil && childList[2] == nil{
+                if tapCounter < 3 && UserDefaults().integer(forKey: "Taps") < 3{
+                    tapSign()
+                    toldDirection = true
+                    expectedDirection = "forward"
+                }
+            }
+            else if isOnCloud!.name!.hasSuffix("d3") && childList[0] == nil && childList[1] == nil{
+                if tapCounter < 3 && UserDefaults().integer(forKey: "Taps") < 3{
+                    tapSign()
+                    toldDirection = true
+                    expectedDirection = "forward"
+                }
+            }
+            else if (isOnCloud!.name!.hasSuffix("d2") && childList[0] != nil) || (isOnCloud!.name!.hasSuffix("d3") && childList[1] != nil){
+                if leftSwipeCounter < 3 && UserDefaults().integer(forKey: "LeftSwipes") < 3{
+                    makeSwipeLeftSign()
+                    toldDirection = true
+                    expectedDirection = "left"
+                }
+            }
+            else if (isOnCloud!.name!.hasSuffix("d1") && childList[1] != nil) || (isOnCloud!.name!.hasSuffix("d2") && childList[2] != nil){
+                if rightSwipeCounter < 3 && UserDefaults().integer(forKey: "RightSwipes") < 3{
+                    makeSwipeRightSign()
+                    toldDirection = true
+                    expectedDirection = "right"
+                }
+            }
+        }
+    }
+
+       
+       private func removeLabels(){
+            tapBird?.removeFromParent()
+            holdLightning?.removeFromParent()
+       }
+       
+       private func tapMeSign(){
+           removeLabels()
+           tapBird = SKSpriteNode(imageNamed: "TapTheBird")
+           tapBird!.zPosition = 7
+           tapBird!.position = CGPoint.zero
+           tapBird!.setScale(2)
+           self.addChild(tapBird!)
+           let wait = SKAction.wait(forDuration: 0.5)
+           let fade = SKAction.fadeIn(withDuration: 1)
+           let fade2 = SKAction.fadeOut(withDuration: 1)
+           let seq = SKAction.sequence([wait, fade, wait, fade2])
+           tapBird!.run(seq, completion: {self.tapBird = nil})
+       }
+       
     
     private func createMainMenu(){
         mainMenu = SKSpriteNode(texture: BunnyTexts.MainMenu)
@@ -1046,6 +1233,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     }
     
     private func makeBird(){
+        if shouldTrackBird{
+            if UserDefaults().integer(forKey: "BirdTapCount") <= 4{
+                tapMeSign()}}
         birdCanPoo = true
         firstBirdTap = true
         birdHasReachedPoint = true
@@ -1141,6 +1331,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     
     private func restartButton(){
+        Ads.adTimer += 1
+        removeLabels()
         GameScore.viewController.saveHighScore(thescore: combinedScoreNum)
         restart = SKSpriteNode(color: UIColor(red: 36, green: 8, blue: 59, a: 1), size: CGSize(width: 210, height: 300))
         restart.position = CGPoint(x: 0, y: 0)
@@ -1152,6 +1344,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         highestScore(score: scorenum)
         highestCombinedScore(highest: combinedScoreNum)
         self.addChild(restart)
+        changeSwipeValues()
         makeSorryTryAgain()
         createTotalScoreLabel()
         createHighestScoreLabel()
@@ -1167,21 +1360,68 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         if GameScore.playerIsAuthentic{
            makeEndOfGameButton()}
         airPlane = nil
+        if Ads.adTimer == 7{
+            Ads.adTimer = 0
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "AdPlayer"), object: self)
+        }
+    }
+    
+    private func changeSwipeValues(){
+        if UserDefaults().bool(forKey: "AllSwipes") == false{
+            if UserDefaults().integer(forKey: "RightSwipes") <= 3{
+                if rightSwipeCounter >= 3{
+                    var amt = UserDefaults().integer(forKey: "RightSwipes")
+                    amt += 1
+                    UserDefaults.standard.set(amt, forKey: "RightSwipes")
+                }
+            }
+            if UserDefaults().integer(forKey: "LeftSwipes") <= 3{
+                if leftSwipeCounter >= 3{
+                    var amt = UserDefaults().integer(forKey: "LeftSwipes")
+                    amt += 1
+                    UserDefaults.standard.set(amt, forKey: "LeftSwipes")
+                }
+            }
+            if UserDefaults().integer(forKey: "UpSwipesRight") <= 3{
+                if upSwipeRightCounter >= 3{
+                    var amt = UserDefaults().integer(forKey: "UpSwipesRight")
+                    amt += 1
+                    UserDefaults.standard.set(amt, forKey: "UpSwipesRight")
+                }
+            }
+            if UserDefaults().integer(forKey: "UpSwipesLeft") <= 3{
+                if upSwipeLeftCounter >= 3{
+                    var amt = UserDefaults().integer(forKey: "UpSwipesLeft")
+                    amt += 1
+                    UserDefaults.standard.set(amt, forKey: "UpSwipesLeft")
+                }
+            }
+            if UserDefaults().integer(forKey: "Taps") <= 3{
+                if tapCounter >= 3{
+                    var amt = UserDefaults().integer(forKey: "Taps")
+                    amt += 1
+                    UserDefaults.standard.set(amt, forKey: "Taps")
+                }
+            }
+            if UserDefaults().integer(forKey: "RightSwipes") > 2 && UserDefaults().integer(forKey: "LeftSwipes") > 2 && UserDefaults().integer(forKey: "UpSwipesRight") > 2 && UserDefaults().integer(forKey: "UpSwipesLeft") > 2 && UserDefaults().integer(forKey: "Taps") > 2{
+                UserDefaults.standard.set(true, forKey: "AllSwipes")
+            }
+        }
     }
     
     private func chooseSky(){
-           if scorenum == 1{
-               savedScore = scorenum
-               skyTimeWait = Int.random(in: 20...35)
-           }
-           else if scorenum > 1{
-               if scorenum == savedScore + skyTimeWait{
-                   savedScore = scorenum
-                   skyTimeWait = Int.random(in: 20...35)
-                   changeTheSky()
-               }
-           }
-       }
+        if scorenum == 1{
+            savedScore = scorenum
+            skyTimeWait = Int.random(in: 20...35)
+        }
+        else if scorenum > 1{
+            if scorenum == savedScore + skyTimeWait{
+                savedScore = scorenum
+                skyTimeWait = Int.random(in: 20...35)
+                changeTheSky()
+            }
+        }
+    }
        
        
     private func changeTheSky(){
@@ -1279,10 +1519,15 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     }
     private func checkIfRaining(){
         if self.itsRaining{
-            self.listOfSkies[self.savedSky].run(SKAction.colorize(with: UIColor.systemGray, colorBlendFactor: 0.7, duration: 0))
+            listOfSkies[savedSky].color = UIColor.gray
+            listOfSkies[savedSky].colorBlendFactor = 0.7
         }
         else{
-            self.listOfSkies[self.savedSky].run(SKAction.colorize(with: UIColor.systemGray, colorBlendFactor: -1, duration: 0))}
+            listOfSkies[savedSky].colorBlendFactor = 0
+        }
+        if !rainCheckDispatchCalled{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {self.rainCheckDispatchCalled = true; self.checkIfRaining()})
+        }
     }
 
     private func changeTheSpeed(){
@@ -1628,7 +1873,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             self.removeAllActions()
             self.removeAllChildren()
         }
-        bunnysdone = false; firsttouch = false; savepos = 0; countfirst = 0; scorenum = 0; onACloud = false; resetCalled = false; cloudMoveTime = 0.005; cloudDelayTime = 0.59; bunnyHopTime = 0.482; listOfSkies = []; colorCloudBlendFactor = 0; carrotsNum = 0; listOfCloudColors = []; listOfHopsFontColors = []; combinedScoreNum = 0; RabbitTextureArray = []; pauseCounter = false; soundTrack = true; bunnyMoveWithSound = true; pausedAfterOpening = false; gameIsActive = false; blackCloudList = [:]; planeCount = 0; lowerPlaneBound = 10; upperPlaneBound = 15; planeSoundPaused = false; listOfCarrots = [:]; triplesChildren = []; countTheTriples = [:]; listOfChildren = [:]; BirdTextureArray = []; birdHasReachedPoint = false; airPlanesAlive = false; ranWasCalled = false; pooPooPos = 0; pooCount = 0; cameToPause = false; birdCanPoo = true; airPlaneHitBunny = false; leftGame = false; calledBunnysDone = false; carrotCounter = false; upOrDownSwipe = false; rainTextureArray = []; itsRaining = false; saveRain = 0; rainTimes = 0; lighteningTime = false; lighteningTap = false; rainFadingOut = false; willMakeRain = false; lighteningHoldIt = false; rainEmitter = nil; bunnyIsProtected = false; rainSoundPaused = false
+        bunnysdone = false; firsttouch = false; savepos = 0; countfirst = 0; scorenum = 0; onACloud = false; resetCalled = false; cloudMoveTime = 0.005; cloudDelayTime = 0.59; bunnyHopTime = 0.482; listOfSkies = []; colorCloudBlendFactor = 0; carrotsNum = 0; listOfCloudColors = []; listOfHopsFontColors = []; combinedScoreNum = 0; RabbitTextureArray = []; pauseCounter = false; soundTrack = true; bunnyMoveWithSound = true; pausedAfterOpening = false; gameIsActive = false; blackCloudList = [:]; planeCount = 0; lowerPlaneBound = 10; upperPlaneBound = 15; planeSoundPaused = false; listOfCarrots = [:]; triplesChildren = []; countTheTriples = [:]; listOfChildren = [:]; BirdTextureArray = []; birdHasReachedPoint = false; airPlanesAlive = false; ranWasCalled = false; pooPooPos = 0; pooCount = 0; cameToPause = false; birdCanPoo = true; airPlaneHitBunny = false; leftGame = false; calledBunnysDone = false; carrotCounter = false; upOrDownSwipe = false; rainTextureArray = []; itsRaining = false; saveRain = 0; rainTimes = 0; lighteningTime = false; lighteningTap = false; rainFadingOut = false; willMakeRain = false; lighteningHoldIt = false; rainEmitter = nil; bunnyIsProtected = false; rainSoundPaused = false; toldDirection = false; tapCounter = 0; leftSwipeCounter = 0; rightSwipeCounter = 0; upSwipeRightCounter = 0; upSwipeLeftCounter = 0; shouldTrackBird = true; shouldTrackLightning = true; expectedDirection = ""; rainCheckDispatchCalled = false; allSwipes = true
+        
         removeGestureRecognizers()
         bunnyFellSound = nil; bunnyDidntHop = nil; planeHitSound = nil; blackCloudsound = nil
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
@@ -1682,6 +1928,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func makeLightening(){
         lighteningHoldIt = false
         if !bunnysdone && !rainFadingOut{
+            if shouldTrackLightning{makeLightningMessage()}
             let rand = Int.random(in: 1...3)
             if rand == 1{
                 let makeLighter = SKAction.colorize(withColorBlendFactor: -0.8, duration: 0.75)
@@ -1692,12 +1939,10 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 let waitASecond = SKAction.wait(forDuration: 0.3)
                 let seq = SKAction.sequence([brightYellowColor, waitASecond])
                 let groupAction = SKAction.group([changeDynamic, seq])
-                DispatchQueue.global().async {
-                    self.lightening1!.alpha = 1
-                    self.bunnyIsProtected = false
-                    self.lightening1!.run(sequence, completion: {self.lightening1!.run(groupAction, completion: {self.lightening1!.run(SKAction.fadeAlpha(by: -1, duration: 0.2)); self.lightening1!.physicsBody!.isDynamic = false})
-                    })
-                }
+                self.lightening1!.alpha = 1
+                self.bunnyIsProtected = false
+                self.lightening1!.run(sequence, completion: {self.lightening1!.run(groupAction, completion: {self.lightening1!.run(SKAction.fadeAlpha(by: -1, duration: 0.2)); self.lightening1!.physicsBody!.isDynamic = false})
+                })
             }
             else if rand == 2 {
                 let makeLighter = SKAction.colorize(withColorBlendFactor: -0.8, duration: 0.75)
@@ -1708,12 +1953,10 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 let waitASecond = SKAction.wait(forDuration: 0.3)
                 let seq = SKAction.sequence([brightYellowColor, waitASecond])
                 let groupAction = SKAction.group([changeDynamic, seq])
-                DispatchQueue.global().async {
-                    self.lightening2!.alpha = 1
-                    self.bunnyIsProtected = false
-                    self.lightening2!.run(sequence, completion: {self.lightening2!.run(groupAction, completion: {self.lightening2!.run(SKAction.fadeAlpha(by: -1, duration: 0.2)); self.lightening2!.physicsBody!.isDynamic = false})
-                    })
-                }
+                self.lightening2!.alpha = 1
+                self.bunnyIsProtected = false
+                self.lightening2!.run(sequence, completion: {self.lightening2!.run(groupAction, completion: {self.lightening2!.run(SKAction.fadeAlpha(by: -1, duration: 0.2)); self.lightening2!.physicsBody!.isDynamic = false})
+                })
             }
             else{
                 let makeLighter = SKAction.colorize(withColorBlendFactor: -0.8, duration: 0.75)
@@ -1724,37 +1967,35 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 let waitASecond = SKAction.wait(forDuration: 0.3)
                 let seq = SKAction.sequence([brightYellowColor, waitASecond])
                 let groupAction = SKAction.group([changeDynamic, seq])
-                DispatchQueue.global().async {
-                    self.lightening3!.alpha = 1
-                    self.bunnyIsProtected = false
-                    self.lightening3!.run(sequence, completion: {self.lightening3!.run(groupAction, completion: {self.lightening3!.run(SKAction.fadeAlpha(by: -1, duration: 0.2)); self.lightening3!.physicsBody!.isDynamic = false})
-                    })
-                }
+                self.lightening3!.alpha = 1
+                self.bunnyIsProtected = false
+                self.lightening3!.run(sequence, completion: {self.lightening3!.run(groupAction, completion: {self.lightening3!.run(SKAction.fadeAlpha(by: -1, duration: 0.2)); self.lightening3!.physicsBody!.isDynamic = false})
+                })
             }
         }
     }
-    private func emitRain(){
-        rainFadingOut = false
-        rainEmitter = SKEmitterNode(fileNamed: "Rain")
-        rainEmitter!.zPosition = 15
-        rainEmitter!.position = CGPoint(x: 0, y: size.height)
-        rainEmitter!.isHidden = true
-        rainEmitter!.isPaused = true
-        self.addChild(rainEmitter!)
+
+    
+    private func checkLightningHoldCount(){
+        var amt = UserDefaults().integer(forKey: "LightningHoldCount")
+        amt += 1
+        UserDefaults.standard.set(amt, forKey: "LightningHoldCount")
     }
     
-    
     private func makeItRain(){
+        rainCheckDispatchCalled = false
         rainFadingOut = false
         makeRainSound()
         rainEmitter = SKEmitterNode(fileNamed: "Rain")
         rainEmitter!.zPosition = 15
         rainEmitter!.position = CGPoint(x: 0, y: size.height)
         self.addChild(rainEmitter!)
-        self.listOfSkies[self.savedSky].run(SKAction.colorize(with: UIColor.systemGray, colorBlendFactor: 0.7, duration: 1))
+        self.run(SKAction.wait(forDuration: 1), completion: {self.listOfSkies[self.savedSky].color = UIColor.gray
+            self.listOfSkies[self.savedSky].colorBlendFactor = 0.7})
         let randInt = Int.random(in: 15...30)
         let lightItUp: Double! = Double(randInt)
-        self.run(SKAction.wait(forDuration: lightItUp), completion: {self.stopTheRain(); let randNum = Int.random(in: 40...70); self.saveRain = self.scorenum + randNum; self.listOfSkies[self.savedSky].run(SKAction.colorize(with: UIColor.systemGray, colorBlendFactor: -0.7, duration: 1)); DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {self.itsRaining = false})})
+        self.run(SKAction.wait(forDuration: lightItUp), completion: {self.stopTheRain(); let randNum = Int.random(in: 40...70); self.saveRain = self.scorenum + randNum; self.listOfSkies[self.savedSky].colorBlendFactor = 0
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {self.itsRaining = false})})
     }
     
     
@@ -1976,6 +2217,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        removeSwipeTexts()
         lighteningHoldIt = false
         for touch in touches{
             let local = touch.location(in: self)
@@ -2003,6 +2245,12 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                 if Bird.contains(local) && self.isPaused == false{
                     birdCanPoo = false
                     birdTap = true
+                    tapBird?.removeFromParent()
+                    if shouldTrackBird{
+                        var amt = UserDefaults().integer(forKey: "BirdTapCount")
+                        amt += 1
+                        UserDefaults.standard.set(amt, forKey: "BirdTapCount")
+                    }
                     if firstBirdTap{
                         Bird.xScale = Bird.xScale * -1
                         if Bird.xScale > 0{
@@ -2173,6 +2421,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         if firsttouch == true && gestureRecognizer.state == .ended {
             if onACloud == true {
                 if inRange(Bunny.parent!){
+                    if expectedDirection == "forward"{tapCounter += 1}
                     let thispos = countTheTriples[savepos]!!.position.y
                     let thatpos = countTheTriples[savepos+1]!!.position.y
                     let distBetween = thatpos - thispos
@@ -2207,6 +2456,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                     switch gestureRecognizer.direction{
                     case .left:
                         if inRange(Bunny.parent!) && bunnyInRangeLeft(Bunny){
+                            if expectedDirection == "left"{leftSwipeCounter += 1}
                             let thispos = countTheTriples[savepos]!!.position.y
                             let thatpos = countTheTriples[savepos+1]!!.position.y
                             let distBetween = thatpos - thispos
@@ -2224,6 +2474,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                         }
                     case .right:
                         if inRange(Bunny.parent!) && bunnyInRangeRight(Bunny){
+                            if expectedDirection == "right"{rightSwipeCounter += 1}
                             let thispos = countTheTriples[savepos]!!.position.y
                             let thatpos = countTheTriples[savepos+1]!!.position.y
                             let distBetween = thatpos - thispos
@@ -2243,6 +2494,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                     upOrDownSwipe = true
                     if isOnCloud!.name!.hasSuffix("d3"){
                         if inRange(Bunny.parent!) && bunnyInFarRangeRight(Bunny) {
+                            if expectedDirection == "up"{upSwipeRightCounter += 1}
                             let thispos = countTheTriples[savepos]!!.position.y
                             let thatpos = countTheTriples[savepos+1]!!.position.y
                             let distBetween = thatpos - thispos
@@ -2261,6 +2513,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                     }
                     else if isOnCloud!.name!.hasSuffix("d1"){
                         if inRange(Bunny.parent!) && inFarRangeLeft(Bunny){
+                            if expectedDirection == "up"{upSwipeLeftCounter += 1}
                             let thispos = countTheTriples[savepos]!!.position.y
                             let thatpos = countTheTriples[savepos+1]!!.position.y
                             let distBetween = thatpos - thispos
@@ -2296,14 +2549,17 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         guard lighteningTap else { return }
         if lightening1!.alpha > 0{
             bunnyIsProtected = true
+            if shouldTrackLightning{if UserDefaults().integer(forKey: "LightningHoldCount") <= 4{checkLightningHoldCount()}}
             lightening1!.run(SKAction.fadeAlpha(by: -1, duration: 0))
         }
         else if lightening2!.alpha > 0{
             bunnyIsProtected = true
+         if shouldTrackLightning{if UserDefaults().integer(forKey: "LightningHoldCount") <= 4{checkLightningHoldCount()}}
         lightening2!.run(SKAction.fadeAlpha(by: -1, duration: 0))
         }
         else if lightening3!.alpha > 0{
             bunnyIsProtected = true
+         if shouldTrackLightning{if UserDefaults().integer(forKey: "LightningHoldCount") <= 4{checkLightningHoldCount()}}
             lightening3!.run(SKAction.fadeAlpha(by: -1, duration: 0))
         }
     }
@@ -2314,6 +2570,11 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         theCountFirstIf: if countfirst > 0 && bunnysdone == false{
         if samePos(bunny: Bunny, cloudpos1: triplesChildren[0], cloudpos2: triplesChildren[1], cloudpos3: triplesChildren[2]){
             onACloud = true
+            if allSwipes == false{
+                if !toldDirection{
+                    dictateDirection()
+                }
+            }
             let num = isOnCloud!.name!.count
             let name = Int(String(isOnCloud!.name![num - 1]))
             blackCloudChecker: if let _ = blackCloudList[savepos]![name!-1]{
@@ -2344,6 +2605,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             score!.text = "Hops: " + String(scorenum)
         }
         else {onACloud = false
+            toldDirection = false
             if !Bunny.hasActions() {
                 if resetCalled == false{
                     bunnysdone = true
@@ -2440,9 +2702,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             let waitForLightening = SKAction.wait(forDuration: TimeInterval(lightItUp))
             self.run(waitForLightening, completion: {self.makeLightening()})
             lighteningTime = false
-            let time = Int.random(in: 5...10)
+            let time = Int.random(in: 4...8)
             let lightUp:Double! = Double(time)
-            DispatchQueue.main.asyncAfter(deadline: .now() + lightUp, execute: {self.lighteningTime = true})
+            self.run(SKAction.wait(forDuration: lightUp), completion: {self.lighteningTime = true})
         }
     }
         if bunnysdone == true{
