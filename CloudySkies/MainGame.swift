@@ -918,7 +918,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         mainMenu = SKSpriteNode(texture: BunnyTexts.MainMenu)
         mainMenu.size = CGSize(width: 210, height: 48)
         mainMenu.setScale(1.5)
-        mainMenu.position = CGPoint(x: 0, y: -200)
+        let playAgainYPos = playAgain.position.y - playAgain.frame.height/2 - mainMenu.frame.height/2
+        mainMenu.position = CGPoint(x: 0, y: playAgainYPos)
         mainMenu.zPosition = 7
         mainMenu.alpha = 0
         self.addChild(mainMenu)
@@ -928,7 +929,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func makeEarnCarrotsPic(){
         earn10Carrots = SKSpriteNode(texture: BunnyTexts.Earn10Carrots)
         earn10Carrots.position.x = 0
-        earn10Carrots.position.y = mainMenu.position.y - mainMenu.frame.height/2 - 50
+        earn10Carrots.position.y = mainMenu.position.y - mainMenu.frame.height/2 - 40
         earn10Carrots.size = CGSize(width: 245, height: 57)
         
         let carrotswidth = earn10Carrots.size.width
@@ -981,7 +982,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         playAgain = SKSpriteNode(texture: BunnyTexts.PlayAgainBar)
         playAgain.size = CGSize(width: 210, height: 48)
         playAgain.setScale(1.5)
-        playAgain.position = CGPoint(x: 0, y: -125)
+        let restartYPos = restart.position.y
+        playAgain.position = CGPoint(x: 0, y: restartYPos - 125)
         playAgain.zPosition = 7
         playAgain.alpha = 0
         self.addChild(playAgain)
@@ -992,7 +994,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     private func makeSorryTryAgain(){
         sorryTryAgain = SKSpriteNode(imageNamed: "SorryTryAgain")
         sorryTryAgain.setScale(1)
-        sorryTryAgain.position = CGPoint(x:0, y: 185)
+        let restartYPos = restart.position.y
+        sorryTryAgain.position = CGPoint(x:0, y: restartYPos + 185)
         sorryTryAgain.alpha = 0
         sorryTryAgain.zPosition = 9
         self.addChild(sorryTryAgain)
@@ -1008,11 +1011,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         carrots.alpha = 0
         carrots.fontSize = 50
         carrots.run(SKAction.colorize(with: UIColor.black, colorBlendFactor: 1, duration: 0))
-        if bunnysdone == false{
-            carrots.setScale(0.75)
-            carrots.position = CGPoint(x: self.frame.width/2 - 140, y: self.frame.height/2 - 65)
-            let scorefadein = SKAction.fadeIn(withDuration: 0.5); carrots.run(scorefadein)
-        }
+        carrots.setScale(0.75)
+        carrots.position = CGPoint(x: self.frame.width/2 - 140, y: self.frame.height/2 - 65)
+        let scorefadein = SKAction.fadeIn(withDuration: 0.5); carrots.run(scorefadein)
         self.addChild(carrots)
     }
     
@@ -1033,7 +1034,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             score.fontName = "Noteworthy-Bold"
             score.run(SKAction.colorize(with: UIColor.white, colorBlendFactor: 1, duration: 0))
             let scorefadein = SKAction.fadeIn(withDuration: endGameFadeInTime)
-            score.position = CGPoint(x: 0, y: 0)
+            let restartYPos = restart.position.y
+            score.position = CGPoint(x: 0, y: restartYPos)
             score.setScale(0.975)
             score.run(scorefadein)
         }
@@ -1046,7 +1048,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         highestCombinedScoreText.fontColor = UIColor.white
         highestCombinedScoreText.fontName = "Noteworthy-Bold"
         highestCombinedScoreText.fontSize = 35
-        highestCombinedScoreText.position = CGPoint(x: 0, y: 64)
+        let restartYPos = restart.position.y
+        highestCombinedScoreText.position = CGPoint(x: 0, y: restartYPos + 64)
         highestCombinedScoreText.zPosition = 7
         highestCombinedScoreText.setScale(0.77)
         highestCombinedScoreText.alpha = 0
@@ -1060,7 +1063,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         combinedScore.fontName = "Noteworthy-Bold"
         combinedScore.fontSize = 45
         combinedScore.zPosition = 7
-        combinedScore.position = CGPoint(x: 0, y: -63)
+        let restartYPos = restart.position.y
+        combinedScore.position = CGPoint(x: 0, y: restartYPos - 63)
         combinedScore.alpha = 0
         combinedScore.setScale(0.9)
         combinedScore.run(SKAction.fadeIn(withDuration: endGameFadeInTime))
@@ -1073,7 +1077,8 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         mostHops.color = UIColor.white
         mostHops.fontName = "Noteworthy-Bold"
         mostHops.fontSize = 35
-        mostHops.position = CGPoint(x: 0, y: 120)
+        let restartYPos = restart.position.y
+        mostHops.position = CGPoint(x: 0, y: restartYPos + 120)
         mostHops.zPosition = 7
         mostHops.setScale(0.77)
         mostHops.alpha = 0
@@ -1358,7 +1363,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         removeLabels()
         GameScore.viewController.saveHighScore(thescore: combinedScoreNum)
         restart = SKSpriteNode(color: UIColor(red: 36, green: 8, blue: 59, a: 1), size: CGSize(width: 210, height: 300))
-        restart.position = CGPoint(x: 0, y: 0)
+        restart.position = CGPoint(x: 0, y: 30)
         restart.setScale(1.5)
         restart.zPosition = 6
         restart.alpha = 0
@@ -1376,10 +1381,9 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         soundOnButton.run(SKAction.fadeOut(withDuration: endGameFadeInTime))
         soundOffButton.run(SKAction.fadeOut(withDuration: endGameFadeInTime))
         score.removeFromParent()
-        setUpScore()
-        setUpCarrotScore()
-        createMainMenu()
         playAgainButton()
+        setUpScore()
+        createMainMenu()
         makeEarnCarrotsPic()
         if GameScore.playerIsAuthentic{
            makeEndOfGameButton()}
