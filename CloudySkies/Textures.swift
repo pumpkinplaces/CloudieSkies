@@ -50,6 +50,7 @@ class BunnyTexts{
     static var SoundButton = SKTexture(imageNamed: "SoundButton")
     static var PauseButton = SKTexture(imageNamed: "PauseButton")
     static var Carrot = SKTexture(imageNamed: "Carrot")
+    static var Earn10Carrots = SKTexture(imageNamed: "Earn10Carrots")
        
     static var picList:[SKTexture] = []
 }
