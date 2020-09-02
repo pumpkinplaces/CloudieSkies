@@ -209,6 +209,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     var expectedDirection = ""
     var rainCheckDispatchCalled = false
     var allSwipes = true
+    var earn10Carrots: SKSpriteNode!
 
     
     override func didMove(to view: SKView) {
@@ -915,7 +916,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     private func createMainMenu(){
         mainMenu = SKSpriteNode(texture: BunnyTexts.MainMenu)
-        mainMenu.size = CGSize(width: 210, height: 47.4)
+        mainMenu.size = CGSize(width: 210, height: 48)
         mainMenu.setScale(1.5)
         mainMenu.position = CGPoint(x: 0, y: -200)
         mainMenu.zPosition = 7
@@ -924,6 +925,28 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         mainMenu.run(SKAction.fadeIn(withDuration: endGameFadeInTime))
     }
     
+    private func makeEarnCarrotsPic(){
+        earn10Carrots = SKSpriteNode(texture: BunnyTexts.Earn10Carrots)
+        earn10Carrots.position.x = 0
+        earn10Carrots.position.y = mainMenu.position.y - mainMenu.frame.height/2 - 50
+        earn10Carrots.size = CGSize(width: 245, height: 57)
+        
+        let carrotswidth = earn10Carrots.size.width
+        let carrotHeight = earn10Carrots.size.height
+        earn10Carrots.zPosition = 7
+        earn10Carrots.alpha = 0
+        self.addChild(earn10Carrots)
+        let makeWidth = SKAction.resize(toWidth: earn10Carrots.size.width + 15, duration: 0.75)
+        let makeHigher = SKAction.resize(toHeight: earn10Carrots.size.height + 5, duration: 0.75)
+        let group = SKAction.group([makeWidth, makeHigher])
+        let makeSmaller = SKAction.resize(toWidth: carrotswidth, duration: 0.75)
+        let makeLower = SKAction.resize(toHeight: carrotHeight, duration: 0.75)
+        let group2 = SKAction.group([makeSmaller, makeLower])
+        let sequence = SKAction.sequence([group, group2])
+        let repeatTheSizeChange = SKAction.repeatForever(sequence)
+        earn10Carrots.run(SKAction.fadeIn(withDuration: endGameFadeInTime), completion: {self.earn10Carrots.run(repeatTheSizeChange)})
+        
+    }
     
     private func createPlayButton(){
         if let _ = pauseButton.parent{
@@ -956,7 +979,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
     
     private func playAgainButton(){
         playAgain = SKSpriteNode(texture: BunnyTexts.PlayAgainBar)
-        playAgain.size = CGSize(width: 210, height: 47.5)
+        playAgain.size = CGSize(width: 210, height: 48)
         playAgain.setScale(1.5)
         playAgain.position = CGPoint(x: 0, y: -125)
         playAgain.zPosition = 7
@@ -1357,14 +1380,17 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
         setUpCarrotScore()
         createMainMenu()
         playAgainButton()
+        makeEarnCarrotsPic()
         if GameScore.playerIsAuthentic{
            makeEndOfGameButton()}
         airPlane = nil
         if Ads.adTimer == 7{
             Ads.adTimer = 0
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "AdPlayer"), object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "InterstitialAdPlayer"), object: self)
         }
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "BannerAdShow"), object: self)
     }
+    
     
     private func changeSwipeValues(){
         if UserDefaults().bool(forKey: "AllSwipes") == false{
@@ -2009,7 +2035,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
 
     private func willItRain(){
         if scorenum == 0{
-            saveRain = Int.random(in: 5...10)
+            saveRain = Int.random(in: 30...70)
         }
         else{
             if scorenum == saveRain || scorenum == saveRain + 1{
@@ -2224,6 +2250,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             if bunnysdone == true{
                 if playAgain.contains(local) && !playAgain.hasActions(){
                     theBlender(runActionOn: playAgain)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "RemoveBannerAdShow"), object: self)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.14, execute: {
                             self.restartGame()
                     })
@@ -2234,11 +2261,15 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
                      GameScore.gameCenterButton.removeTarget(self, action: #selector(self.sendGameCenterNotification), for: .touchUpInside)
                         GameScore.gameCenterButton.removeFromSuperview()}
                      removeGestureRecognizers()
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "RemoveBannerAdShow"), object: self)
                     let playScene = PlayScene(fileNamed: "PlayScene")
                     let fadeAway = SKTransition.fade(with: UIColor.systemTeal, duration: 1)
                     DispatchQueue.global().async {
                         self.scene?.view?.presentScene(playScene!, transition: fadeAway)
                     }
+                }
+                if earn10Carrots.contains(local) && earn10Carrots.alpha == 1{
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "RewardShow"), object: self)
                 }
             }
             else if bunnysdone == false {
@@ -2702,7 +2733,7 @@ class MainGame: SKScene, SKPhysicsContactDelegate {
             let waitForLightening = SKAction.wait(forDuration: TimeInterval(lightItUp))
             self.run(waitForLightening, completion: {self.makeLightening()})
             lighteningTime = false
-            let time = Int.random(in: 4...8)
+            let time = Int.random(in: 4...9)
             let lightUp:Double! = Double(time)
             self.run(SKAction.wait(forDuration: lightUp), completion: {self.lighteningTime = true})
         }
