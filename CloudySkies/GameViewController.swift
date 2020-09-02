@@ -94,6 +94,7 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
     
     
      func addBannerViewToView(_ bannerView: GADBannerView) {
+         print("is coming to banner")
      bannerView.translatesAutoresizingMaskIntoConstraints = false
      view.addSubview(bannerView)
      view.addConstraints(
