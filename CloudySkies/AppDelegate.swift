@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import FirebaseCore
+import FirebaseInstanceID
 import GoogleMobileAds
 import FirebaseMessaging
 
