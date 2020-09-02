@@ -130,6 +130,7 @@ class GameScene: SKScene {
         BunnyTexts.picList.append(BunnyTexts.SoundButton)
         BunnyTexts.picList.append(BunnyTexts.PauseButton)
         BunnyTexts.picList.append(BunnyTexts.Carrot)
+        BunnyTexts.picList.append(BunnyTexts.Earn10Carrots)
         SKTexture.preload(BunnyTexts.picList, withCompletionHandler: {self.isLoading = false})
     }
     
