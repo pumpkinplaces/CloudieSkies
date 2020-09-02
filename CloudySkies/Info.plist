@@ -19,7 +19,7 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-9087912874155205/4047364170
+	<string>ca-app-pub-9087912874155205~1830063246
 </string>
 	<key>GADIsAdManagerApp</key>
 	<true/>
