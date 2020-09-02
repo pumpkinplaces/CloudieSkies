@@ -13,12 +13,17 @@ import AVFoundation
 import GameKit
 import GoogleMobileAds
 
-class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINavigationControllerDelegate, GKLocalPlayerListener, GADInterstitialDelegate {
+class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINavigationControllerDelegate, GKLocalPlayerListener, GADInterstitialDelegate, GADBannerViewDelegate, GADRewardedAdDelegate {
+    
+    
     
     var mainGameScene = GameScene()
     var storeSong: AVAudioPlayer?
     var initialScrollDone = Bool()
     var interstitialAd: GADInterstitial!
+    var clickAd: GADInterstitial!
+    var bannerAd: GADBannerView!
+    var reward: GADRewardedAd!
     
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil)
@@ -28,6 +33,8 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
     override func viewDidLoad() {
         super.viewDidLoad()
         interstitialAd = createAndLoadInterstitial()
+        bannerAd = createAndLoadBannerAd()
+        reward = createAndLoadRewardAd()
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.playBackGroundSound(_:)), name: NSNotification.Name(rawValue: "PlayBackgroundSound"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.stopBackGroundSound(_:)), name: NSNotification.Name(rawValue: "StopBackgroundSound"), object: nil)
@@ -35,7 +42,11 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.resumeBackGroundSound(_:)), name: NSNotification.Name(rawValue: "ResumeBackGroundSound"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.leaderboard(_:)), name:  NSNotification.Name(rawValue: "GameCenterLeaderBoard"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.playAd(_:)), name: NSNotification.Name(rawValue: "AdPlayer"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.playInterstitialAd(_:)), name: NSNotification.Name(rawValue: "InterstitialAdPlayer"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.showBannerAd(_:)), name: NSNotification.Name(rawValue: "BannerAdShow"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.showRewardAd(_:)), name: NSNotification.Name(rawValue: "RewardShow"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.removeBannerAd(_:)), name: NSNotification.Name(rawValue: "RemoveBannerAdShow"), object: nil)
+        
         //createGradientLayer()
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -56,15 +67,67 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
         }
     }
     private func createAndLoadInterstitial() -> GADInterstitial{
-        interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9087912874155205/4047364170")
+        interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910")
         interstitialAd.delegate = self
         let request = GADRequest()
         interstitialAd.load(request)
         return interstitialAd
     }
     
+    private func createAndLoadBannerAd() -> GADBannerView{
+        bannerAd = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerAd.delegate = self
+        bannerAd.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        let request = GADRequest()
+        bannerAd.rootViewController = self
+        bannerAd.load(request)
+        return bannerAd
+    }
+    
+    @objc func showBannerAd(_ notification: Notification){
+        addBannerViewToView(bannerAd)
+    }
+    
+    @objc func removeBannerAd(_ notification: Notification){
+        bannerAd.removeFromSuperview()
+    }
+    
+    
+     func addBannerViewToView(_ bannerView: GADBannerView) {
+     bannerView.translatesAutoresizingMaskIntoConstraints = false
+     view.addSubview(bannerView)
+     view.addConstraints(
+       [NSLayoutConstraint(item: bannerView,
+                           attribute: .bottom,
+                           relatedBy: .equal,
+                           toItem: view.safeAreaLayoutGuide,
+                           attribute: .bottom,
+                           multiplier: 1,
+                           constant: 0),
+        NSLayoutConstraint(item: bannerView,
+                           attribute: .centerX,
+                           relatedBy: .equal,
+                           toItem: view,
+                           attribute: .centerX,
+                           multiplier: 1,
+                           constant: 0)
+       ])
+    }
+    
+    private func createAndLoadRewardAd() -> GADRewardedAd{
+        reward = GADRewardedAd(adUnitID: "ca-app-pub-3940256099942544/1712485313")
+        reward.load(GADRequest()) { error in
+        if error != nil {return}
+        }
+        return reward
+    }
+    
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {
       interstitialAd = createAndLoadInterstitial()
+    }
+    
+    func rewardedAdDidDismiss(_ rewardedAd: GADRewardedAd) {
+        reward = createAndLoadRewardAd()
     }
     
 
@@ -123,11 +186,25 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
     }
     
     
-    @objc func playAd(_ notification: Notification){
+    @objc func playInterstitialAd(_ notification: Notification){
         if interstitialAd.isReady {
-          interstitialAd.present(fromRootViewController: self)
+            interstitialAd.present(fromRootViewController: self)
         }
     }
+    
+
+    @objc func showRewardAd(_ notification: Notification){
+        if reward.isReady {
+            reward.present(fromRootViewController: self, delegate: self)
+        }
+    }
+    
+    func rewardedAd(_ rewardedAd: GADRewardedAd, userDidEarn reward: GADAdReward) {
+        var carrotAmount = UserDefaults().integer(forKey: "CarrotCount")
+        carrotAmount += 10
+        UserDefaults.standard.set(carrotAmount, forKey: "CarrotCount")
+    }
+    
     
     func saveHighScore(thescore: Int){
         if GKLocalPlayer.local.isAuthenticated{
