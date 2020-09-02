@@ -67,7 +67,7 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
         }
     }
     private func createAndLoadInterstitial() -> GADInterstitial{
-        interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910")
+        interstitialAd = GADInterstitial(adUnitID: "ca-app-pub-9087912874155205/4047364170")
         interstitialAd.delegate = self
         let request = GADRequest()
         interstitialAd.load(request)
@@ -77,7 +77,7 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
     private func createAndLoadBannerAd() -> GADBannerView{
         bannerAd = GADBannerView(adSize: kGADAdSizeBanner)
         bannerAd.delegate = self
-        bannerAd.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        bannerAd.adUnitID = "ca-app-pub-9087912874155205/2512567449"
         let request = GADRequest()
         bannerAd.rootViewController = self
         bannerAd.load(request)
@@ -115,7 +115,7 @@ class GameViewController: UIViewController, GKGameCenterControllerDelegate, UINa
     }
     
     private func createAndLoadRewardAd() -> GADRewardedAd{
-        reward = GADRewardedAd(adUnitID: "ca-app-pub-3940256099942544/1712485313")
+        reward = GADRewardedAd(adUnitID: "ca-app-pub-9087912874155205/3996205359")
         reward.load(GADRequest()) { error in
         if error != nil {return}
         }
