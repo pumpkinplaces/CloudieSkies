@@ -19,8 +19,8 @@
 		3836382F24CAB08A00FFB634 /* DarkBrownBunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836382E24CAB08A00FFB634 /* DarkBrownBunny.atlas */; };
 		3836383124CB619300FFB634 /* Shiny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836383024CB619300FFB634 /* Shiny.atlas */; };
 		3836383924CB90E600FFB634 /* LightBrownBunny.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3836383824CB90E500FFB634 /* LightBrownBunny.atlas */; };
+		383912862501B4CF000B3184 /* Jason.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 383912852501B4CF000B3184 /* Jason.atlas */; };
 		3845629424CE739B0023A57D /* BirdAnimation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3845629324CE739B0023A57D /* BirdAnimation.atlas */; };
-		3847052924F3E7CA00666A6A /* Jason.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3847052824F3E7C900666A6A /* Jason.atlas */; };
 		3847052B24F3F9DA00666A6A /* Lightening.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3847052A24F3F9DA00666A6A /* Lightening.m4a */; };
 		3847052D24F4085600666A6A /* RainSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3847052C24F4085600666A6A /* RainSound.m4a */; };
 		3849B14724F166DB0035FB1C /* Rain.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3849B14624F166DB0035FB1C /* Rain.sks */; };
@@ -96,8 +96,8 @@
 		3836382E24CAB08A00FFB634 /* DarkBrownBunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = DarkBrownBunny.atlas; sourceTree = "<group>"; };
 		3836383024CB619300FFB634 /* Shiny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Shiny.atlas; sourceTree = "<group>"; };
 		3836383824CB90E500FFB634 /* LightBrownBunny.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = LightBrownBunny.atlas; sourceTree = "<group>"; };
+		383912852501B4CF000B3184 /* Jason.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Jason.atlas; sourceTree = "<group>"; };
 		3845629324CE739B0023A57D /* BirdAnimation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BirdAnimation.atlas; sourceTree = "<group>"; };
-		3847052824F3E7C900666A6A /* Jason.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Jason.atlas; sourceTree = "<group>"; };
 		3847052A24F3F9DA00666A6A /* Lightening.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lightening.m4a; sourceTree = "<group>"; };
 		3847052C24F4085600666A6A /* RainSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = RainSound.m4a; sourceTree = "<group>"; };
 		3849B14624F166DB0035FB1C /* Rain.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Rain.sks; sourceTree = "<group>"; };
@@ -214,13 +214,13 @@
 		38804EE924986D9900B330F1 /* CloudySkies */ = {
 			isa = PBXGroup;
 			children = (
+				380EF36624F058FA0020D790 /* Cloudie Skies.entitlements */,
+				383912852501B4CF000B3184 /* Jason.atlas */,
 				3853EEEE24FD444E003BEB0F /* Jackie.atlas */,
 				3853EEEC24FD442F003BEB0F /* Joyce.atlas */,
 				3854DFA624FC76D20053FAD1 /* PatchBunny.atlas */,
 				3847052C24F4085600666A6A /* RainSound.m4a */,
 				3847052A24F3F9DA00666A6A /* Lightening.m4a */,
-				380EF36624F058FA0020D790 /* Cloudie Skies.entitlements */,
-				3847052824F3E7C900666A6A /* Jason.atlas */,
 				380EF36024EF3E790020D790 /* Joshie.atlas */,
 				380EF35824EEBFE30020D790 /* BrownRabbit.atlas */,
 				387E1FE724BFAD43003D3F87 /* Assets.xcassets */,
@@ -412,6 +412,7 @@
 				38C4DCF724BA200C0014FF29 /* MainGame.sks in Resources */,
 				38DDC8C124BCD8CB00B556B7 /* Intro.m4a in Resources */,
 				3836382F24CAB08A00FFB634 /* DarkBrownBunny.atlas in Resources */,
+				383912862501B4CF000B3184 /* Jason.atlas in Resources */,
 				3836381724C817A700FFB634 /* Rabbita.atlas in Resources */,
 				3847052B24F3F9DA00666A6A /* Lightening.m4a in Resources */,
 				3853EEED24FD442F003BEB0F /* Joyce.atlas in Resources */,
@@ -419,7 +420,6 @@
 				380EF36124EF3E790020D790 /* Joshie.atlas in Resources */,
 				3847052D24F4085600666A6A /* RainSound.m4a in Resources */,
 				3865C5A324DCA904006DC340 /* storeSong.m4a in Resources */,
-				3847052924F3E7CA00666A6A /* Jason.atlas in Resources */,
 				3855FB2824DB9991000CBA8A /* Chirp.m4a in Resources */,
 				3855FB1A24D8F385000CBA8A /* Bunny.atlas in Resources */,
 				38C4DCF624BA20050014FF29 /* PlayScene.sks in Resources */,
